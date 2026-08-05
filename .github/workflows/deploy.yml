@@ -27,7 +27,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
           fetch-depth: 0
 
       - name: Setup Hugo
@@ -35,6 +34,9 @@ jobs:
         with:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
+
+      - name: Clone theme
+        run: git clone https://github.com/Gavin1668/hugo-theme-stack.git themes/hugo-theme-stack
 
       - name: Build
         run: hugo --minify
