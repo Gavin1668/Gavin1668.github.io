@@ -38,7 +38,7 @@ params:
     emoji: 💻
     subtitle: 代码、思考与生活。
     avatar:
-      enabled: true
+      enabled: false
       local: true
       src: img/avatar.png
 
