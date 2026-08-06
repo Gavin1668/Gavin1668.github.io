@@ -4,7 +4,8 @@
   "scripts": {
     "build": "./node_modules/.bin/hugo --minify",
     "dev": "hugo server -D",
-    "clean": "rm -rf public"
+    "clean": "rm -rf public",
+    "prebuild": "git clone https://github.com/Gavin1668/hugo-theme-stack.git themes/hugo-theme-stack"
   },
   "dependencies": {
     "hugo-extended": "^0.145.0"
