@@ -1,4 +1,4 @@
-baseurl: https://gavin1668.github.io
+baseurl: ""
 languageCode: zh-cn
 theme: hugo-theme-stack
 pagination:
