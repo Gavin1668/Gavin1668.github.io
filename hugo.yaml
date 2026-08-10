@@ -103,6 +103,12 @@ menu:
       name: 搜索
       url: /search/
       weight: 3
+      ```yaml
+    - identifier: dimensional-chain
+      name: 尺寸链计算
+      url: /tools/dimensional-chain-calculator.html
+      weight: 4
+```
 
   social:
     - identifier: github
