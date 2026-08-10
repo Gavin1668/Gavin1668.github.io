@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>尺寸链计算工具 — GB/T 5847-2004</title>
+<style>
+  :root {
+    --bg: #fbfcf9;
+    --surface: #fff;
+    --subtle: #f5f7f2;
+    --text: #151c17;
+    --text-secondary: #4d5a50;
+    --muted: #7b877d;
+    --primary: #2f684d;
+    --primary-hover: #244f3b;
+    --primary-subtle: #dceee3;
+    --border: #dfe6de;
+    --border-subtle: #edf1eb;
+    --radius: 8px;
+    --radius-sm: 5px;
+    --shadow: 0 2px 8px rgba(20,24,20,.05);
+    --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", Georgia, serif;
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+    --ease: cubic-bezier(.22,1,.36,1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+  
+  /* Header */
+  header {
+    padding: 40px 0 28px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+  header h1 {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  /* Method tabs */
+  .method-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--subtle);
+    padding: 4px;
+    border-radius: var(--radius);
+    margin-bottom: 32px;
+  }
+  .method-tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px 20px;
+    border: none;
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all .2s var(--ease);
+  }
+  .method-tab.active {
+    background: var(--surface);
+    color: var(--primary);
+    box-shadow: var(--shadow);
+  }
+  .method-tab:hover:not(.active) {
+    color: var(--text);
+    background: rgba(0,0,0,.03);
+  }
+
+  /* Section */
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+  .section h2 {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 590;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+  .section h3 {
+    font-size: 16px;
+    font-weight: 590;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+
+  /* Labels */
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 510;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+
+  /* Inputs */
+  input[type="number"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    transition: border-color .2s var(--ease);
+  }
+  input[type="number"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(47,104,77,.15);
+  }
+  input[type="number"]:disabled {
+    background: var(--subtle);
+    color: var(--muted);
+    cursor: not-allowed;
+  }
+  select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    cursor: pointer;
+  }
+  select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  /* Grid for dimension inputs */
+  .dim-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 50px;
+    gap: 10px;
+    align-items: end;
+    margin-bottom: 12px;
+  }
+  .dim-grid-header {
+    font-size: 12px;
+    font-weight: 590;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding-bottom: 4px;
+  }
+  .dim-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 50px;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .dim-row:last-child { border-bottom: none; }
+  .dim-row .ring-type select {
+    font-weight: 500;
+  }
+  .dim-row .ring-type select option[value="increasing"] { color: #2f684d; }
+  .dim-row .ring-type select option[value="decreasing"] { color: #a74444; }
+
+  /* Ring type badge */
+  .ring-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 510;
+  }
+  .ring-badge.increasing {
+    background: var(--primary-subtle);
+    color: var(--primary);
+  }
+  .ring-badge.decreasing {
+    background: #fbefef;
+    color: #a74444;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 510;
+    cursor: pointer;
+    transition: all .2s var(--ease);
+    background: var(--surface);
+    color: var(--text);
+  }
+  .btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  .btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+    color: #fff;
+  }
+  .btn-sm {
+    padding: 4px 12px;
+    font-size: 13px;
+  }
+  .btn-danger {
+    border-color: transparent;
+    background: transparent;
+    color: var(--muted);
+    font-size: 16px;
+    padding: 4px 8px;
+  }
+  .btn-danger:hover {
+    color: #a74444;
+    border-color: transparent;
+  }
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  /* Result card */
+  .result-card {
+    background: var(--subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 16px;
+  }
+  .result-label {
+    font-size: 12px;
+    font-weight: 510;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 4px;
+  }
+  .result-value {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 580;
+    color: var(--text);
+  }
+  .result-value.highlight {
+    color: var(--primary);
+    font-size: 32px;
+  }
+  .result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+  }
+
+  /* Dimension display */
+  .dim-display {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 580;
+    color: var(--text);
+    text-align: center;
+    padding: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .dim-display .es { color: var(--primary); }
+  .dim-display .ei { color: #a74444; }
+
+  /* Formula display */
+  .formula {
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 13px;
+    background: var(--subtle);
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    margin: 12px 0;
+    overflow-x: auto;
+    color: var(--text-secondary);
+  }
+
+  /* Info box */
+  .info-box {
+    background: var(--primary-subtle);
+    border-left: 3px solid var(--primary);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 16px 0;
+  }
+
+  /* Prob params */
+  .prob-params {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .prob-note {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 40px 0;
+    border-top: 1px solid var(--border-subtle);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  footer a { color: var(--primary); text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .container { padding: 0 16px; }
+    .dim-grid, .dim-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .dim-grid-header:nth-child(n+3),
+    .dim-row > *:nth-child(n+3) { display: none; }
+    /* Mobile: show simplified view */
+    .dim-row-mobile { display: grid !important; }
+    .result-grid { grid-template-columns: 1fr 1fr; }
+    .section { padding: 20px; }
+    header h1 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+  <h1>尺寸链计算工具</h1>
+  <p class="subtitle">基于 GB/T 5847-2004《尺寸链 计算方法》— 极值法 &amp; 概率法</p>
+</header>
+
+<!-- Method Selection -->
+<div class="method-tabs">
+  <button class="method-tab active" onclick="switchMethod('extremum')">极值法 (Worst-Case)</button>
+  <button class="method-tab" onclick="switchMethod('probabilistic')">概率法 (RSS / Statistical)</button>
+</div>
+
+<!-- Input Section -->
+<div class="section">
+  <h2>组成环尺寸输入</h2>
+  <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px;">
+    输入各组成环的基本尺寸与上下偏差。增环增大使封闭环增大，减环增大使封闭环减小。
+  </p>
+
+  <div class="dim-grid">
+    <div class="dim-grid-header">环类型</div>
+    <div class="dim-grid-header">名称</div>
+    <div class="dim-grid-header">基本尺寸 (mm)</div>
+    <div class="dim-grid-header">上偏差 ES (mm)</div>
+    <div class="dim-grid-header">下偏差 EI (mm)</div>
+    <div></div>
+  </div>
+
+  <div id="dim-rows"></div>
+
+  <div class="btn-row">
+    <button class="btn" onclick="addRow()">+ 添加组成环</button>
+    <button class="btn btn-primary" onclick="calculate()">计算封闭环</button>
+    <button class="btn" onclick="resetAll()">重置</button>
+  </div>
+</div>
+
+<!-- Probabilistic params (hidden by default) -->
+<div class="section" id="prob-params" style="display:none;">
+  <h2>概率法参数</h2>
+
+  <div class="info-box">
+    <strong>置信水平 P：</strong>99.73% 对应 <strong>K₀ = 1</strong>（正态分布 3σ），<br>
+    95% 对应 K₀ = 1.96，99% 对应 K₀ = 2.58。
+  </div>
+
+  <div class="prob-params">
+    <div>
+      <label>置信水平 K₀</label>
+      <select id="confidence-level" onchange="updateK0()">
+        <option value="1">99.73% (3σ) — K₀ = 1</option>
+        <option value="1.96">95% — K₀ = 1.96</option>
+        <option value="2.58">99% — K₀ = 2.58</option>
+        <option value="custom">自定义 K₀</option>
+      </select>
+    </div>
+    <div id="custom-k0-group" style="display:none;">
+      <label>自定义 K₀ 值</label>
+      <input type="number" id="custom-k0" value="1" step="0.01" min="0.1">
+    </div>
+  </div>
+
+  <h3 style="margin-top:20px;">各组成环分布参数</h3>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">
+    根据 GB/T 5847-2004，设置各组成环的分布类型（决定相对分布系数 K 和相对不对称系数 e）。
+  </p>
+
+  <div class="dim-grid">
+    <div class="dim-grid-header">名称</div>
+    <div class="dim-grid-header">分布类型</div>
+    <div class="dim-grid-header">分布系数 K</div>
+    <div class="dim-grid-header">不对称系数 e</div>
+    <div></div>
+  </div>
+
+  <div id="prob-dim-rows"></div>
+</div>
+
+<!-- Results -->
+<div id="results" style="display:none;">
+  <div class="section">
+    <h2>计算结果 — 封闭环</h2>
+
+    <div class="result-card" style="text-align:center;margin-bottom:24px;">
+      <div class="result-label">封闭环尺寸</div>
+      <div class="dim-display" id="result-display"></div>
+    </div>
+
+    <div class="result-grid">
+      <div class="result-card">
+        <div class="result-label">基本尺寸 A₀</div>
+        <div class="result-value" id="result-basic">—</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">上偏差 ES₀</div>
+        <div class="result-value" id="result-es">—</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">下偏差 EI₀</div>
+        <div class="result-value" id="result-ei">—</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">公差 T₀</div>
+        <div class="result-value" id="result-tol">—</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">最大极限尺寸</div>
+        <div class="result-value" id="result-max">—</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">最小极限尺寸</div>
+        <div class="result-value" id="result-min">—</div>
+      </div>
+    </div>
+
+    <div class="formula" id="formula-display"></div>
+  </div>
+</div>
+
+<footer>
+  基于 GB/T 5847-2004《尺寸链 计算方法》 &nbsp;·&nbsp;
+  <a href="https://openstd.samr.gov.cn/bzgk/gb/newGbInfo?hcno=5C93AF02031B62D6ADB3FAA980C56252" target="_blank">国家标准全文</a>
+</footer>
+
+</div>
+
+<script>
+// ============ STATE ============
+let currentMethod = 'extremum';
+let rowId = 0;
+
+// ============ DIMENSION ROW ============
+function createRowData() {
+  return {
+    id: ++rowId,
+    name: `A${rowId}`,
+    basic: '',
+    es: '',
+    ei: '',
+    type: 'increasing', // increasing or decreasing
+    distType: 'normal', // for probabilistic: normal, uniform, triangular, etc.
+    customK: '',
+    customE: ''
+  };
+}
+
+// Distribution types and their K, e values per GB/T 5847-2004
+const DIST_TYPES = {
+  normal:     { name: '正态分布 (Normal)',      K: 1,    e: 0 },
+  uniform:    { name: '均匀分布 (Uniform)',       K: 1.73, e: 0 },
+  triangular: { name: '三角分布 (Triangular)',    K: 1.22, e: 0 },
+  rayleigh:   { name: '瑞利分布 (Rayleigh)',     K: 1.14, e: -0.28 },
+  custom:     { name: '自定义',                   K: null, e: null }
+};
+
+let dims = [createRowData(), createRowData()];
+
+// ============ RENDER ============
+function renderDimRows() {
+  const container = document.getElementById('dim-rows');
+  container.innerHTML = dims.map((d, i) => `
+    <div class="dim-row">
+      <div class="ring-type">
+        <select onchange="updateDim(${i},'type',this.value)">
+          <option value="increasing" ${d.type==='increasing'?'selected':''}>增环 ↑</option>
+          <option value="decreasing" ${d.type==='decreasing'?'selected':''}>减环 ↓</option>
+        </select>
+      </div>
+      <input type="text" value="${d.name}" placeholder="名称" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;" onchange="updateDim(${i},'name',this.value)">
+      <input type="number" value="${d.basic}" step="0.001" placeholder="基本尺寸" onchange="updateDim(${i},'basic',this.value)">
+      <input type="number" value="${d.es}" step="0.001" placeholder="上偏差" onchange="updateDim(${i},'es',this.value)">
+      <input type="number" value="${d.ei}" step="0.001" placeholder="下偏差" onchange="updateDim(${i},'ei',this.value)">
+      <button class="btn btn-danger" onclick="removeRow(${i})" title="删除">&times;</button>
+    </div>
+  `).join('');
+}
+
+function renderProbRows() {
+  const container = document.getElementById('prob-dim-rows');
+  container.innerHTML = dims.map((d, i) => `
+    <div class="dim-row">
+      <span style="font-weight:500;font-size:14px;color:var(--text);">${d.name} <span class="ring-badge ${d.type}">${d.type==='increasing'?'增':'减'}环</span></span>
+      <select onchange="updateDim(${i},'distType',this.value);renderProbRows();">
+        ${Object.entries(DIST_TYPES).map(([k,v]) => `<option value="${k}" ${d.distType===k?'selected':''}>${v.name}</option>`).join('')}
+      </select>
+      <input type="number" value="${d.distType==='custom'?d.customK:DIST_TYPES[d.distType].K}" step="0.01" ${d.distType!=='custom'?'disabled':''} onchange="updateDim(${i},'customK',this.value)" placeholder="K">
+      <input type="number" value="${d.distType==='custom'?d.customE:DIST_TYPES[d.distType].e}" step="0.01" ${d.distType!=='custom'?'disabled':''} onchange="updateDim(${i},'customE',this.value)" placeholder="e">
+      <div></div>
+    </div>
+  `).join('');
+}
+
+function updateDim(idx, key, val) {
+  if (['basic','es','ei','customK','customE'].includes(key)) {
+    val = val === '' ? '' : parseFloat(val);
+  }
+  dims[idx][key] = val;
+}
+
+function addRow() {
+  dims.push(createRowData());
+  renderDimRows();
+  renderProbRows();
+}
+
+function removeRow(idx) {
+  if (dims.length <= 1) return;
+  dims.splice(idx, 1);
+  renderDimRows();
+  renderProbRows();
+}
+
+function resetAll() {
+  dims = [createRowData(), createRowData()];
+  rowId = 0;
+  dims[0].id = ++rowId;
+  dims[0].name = 'A1';
+  dims[1].id = ++rowId;
+  dims[1].name = 'A2';
+  renderDimRows();
+  renderProbRows();
+  document.getElementById('results').style.display = 'none';
+}
+
+// ============ METHOD SWITCH ============
+function switchMethod(method) {
+  currentMethod = method;
+  document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.method-tab:nth-child(${method==='extremum'?1:2})`).classList.add('active');
+  document.getElementById('prob-params').style.display = method === 'probabilistic' ? '' : 'none';
+  document.getElementById('results').style.display = 'none';
+}
+
+function updateK0() {
+  const val = document.getElementById('confidence-level').value;
+  if (val === 'custom') {
+    document.getElementById('custom-k0-group').style.display = '';
+  } else {
+    document.getElementById('custom-k0-group').style.display = 'none';
+  }
+}
+
+// ============ CALCULATION ============
+function formatDim(basic, es, ei) {
+  if (basic === '' || basic === undefined || basic === null) return '—';
+  const b = parseFloat(basic);
+  const u = parseFloat(es) || 0;
+  const l = parseFloat(ei) || 0;
+  
+  let esStr = u > 0 ? `+${u}` : `${u}`;
+  let eiStr = l > 0 ? `+${l}` : `${l}`;
+  if (u === 0 && l === 0) esStr = '0';
+  
+  return `${b}<sub>${eiStr}</sub><sup>${esStr}</sup>`;
+}
+
+function calculate() {
+  // Validate inputs
+  for (let d of dims) {
+    if (d.basic === '' || d.basic === null) {
+      alert(`请输入组成环 "${d.name}" 的基本尺寸`);
+      return;
+    }
+  }
+
+  if (currentMethod === 'extremum') {
+    calculateExtremum();
+  } else {
+    calculateProbabilistic();
+  }
+}
+
+function calculateExtremum() {
+  // GB/T 5847-2004 极值法公式:
+  // A₀ = ΣA_增 - ΣA_减
+  // ES₀ = ΣES_增 - ΣEI_减
+  // EI₀ = ΣEI_增 - ΣES_减
+  // T₀ = ΣT (所有组成环公差之和)
+
+  let basicInc = 0, basicDec = 0;
+  let esInc = 0, eiDec = 0;
+  let eiInc = 0, esDec = 0;
+  let tolSum = 0;
+  let formulaParts = [];
+
+  for (let d of dims) {
+    const b = parseFloat(d.basic);
+    const es = parseFloat(d.es) || 0;
+    const ei = parseFloat(d.ei) || 0;
+    const tol = es - ei;
+
+    if (d.type === 'increasing') {
+      basicInc += b;
+      esInc += es;
+      eiInc += ei;
+      formulaParts.push(`+(${formatDim(d.basic, d.es, d.ei)})`);
+    } else {
+      basicDec += b;
+      eiDec += ei;
+      esDec += es;
+      formulaParts.push(`-(${formatDim(d.basic, d.es, d.ei)})`);
+    }
+    tolSum += tol;
+  }
+
+  const A0 = basicInc - basicDec;
+  const ES0 = esInc - eiDec;
+  const EI0 = eiInc - esDec;
+  const T0 = ES0 - EI0;
+  const Amax = A0 + ES0;
+  const Amin = A0 + EI0;
+
+  displayResult(A0, ES0, EI0, T0, Amax, Amin, '极值法', formulaParts.join(' '));
+}
+
+function calculateProbabilistic() {
+  // GB/T 5847-2004 概率法公式:
+  // A₀ = Σξᵢ·Aᵢ (ξ=+1 for increasing, ξ=-1 for decreasing)
+  // Δ₀ = Σξᵢ·(Δᵢ + eᵢ·Tᵢ/2)  (中间偏差)
+  // T₀ = (1/K₀)·√[Σ(ξᵢ·Kᵢ·Tᵢ)²]
+  // ES₀ = Δ₀ + T₀/2
+  // EI₀ = Δ₀ - T₀/2
+
+  // Get K0
+  let K0;
+  const confSelect = document.getElementById('confidence-level').value;
+  if (confSelect === 'custom') {
+    K0 = parseFloat(document.getElementById('custom-k0').value) || 1;
+  } else {
+    K0 = parseFloat(confSelect);
+  }
+
+  let basicSum = 0;
+  let deltaSum = 0; // 中间偏差加权和
+  let ktSqSum = 0;  // Σ(ξ·K·T)²
+
+  for (let d of dims) {
+    const xi = d.type === 'increasing' ? 1 : -1;
+    const b = parseFloat(d.basic);
+    const es = parseFloat(d.es) || 0;
+    const ei = parseFloat(d.ei) || 0;
+    const T = es - ei;
+    const delta = (es + ei) / 2; // 中间偏差 = (ES+EI)/2
+
+    basicSum += xi * b;
+    deltaSum += xi * (delta + getE(d) * T / 2);
+
+    const K = getK(d);
+    ktSqSum += Math.pow(xi * K * T, 2);
+  }
+
+  const A0 = basicSum;
+  const T0 = (1 / K0) * Math.sqrt(ktSqSum);
+  const delta0 = deltaSum;
+  const ES0 = delta0 + T0 / 2;
+  const EI0 = delta0 - T0 / 2;
+  const Amax = A0 + ES0;
+  const Amin = A0 + EI0;
+
+  displayResult(A0, ES0, EI0, T0, Amax, Amin, `概率法 (K₀=${K0})`,
+    `T₀ = (1/${K0})·√[Σ(ξᵢ·Kᵢ·Tᵢ)²] = ${T0.toFixed(4)} mm`);
+}
+
+function getK(d) {
+  if (d.distType === 'custom') return parseFloat(d.customK) || 1;
+  return DIST_TYPES[d.distType]?.K ?? 1;
+}
+
+function getE(d) {
+  if (d.distType === 'custom') return parseFloat(d.customE) || 0;
+  return DIST_TYPES[d.distType]?.e ?? 0;
+}
+
+function displayResult(A0, ES0, EI0, T0, Amax, Amin, method, formulaText) {
+  document.getElementById('results').style.display = '';
+
+  // Dimension display with sup/sub
+  let esStr = ES0 >= 0 ? `+${ES0.toFixed(4)}` : ES0.toFixed(4);
+  let eiStr = EI0 >= 0 ? `+${EI0.toFixed(4)}` : EI0.toFixed(4);
+  document.getElementById('result-display').innerHTML =
+    `${A0.toFixed(4)}<sub style="color:#a74444">${eiStr}</sub><sup style="color:#2f684d">${esStr}</sup>`;
+
+  document.getElementById('result-basic').textContent = A0.toFixed(4) + ' mm';
+  document.getElementById('result-es').innerHTML = `<span style="color:#2f684d">${esStr}</span> mm`;
+  document.getElementById('result-ei').innerHTML = `<span style="color:#a74444">${eiStr}</span> mm`;
+  document.getElementById('result-tol').textContent = T0.toFixed(4) + ' mm';
+  document.getElementById('result-max').textContent = Amax.toFixed(4) + ' mm';
+  document.getElementById('result-min').textContent = Amin.toFixed(4) + ' mm';
+
+  document.getElementById('formula-display').innerHTML = `
+    <strong>计算方法：</strong>${method}<br><br>
+    <strong>组成环展开：</strong><br>${formulaText}<br><br>
+    <strong>封闭环基本尺寸：</strong>A₀ = ${A0.toFixed(4)} mm<br>
+    <strong>封闭环上偏差：</strong>ES₀ = ${esStr} mm<br>
+    <strong>封闭环下偏差：</strong>EI₀ = ${eiStr} mm<br>
+    <strong>封闭环公差：</strong>T₀ = ${T0.toFixed(4)} mm<br>
+    <strong>极限尺寸范围：</strong>[${Amin.toFixed(4)}, ${Amax.toFixed(4)}] mm
+  `;
+
+  // Scroll to results
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ============ INIT ============
+renderDimRows();
+renderProbRows();
+</script>
+
+</body>
+</html>
