@@ -1,0 +1,18 @@
+{{/* 首页「每日资讯」widget：展示最近几期自动日报 */}}
+<section class="widget widget-daily">
+    <h2 class="widget-title">
+        <span class="widget-icon">📰</span>
+        每日资讯
+    </h2>
+    <ul class="widget-daily-list">
+        {{ range first 5 (where (site.RegularPages) "Type" "daily") }}
+        <li class="widget-daily-item">
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <time class="widget-daily-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "01-02" }}</time>
+        </li>
+        {{ end }}
+    </ul>
+    {{ if (where (site.RegularPages) "Type" "daily") }}
+    <a class="widget-daily-more" href="/daily/">查看全部日报 →</a>
+    {{ end }}
+</section>
