@@ -1,5 +1,8 @@
 {{ define "main" }}
-    {{- $paginator := partial "helper/paginator.html" . -}}
+    {{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+    {{ $notHidden := where .Site.RegularPages "Params.hidden" "!=" true }}
+    {{ $filtered := ($pages | intersect $notHidden) }}
+    {{ $pag := .Paginate ($filtered) }}
 
     {{/* ===== 顶部 Hero（仿 zhujay 风格） ===== */}}
     <section class="site-hero">
@@ -33,8 +36,8 @@
 
     {{/* ===== 文章列表（卡片化） ===== */}}
     <section class="article-list">
-        {{ range $index, $element := $paginator.Pages }}
-            {{ if ne $element.Section "daily" }}
+        {{ range $pag.Pages }}
+            {{ if ne .Section "daily" }}
                 {{ partial "article-list/default" . }}
             {{ end }}
         {{ end }}
