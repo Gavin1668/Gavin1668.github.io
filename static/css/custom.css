@@ -1,6 +1,6 @@
 /* ===========================================================
-   首页 zhujay 风格改造：单栏 + 暖色 + 卡片化
-   仅作用于首页（通过 home.html 注入）
+   全站 zhujay 风格：单栏 + 暖色 + 卡片化
+   通过 layouts/partials/head/custom.html 全站注入
    =========================================================== */
 
 /* 单栏容器：居中、限定宽度，隐藏侧栏占位 */
@@ -20,7 +20,7 @@ body {
     background-color: #faf6f0;
 }
 
-/* ===================== 顶部 Hero ===================== */
+/* ===================== 顶部 Hero（首页） ===================== */
 .site-hero {
     text-align: center;
     padding: 52px 0 26px;
@@ -59,7 +59,7 @@ body {
     text-decoration: underline;
 }
 
-/* ===================== 日报卡片 ===================== */
+/* ===================== 日报卡片（首页） ===================== */
 .daily-card {
     background: #fff;
     border: 1px solid #f0e3d6;
@@ -109,13 +109,15 @@ body {
     text-decoration: underline;
 }
 
-/* ===================== 文章卡片化 ===================== */
-.article-list {
+/* ===================== 文章列表卡片化（首页 + 归档页） ===================== */
+.article-list,
+.article-list--compact {
     display: flex;
     flex-direction: column;
     gap: 18px;
 }
-.article-list article {
+.article-list article,
+.article-list--compact article {
     background: #fff;
     border: 1px solid #f0e3d6;
     border-radius: 14px;
@@ -123,54 +125,142 @@ body {
     box-shadow: 0 6px 20px rgba(192, 112, 58, .06);
     transition: transform .15s ease, box-shadow .15s ease;
 }
-.article-list article:hover {
+.article-list article:hover,
+.article-list--compact article:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 26px rgba(192, 112, 58, .14);
 }
 /* 有封面图时，图片作为顶部横幅 */
-.article-list article.has-image .article-header {
+.article-list article.has-image .article-header,
+.article-list--compact article.has-image .article-header {
     display: block;
 }
-.article-list article.has-image .article-image img {
+.article-list article.has-image .article-image img,
+.article-list--compact article.has-image .article-image img {
     width: 100%;
     height: 200px;
     object-fit: cover;
 }
-.article-list .article-details {
+.article-list .article-details,
+.article-list--compact .article-details {
     padding: 16px 20px 20px;
 }
-.article-list .article-title {
+.article-list .article-title,
+.article-list--compact .article-title {
     font-size: 1.15rem;
     margin: 0 0 4px;
 }
-.article-list .article-title a {
+.article-list .article-title a,
+.article-list--compact .article-title a {
     color: #3a2e26;
     text-decoration: none;
 }
-.article-list .article-title a:hover {
+.article-list .article-title a:hover,
+.article-list--compact .article-title a:hover {
     color: #c0703a;
 }
-.article-list .article-subtitle {
+.article-list .article-subtitle,
+.article-list--compact .article-subtitle {
     color: #6f6258;
     margin: 2px 0 8px;
 }
-.article-list .article-category a {
+.article-list .article-category a,
+.article-list--compact .article-category a {
     background: #c0703a !important;
     color: #fff !important;
     border-radius: 999px;
     padding: 2px 11px;
     font-size: .78rem;
 }
-.article-list .article-time {
+.article-list .article-time,
+.article-list--compact .article-time {
     color: #a08a78;
     font-size: .82rem;
 }
-/* 列表卡片的"阅读全文"提示 */
-.article-list .article-title-wrapper::after {
-    content: "阅读全文 →";
-    display: inline-block;
-    margin-top: 10px;
+
+/* ===================== 文章详情页（single） ===================== */
+.article-page .article {
+    background: #fff;
+    border: 1px solid #f0e3d6;
+    border-radius: 14px;
+    padding: 26px 28px 30px;
+    margin: 28px 0;
+    box-shadow: 0 6px 20px rgba(192, 112, 58, .06);
+}
+.article-page .article-header {
+    margin-bottom: 14px;
+}
+.article-page .article-title {
+    color: #3a2e26;
+    font-size: 1.7rem;
+    line-height: 1.35;
+}
+.article-page .article-meta {
+    color: #a08a78;
+    font-size: .85rem;
+}
+.article-page .article-content {
+    color: #4a3f37;
+    line-height: 1.85;
+    font-size: 1rem;
+}
+.article-page .article-content a {
     color: #c0703a;
-    font-weight: 600;
-    font-size: .88rem;
+    text-decoration: underline;
+}
+.article-page .article-content h2,
+.article-page .article-content h3 {
+    color: #3a2e26;
+    margin-top: 1.6em;
+}
+.article-page .article-content blockquote {
+    border-left: 3px solid #c0703a;
+    background: #fbf3ec;
+    color: #6f6258;
+    padding: 10px 16px;
+    border-radius: 0 8px 8px 0;
+}
+.article-page .article-content code {
+    background: #f3e9df;
+    color: #b35a25;
+    padding: 1px 6px;
+    border-radius: 5px;
+}
+.article-page .article-content pre {
+    background: #2b2420;
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+.article-page .article-content pre code {
+    background: transparent;
+    color: #f3e9df;
+    padding: 0;
+}
+.article-page .article-footer {
+    border-top: 1px solid #f0e3d6;
+    margin-top: 22px;
+    padding-top: 16px;
+}
+.article-page .article-tags a {
+    background: #c0703a !important;
+    color: #fff !important;
+    border-radius: 999px !important;
+    padding: 3px 12px !important;
+    font-size: .8rem !important;
+}
+
+/* 归档/分类页标题 */
+.section-card {
+    background: #fff;
+    border: 1px solid #f0e3d6;
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin: 22px 0;
+    box-shadow: 0 6px 20px rgba(192, 112, 58, .06);
+}
+.section-term {
+    color: #3a2e26;
+}
+.section-description {
+    color: #6f6258;
 }
