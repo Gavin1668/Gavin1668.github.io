@@ -65,6 +65,7 @@ params:
       - type: tag-cloud
         params:
           limit: 10
+      - type: daily
     page:
       - type: toc
 
