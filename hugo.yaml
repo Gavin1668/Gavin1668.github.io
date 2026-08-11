@@ -91,26 +91,31 @@ params:
 
 menu:
   main:
-    - identifier: about
-      name: 关于
-      url: /about/
-      weight: 1
+    # 关于(about) 由 content/page/about 的 front matter 管理，已带 icon: user，此处不重复定义
     - identifier: archives
       name: 归档
       url: /archives/
       weight: 2
+      params:
+        icon: archive
     - identifier: search
       name: 搜索
       url: /search/
       weight: 3
+      params:
+        icon: search
     - identifier: recommended
       name: 推荐
       url: /recommended/
       weight: 4
+      params:
+        icon: star
     - identifier: dimensional-chain
       name: 尺寸链计算
       url: /tools/dimensional-chain-calculator.html
       weight: 5
+      params:
+        icon: ruler
 
   social:
     - identifier: github
