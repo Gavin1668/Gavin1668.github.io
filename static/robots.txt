@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gavin1668.github.io/sitemap.xml
