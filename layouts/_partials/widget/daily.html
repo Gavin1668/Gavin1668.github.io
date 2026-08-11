@@ -1,0 +1,18 @@
+{{- $context := .Context -}}
+<section class="widget widget-daily">
+    <div class="widget-icon">
+        {{ partial "helper/icon" "messages" }}
+    </div>
+    <h2 class="widget-title section-title">
+        <a href="/daily/">每日资讯</a>
+    </h2>
+    <ul class="widget-daily--list">
+        {{ range first 5 (where $context.Site.RegularPages "Type" "daily") }}
+        <li class="widget-daily--item">
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <time class="widget-daily--date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "01-02" }}</time>
+        </li>
+        {{ end }}
+    </ul>
+    <a class="widget-daily--more" href="/daily/">查看全部 →</a>
+</section>
