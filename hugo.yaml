@@ -98,7 +98,7 @@ menu:
       url: /archives/
       weight: 2
       params:
-        icon: archive
+        icon: archives
     - identifier: search
       name: 搜索
       url: /search/
@@ -110,13 +110,13 @@ menu:
       url: /recommended/
       weight: 4
       params:
-        icon: star
+        icon: messages
     - identifier: dimensional-chain
       name: 尺寸链计算
       url: /tools/dimensional-chain-calculator.html
       weight: 5
       params:
-        icon: ruler
+        icon: link
 
   social:
     - identifier: github
