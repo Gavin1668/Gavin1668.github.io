@@ -1,0 +1,176 @@
+/* ===========================================================
+   首页 zhujay 风格改造：单栏 + 暖色 + 卡片化
+   仅作用于首页（通过 home.html 注入）
+   =========================================================== */
+
+/* 单栏容器：居中、限定宽度，隐藏侧栏占位 */
+.main-container.main-container {
+    display: block;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+.left-sidebar,
+.right-sidebar {
+    display: none !important;
+}
+
+/* 暖色基调 */
+body {
+    background-color: #faf6f0;
+}
+
+/* ===================== 顶部 Hero ===================== */
+.site-hero {
+    text-align: center;
+    padding: 52px 0 26px;
+}
+.site-hero__avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 14px rgba(192, 112, 58, .18);
+}
+.site-hero__title {
+    font-size: 1.9rem;
+    margin: 14px 0 6px;
+    color: #3a2e26;
+}
+.site-hero__subtitle {
+    color: #8a7a6e;
+    margin: 0 0 16px;
+    font-size: .98rem;
+}
+.site-hero__nav {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.site-hero__nav a {
+    color: #c0703a;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .95rem;
+}
+.site-hero__nav a:hover {
+    text-decoration: underline;
+}
+
+/* ===================== 日报卡片 ===================== */
+.daily-card {
+    background: #fff;
+    border: 1px solid #f0e3d6;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin: 22px 0;
+    box-shadow: 0 6px 20px rgba(192, 112, 58, .08);
+}
+.daily-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #a08a78;
+    font-size: .82rem;
+}
+.daily-card__badge {
+    background: #c0703a;
+    color: #fff;
+    padding: 2px 11px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+.daily-card__title {
+    margin: 10px 0 6px;
+    font-size: 1.18rem;
+}
+.daily-card__title a {
+    color: #3a2e26;
+    text-decoration: none;
+}
+.daily-card__title a:hover {
+    color: #c0703a;
+}
+.daily-card__excerpt {
+    color: #6f6258;
+    font-size: .92rem;
+    line-height: 1.65;
+    margin: 0 0 10px;
+}
+.daily-card__more {
+    color: #c0703a;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: .9rem;
+}
+.daily-card__more:hover {
+    text-decoration: underline;
+}
+
+/* ===================== 文章卡片化 ===================== */
+.article-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.article-list article {
+    background: #fff;
+    border: 1px solid #f0e3d6;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(192, 112, 58, .06);
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+.article-list article:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px rgba(192, 112, 58, .14);
+}
+/* 有封面图时，图片作为顶部横幅 */
+.article-list article.has-image .article-header {
+    display: block;
+}
+.article-list article.has-image .article-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+.article-list .article-details {
+    padding: 16px 20px 20px;
+}
+.article-list .article-title {
+    font-size: 1.15rem;
+    margin: 0 0 4px;
+}
+.article-list .article-title a {
+    color: #3a2e26;
+    text-decoration: none;
+}
+.article-list .article-title a:hover {
+    color: #c0703a;
+}
+.article-list .article-subtitle {
+    color: #6f6258;
+    margin: 2px 0 8px;
+}
+.article-list .article-category a {
+    background: #c0703a !important;
+    color: #fff !important;
+    border-radius: 999px;
+    padding: 2px 11px;
+    font-size: .78rem;
+}
+.article-list .article-time {
+    color: #a08a78;
+    font-size: .82rem;
+}
+/* 列表卡片的"阅读全文"提示 */
+.article-list .article-title-wrapper::after {
+    content: "阅读全文 →";
+    display: inline-block;
+    margin-top: 10px;
+    color: #c0703a;
+    font-weight: 600;
+    font-size: .88rem;
+}
