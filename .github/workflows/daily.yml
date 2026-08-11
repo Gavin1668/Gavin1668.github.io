@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   daily:
@@ -37,3 +38,9 @@ jobs:
             git commit -m "daily: add report $(date +%F)"
             git push
           fi
+
+      - name: Trigger deployment
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy.yml --ref main
