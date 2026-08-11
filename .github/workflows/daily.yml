@@ -1,0 +1,39 @@
+name: Daily Report
+
+on:
+  schedule:
+    # UTC 23:00 = 北京时间 07:00，每天生成一期日报
+    - cron: "0 23 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Generate daily report
+        run: python scripts/gen_daily.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/daily
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "daily: add report $(date +%F)"
+            git push
+          fi
