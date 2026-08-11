@@ -9,7 +9,7 @@ languages:
   zh-cn:
     languageName: 中文
     title: Gavin's Blog
-    description: 记录技术，记录生活。
+    description: Gavin 的技术博客：分享 Hugo / GitHub Pages 搭建折腾、编程实践与读书笔记。
     weight: 1
 
 DefaultContentLanguage: zh-cn
