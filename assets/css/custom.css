@@ -264,3 +264,92 @@ body {
 .section-description {
     color: #6f6258;
 }
+
+/* ===================== 暗色模式适配 ===================== */
+:root[data-scheme=dark] body {
+    background-color: #1a1612;
+}
+:root[data-scheme=dark] .site-hero__title {
+    color: #f0e6dc;
+}
+:root[data-scheme=dark] .site-hero__subtitle {
+    color: #a89888;
+}
+:root[data-scheme=dark] .site-hero__nav a {
+    color: #e0a060;
+}
+:root[data-scheme=dark] .site-hero__avatar {
+    border-color: #2a2420;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .4);
+}
+:root[data-scheme=dark] .daily-card,
+:root[data-scheme=dark] .article-list article,
+:root[data-scheme=dark] .article-list--compact article,
+:root[data-scheme=dark] .article-page .article,
+:root[data-scheme=dark] .section-card {
+    background: #252018;
+    border-color: #3a3228;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
+}
+:root[data-scheme=dark] .daily-card__head,
+:root[data-scheme=dark] .article-list .article-time,
+:root[data-scheme=dark] .article-list--compact .article-time,
+:root[data-scheme=dark] .article-page .article-meta {
+    color: #8a7a68;
+}
+:root[data-scheme=dark] .daily-card__title a,
+:root[data-scheme=dark] .article-list .article-title a,
+:root[data-scheme=dark] .article-list--compact .article-title a,
+:root[data-scheme=dark] .article-page .article-title,
+:root[data-scheme=dark] .section-term {
+    color: #f0e6dc;
+}
+:root[data-scheme=dark] .daily-card__title a:hover,
+:root[data-scheme=dark] .article-list .article-title a:hover,
+:root[data-scheme=dark] .article-list--compact .article-title a:hover {
+    color: #e0a060;
+}
+:root[data-scheme=dark] .daily-card__excerpt,
+:root[data-scheme=dark] .article-list .article-subtitle,
+:root[data-scheme=dark] .article-list--compact .article-subtitle,
+:root[data-scheme=dark] .article-page .article-content,
+:root[data-scheme=dark] .section-description {
+    color: #b8a898;
+}
+:root[data-scheme=dark] .daily-card__more {
+    color: #e0a060;
+}
+:root[data-scheme=dark] .article-page .article-content a {
+    color: #e0a060;
+}
+:root[data-scheme=dark] .article-page .article-content h2,
+:root[data-scheme=dark] .article-page .article-content h3 {
+    color: #f0e6dc;
+}
+:root[data-scheme=dark] .article-page .article-content blockquote {
+    background: #2e2820;
+    color: #a89888;
+    border-left-color: #e0a060;
+}
+:root[data-scheme=dark] .article-page .article-content code {
+    background: #3a3228;
+    color: #e0a060;
+}
+:root[data-scheme=dark] .article-page .article-content pre {
+    background: #1a1612;
+}
+:root[data-scheme=dark] .article-page .article-footer {
+    border-top-color: #3a3228;
+}
+:root[data-scheme=dark] .article-list article:hover,
+:root[data-scheme=dark] .article-list--compact article:hover {
+    box-shadow: 0 10px 26px rgba(0, 0, 0, .4);
+}
+:root[data-scheme=dark] .daily-card__badge {
+    background: #e0a060;
+}
+:root[data-scheme=dark] .article-list .article-category a,
+:root[data-scheme=dark] .article-list--compact .article-category a,
+:root[data-scheme=dark] .article-page .article-tags a {
+    background: #e0a060 !important;
+}

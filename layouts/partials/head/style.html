@@ -1,2 +1,3 @@
-{{ $style := resources.Get "css/style.css" | minify | resources.Fingerprint "sha256" }}
+{{/* Hugo Extended 原生编译主题 SCSS，无需手动 compile-scss.js */}}
+{{ $style := resources.Get "scss/style.scss" | toCSS | minify | resources.Fingerprint "sha256" }}
 <link rel="stylesheet" href="{{ $style.RelPermalink }}">

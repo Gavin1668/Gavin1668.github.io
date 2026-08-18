@@ -8,7 +8,6 @@ on:
 
 permissions:
   contents: write
-  actions: write
 
 jobs:
   daily:
@@ -37,10 +36,5 @@ jobs:
           else
             git commit -m "daily: add report $(date +%F)"
             git push
+            # push 到 main 后会自动触发 deploy.yml，无需手动触发
           fi
-
-      - name: Trigger deployment
-        if: success()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run deploy.yml --ref main

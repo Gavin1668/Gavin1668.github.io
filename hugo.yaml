@@ -1,4 +1,5 @@
-baseurl: ""
+baseurl: "https://gavin1668.github.io/"
+canonifyURLs: false
 languageCode: zh-cn
 theme: hugo-theme-stack
 pagination:
@@ -70,7 +71,7 @@ params:
 
   opengraph:
     twitter:
-      site:
+      site: "@Gavin1668"
       card: summary_large_image
 
   defaultImage:
@@ -88,6 +89,16 @@ params:
       enabled: true
     content:
       enabled: true
+  seo:
+    description: "Gavin 的技术博客：分享 Hugo / GitHub Pages 搭建折腾、编程实践与读书笔记。"
+    keywords:
+      - Hugo
+      - GitHub Pages
+      - 技术博客
+      - 编程
+      - 电机工程
+      - BLDC
+      - 步进电机
 
 menu:
   main:

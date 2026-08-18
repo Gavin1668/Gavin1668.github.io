@@ -1,1 +1,3 @@
-<link rel="stylesheet" href="{{ "css/custom.css" | relURL }}">
+{{/* 自定义样式通过 Hugo Pipes 处理，自动 minify + fingerprint */}}
+{{ $custom := resources.Get "css/custom.css" | minify | resources.Fingerprint "sha256" }}
+<link rel="stylesheet" href="{{ $custom.RelPermalink }}">
