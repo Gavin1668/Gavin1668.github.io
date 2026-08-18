@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的书签 — Gavin's Blog</title>
+<style>
+  :root {
+    --bg: #faf6f0;
+    --surface: #fff;
+    --surface-hover: #fdf8f3;
+    --text: #3a2e26;
+    --text-secondary: #6f6258;
+    --muted: #a08a78;
+    --primary: #c0703a;
+    --primary-hover: #a85e2e;
+    --primary-subtle: #fbf3ec;
+    --border: #f0e3d6;
+    --border-focus: #c0703a;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 6px 20px rgba(192,112,58,.08);
+    --shadow-hover: 0 10px 26px rgba(192,112,58,.14);
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    --ease: cubic-bezier(.22,1,.36,1);
+    --danger: #d9534f;
+    --success: #5cb85c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+  /* ===== Header ===== */
+  header {
+    padding: 32px 0 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  header h1 a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  header .subtitle {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .user-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .user-info {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .user-info strong { color: var(--primary); }
+
+  /* ===== Buttons ===== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .2s var(--ease);
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-outline {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+  }
+  .btn-outline:hover { background: var(--primary-subtle); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+  }
+  .btn-ghost:hover { background: var(--primary-subtle); color: var(--primary); }
+  .btn-danger {
+    background: transparent;
+    color: var(--danger);
+  }
+  .btn-danger:hover { background: #fdf0ef; }
+  .btn-sm { padding: 5px 12px; font-size: 13px; }
+  .btn-block { width: 100%; justify-content: center; }
+
+  /* ===== Auth Section ===== */
+  .auth-section {
+    max-width: 400px;
+    margin: 60px auto;
+    text-align: center;
+  }
+  .auth-section .icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+  .auth-section h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+  .auth-section p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+  .auth-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--border);
+  }
+  .auth-tab {
+    flex: 1;
+    padding: 12px;
+    background: none;
+    border: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all .2s;
+    font-family: inherit;
+  }
+  .auth-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+  }
+  .auth-form { display: none; }
+  .auth-form.active { display: block; }
+  .form-group {
+    margin-bottom: 16px;
+    text-align: left;
+  }
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: inherit;
+    background: var(--surface);
+    color: var(--text);
+    transition: border-color .2s;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    outline: none;
+    border-color: var(--border-focus);
+  }
+  .form-group textarea { resize: vertical; min-height: 70px; }
+  .form-error {
+    color: var(--danger);
+    font-size: 13px;
+    margin-top: 8px;
+    min-height: 18px;
+  }
+  .form-success {
+    color: var(--success);
+    font-size: 13px;
+    margin-top: 8px;
+    min-height: 18px;
+  }
+
+  /* ===== Toolbar ===== */
+  .toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .search-box {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+  }
+  .search-box input {
+    width: 100%;
+    padding: 10px 14px 10px 38px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: inherit;
+    background: var(--surface);
+    color: var(--text);
+  }
+  .search-box input:focus { outline: none; border-color: var(--border-focus); }
+  .search-box::before {
+    content: "🔍";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+  }
+
+  /* ===== Tab Navigation ===== */
+  .tabs-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+  }
+  .tab-item {
+    padding: 8px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .2s var(--ease);
+    font-family: inherit;
+  }
+  .tab-item:hover { border-color: var(--primary); color: var(--primary); }
+  .tab-item.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  .tab-item .count {
+    margin-left: 6px;
+    opacity: .7;
+    font-size: 12px;
+  }
+
+  /* ===== Bookmark Grid ===== */
+  .bookmark-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .bookmark-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    transition: all .2s var(--ease);
+    display: flex;
+    flex-direction: column;
+  }
+  .bookmark-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+  .bookmark-card .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .bookmark-card .favicon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--primary-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .bookmark-card .favicon img { width: 100%; height: 100%; border-radius: 6px; object-fit: cover; }
+  .bookmark-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    flex: 1;
+  }
+  .bookmark-card h3 a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .bookmark-card h3 a:hover { color: var(--primary); }
+  .bookmark-card .desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .bookmark-card .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .bookmark-card .tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .bookmark-card .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: var(--primary-subtle);
+    color: var(--primary);
+    border-radius: 999px;
+  }
+  .bookmark-card .actions {
+    display: flex;
+    gap: 4px;
+  }
+  .bookmark-card .actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    opacity: .5;
+    transition: opacity .2s;
+  }
+  .bookmark-card .actions button:hover { opacity: 1; background: var(--primary-subtle); }
+
+  /* ===== Empty State ===== */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+  .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-state h3 { font-size: 18px; margin-bottom: 8px; color: var(--text-secondary); }
+  .empty-state p { font-size: 14px; }
+
+  /* ===== Modal ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 28px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  }
+  .modal h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 24px;
+  }
+
+  /* ===== Toast ===== */
+  .toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font-size: 14px;
+    z-index: 2000;
+    transform: translateX(120%);
+    transition: transform .3s var(--ease);
+    max-width: 320px;
+  }
+  .toast.show { transform: translateX(0); }
+  .toast.success { background: var(--success); }
+  .toast.error { background: var(--danger); }
+  .toast.info { background: var(--primary); }
+
+  /* ===== Stats Bar ===== */
+  .stats-bar {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .stat-item {
+    text-align: center;
+    flex: 1;
+  }
+  .stat-item .num {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .stat-item .label {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    text-align: center;
+    padding: 40px 0 20px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer a { color: var(--primary); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .header-top { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .bookmark-grid { grid-template-columns: 1fr; }
+    .stats-bar { gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-top">
+      <div>
+        <h1><a href="/">🔖 我的书签</a></h1>
+        <div class="subtitle">收藏、分类、管理你的网络书签</div>
+      </div>
+      <div class="user-area" id="userArea">
+        <!-- 动态渲染 -->
+      </div>
+    </div>
+  </header>
+
+  <!-- 未登录：登录注册 -->
+  <div id="authSection" class="auth-section">
+    <div class="icon">🔐</div>
+    <h2>登录后管理你的书签</h2>
+    <p>数据保存在本地浏览器，注册即可开始收藏</p>
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">登录</button>
+      <button class="auth-tab" data-tab="register">注册</button>
+    </div>
+    <form id="loginForm" class="auth-form active">
+      <div class="form-group">
+        <label>用户名</label>
+        <input type="text" id="loginUsername" placeholder="请输入用户名" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label>密码</label>
+        <input type="password" id="loginPassword" placeholder="请输入密码" autocomplete="current-password">
+      </div>
+      <div class="form-error" id="loginError"></div>
+      <button type="submit" class="btn btn-primary btn-block">登录</button>
+    </form>
+    <form id="registerForm" class="auth-form">
+      <div class="form-group">
+        <label>用户名</label>
+        <input type="text" id="regUsername" placeholder="3-20个字符" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label>密码</label>
+        <input type="password" id="regPassword" placeholder="至少6位" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label>确认密码</label>
+        <input type="password" id="regPassword2" placeholder="再次输入密码" autocomplete="new-password">
+      </div>
+      <div class="form-error" id="regError"></div>
+      <div class="form-success" id="regSuccess"></div>
+      <button type="submit" class="btn btn-primary btn-block">注册</button>
+    </form>
+  </div>
+
+  <!-- 已登录：书签管理 -->
+  <div id="bookmarkSection" style="display:none;">
+    <div class="stats-bar" id="statsBar"></div>
+    <div class="toolbar">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="搜索书签标题、描述或标签...">
+      </div>
+      <button class="btn btn-primary" id="addBtn">+ 添加书签</button>
+      <button class="btn btn-outline btn-sm" id="exportBtn">导出</button>
+      <button class="btn btn-outline btn-sm" id="importBtn">导入</button>
+      <input type="file" id="importFile" accept=".json" style="display:none;">
+    </div>
+    <div class="tabs-nav" id="tabsNav"></div>
+    <div class="bookmark-grid" id="bookmarkGrid"></div>
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="icon">📭</div>
+      <h3>还没有书签</h3>
+      <p>点击「添加书签」开始收藏吧</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>数据存储于本地浏览器 · <a href="/">返回博客</a></p>
+  </footer>
+</div>
+
+<!-- 添加/编辑书签模态框 -->
+<div class="modal-overlay" id="bookmarkModal">
+  <div class="modal">
+    <h2 id="modalTitle">添加书签</h2>
+    <form id="bookmarkForm">
+      <input type="hidden" id="bookmarkId">
+      <div class="form-group">
+        <label>标题 *</label>
+        <input type="text" id="bmTitle" placeholder="书签标题" required>
+      </div>
+      <div class="form-group">
+        <label>网址 *</label>
+        <input type="url" id="bmUrl" placeholder="https://example.com" required>
+      </div>
+      <div class="form-group">
+        <label>描述</label>
+        <textarea id="bmDesc" placeholder="简短描述（可选）"></textarea>
+      </div>
+      <div class="form-group">
+        <label>标签（用逗号分隔）</label>
+        <input type="text" id="bmTags" placeholder="如：技术,工具,博客">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancelModal">取消</button>
+        <button type="submit" class="btn btn-primary">保存</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 确认对话框 -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal" style="max-width:360px;">
+    <h2 id="confirmTitle">确认操作</h2>
+    <p id="confirmMessage" style="color:var(--text-secondary);margin-bottom:8px;">确定要执行此操作吗？</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="confirmCancel">取消</button>
+      <button type="button" class="btn btn-primary" id="confirmOk">确定</button>
+    </div>
+  </div>
+</div>
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== 数据层 =====
+const STORAGE_USERS = 'bookmark_users';
+const STORAGE_SESSION = 'bookmark_session';
+
+function getUsers() {
+  return JSON.parse(localStorage.getItem(STORAGE_USERS) || '{}');
+}
+function saveUsers(users) {
+  localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+}
+function getCurrentUser() {
+  return sessionStorage.getItem(STORAGE_SESSION);
+}
+function setCurrentUser(username) {
+  sessionStorage.setItem(STORAGE_SESSION, username);
+}
+function clearSession() {
+  sessionStorage.removeItem(STORAGE_SESSION);
+}
+function getUserBookmarks(username) {
+  const users = getUsers();
+  return users[username] ? users[username].bookmarks : [];
+}
+function saveUserBookmarks(username, bookmarks) {
+  const users = getUsers();
+  if (users[username]) {
+    users[username].bookmarks = bookmarks;
+    saveUsers(users);
+  }
+}
+
+// ===== Toast =====
+function showToast(msg, type = 'info') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = `toast ${type} show`;
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// ===== 认证 =====
+const authSection = document.getElementById('authSection');
+const bookmarkSection = document.getElementById('bookmarkSection');
+const userArea = document.getElementById('userArea');
+
+function renderAuthState() {
+  const user = getCurrentUser();
+  if (user) {
+    authSection.style.display = 'none';
+    bookmarkSection.style.display = 'block';
+    userArea.innerHTML = `
+      <span class="user-info">👤 <strong>${escapeHtml(user)}</strong></span>
+      <button class="btn btn-outline btn-sm" id="logoutBtn">登出</button>
+    `;
+    document.getElementById('logoutBtn').onclick = handleLogout;
+    renderBookmarks();
+  } else {
+    authSection.style.display = 'block';
+    bookmarkSection.style.display = 'none';
+    userArea.innerHTML = '';
+  }
+}
+
+// Auth tabs
+document.querySelectorAll('.auth-tab').forEach(tab => {
+  tab.onclick = () => {
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab + 'Form').classList.add('active');
+    clearMessages();
+  };
+});
+
+function clearMessages() {
+  document.getElementById('loginError').textContent = '';
+  document.getElementById('regError').textContent = '';
+  document.getElementById('regSuccess').textContent = '';
+}
+
+// 注册
+document.getElementById('registerForm').onsubmit = (e) => {
+  e.preventDefault();
+  const username = document.getElementById('regUsername').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const password2 = document.getElementById('regPassword2').value;
+  const errEl = document.getElementById('regError');
+  const sucEl = document.getElementById('regSuccess');
+  errEl.textContent = '';
+  sucEl.textContent = '';
+
+  if (username.length < 3 || username.length > 20) {
+    errEl.textContent = '用户名需3-20个字符';
+    return;
+  }
+  if (password.length < 6) {
+    errEl.textContent = '密码至少6位';
+    return;
+  }
+  if (password !== password2) {
+    errEl.textContent = '两次密码不一致';
+    return;
+  }
+  const users = getUsers();
+  if (users[username]) {
+    errEl.textContent = '用户名已存在';
+    return;
+  }
+  users[username] = { password, bookmarks: [], createdAt: Date.now() };
+  saveUsers(users);
+  sucEl.textContent = '注册成功！请登录';
+  document.getElementById('registerForm').reset();
+  setTimeout(() => {
+    document.querySelector('.auth-tab[data-tab="login"]').click();
+    document.getElementById('loginUsername').value = username;
+  }, 800);
+};
+
+// 登录
+document.getElementById('loginForm').onsubmit = (e) => {
+  e.preventDefault();
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+  errEl.textContent = '';
+
+  const users = getUsers();
+  if (!users[username]) {
+    errEl.textContent = '用户不存在';
+    return;
+  }
+  if (users[username].password !== password) {
+    errEl.textContent = '密码错误';
+    return;
+  }
+  setCurrentUser(username);
+  showToast(`欢迎回来，${username}！`, 'success');
+  renderAuthState();
+};
+
+// 登出
+function handleLogout() {
+  clearSession();
+  showToast('已登出', 'info');
+  renderAuthState();
+}
+
+// ===== 书签管理 =====
+let currentTag = '全部';
+let searchKeyword = '';
+
+function getAllTags(bookmarks) {
+  const tagSet = new Set();
+  bookmarks.forEach(b => (b.tags || []).forEach(t => tagSet.add(t)));
+  return Array.from(tagSet).sort();
+}
+
+function renderTabs() {
+  const user = getCurrentUser();
+  const bookmarks = getUserBookmarks(user);
+  const tags = getAllTags(bookmarks);
+  const tabsNav = document.getElementById('tabsNav');
+
+  const filtered = filterBookmarks(bookmarks);
+  let html = `<button class="tab-item ${currentTag === '全部' ? 'active' : ''}" data-tag="全部">全部 <span class="count">${bookmarks.length}</span></button>`;
+  tags.forEach(tag => {
+    const count = bookmarks.filter(b => (b.tags || []).includes(tag)).length;
+    html += `<button class="tab-item ${currentTag === tag ? 'active' : ''}" data-tag="${escapeHtml(tag)}">${escapeHtml(tag)} <span class="count">${count}</span></button>`;
+  });
+  tabsNav.innerHTML = html;
+
+  tabsNav.querySelectorAll('.tab-item').forEach(btn => {
+    btn.onclick = () => {
+      currentTag = btn.dataset.tag;
+      renderTabs();
+      renderBookmarkList();
+    };
+  });
+}
+
+function filterBookmarks(bookmarks) {
+  return bookmarks.filter(b => {
+    const tagMatch = currentTag === '全部' || (b.tags || []).includes(currentTag);
+    const kw = searchKeyword.toLowerCase();
+    const searchMatch = !kw ||
+      b.title.toLowerCase().includes(kw) ||
+      (b.desc || '').toLowerCase().includes(kw) ||
+      (b.tags || []).some(t => t.toLowerCase().includes(kw));
+    return tagMatch && searchMatch;
+  });
+}
+
+function renderStats() {
+  const user = getCurrentUser();
+  const bookmarks = getUserBookmarks(user);
+  const tags = getAllTags(bookmarks);
+  document.getElementById('statsBar').innerHTML = `
+    <div class="stat-item"><div class="num">${bookmarks.length}</div><div class="label">书签总数</div></div>
+    <div class="stat-item"><div class="num">${tags.length}</div><div class="label">标签数</div></div>
+    <div class="stat-item"><div class="num">${user}</div><div class="label">当前用户</div></div>
+  `;
+}
+
+function renderBookmarkList() {
+  const user = getCurrentUser();
+  const bookmarks = getUserBookmarks(user);
+  const filtered = filterBookmarks(bookmarks);
+  const grid = document.getElementById('bookmarkGrid');
+  const empty = document.getElementById('emptyState');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    empty.querySelector('h3').textContent = bookmarks.length === 0 ? '还没有书签' : '没有匹配的书签';
+    empty.querySelector('p').textContent = bookmarks.length === 0 ? '点击「添加书签」开始收藏吧' : '试试其他关键词或标签';
+    return;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = filtered.map(b => {
+    const hostname = (() => { try { return new URL(b.url).hostname; } catch { return ''; } })();
+    const favicon = hostname ? `<img src="https://www.google.com/s2/favicons?domain=${hostname}&sz=64" alt="" onerror="this.style.display='none';this.parentElement.textContent='🔗'">` : '🔗';
+    return `
+      <div class="bookmark-card">
+        <div class="card-header">
+          <div class="favicon">${favicon}</div>
+          <h3><a href="${escapeAttr(b.url)}" target="_blank" rel="noopener">${escapeHtml(b.title)}</a></h3>
+        </div>
+        ${b.desc ? `<div class="desc">${escapeHtml(b.desc)}</div>` : '<div class="desc" style="color:var(--muted);">暂无描述</div>'}
+        <div class="card-footer">
+          <div class="tags">
+            ${(b.tags || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}
+          </div>
+          <div class="actions">
+            <button title="编辑" onclick="editBookmark('${b.id}')">✏️</button>
+            <button title="删除" onclick="deleteBookmark('${b.id}')">🗑️</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderBookmarks() {
+  renderStats();
+  renderTabs();
+  renderBookmarkList();
+}
+
+// 搜索
+document.getElementById('searchInput').oninput = (e) => {
+  searchKeyword = e.target.value;
+  renderBookmarkList();
+};
+
+// ===== 模态框 =====
+const modal = document.getElementById('bookmarkModal');
+const bookmarkForm = document.getElementById('bookmarkForm');
+
+document.getElementById('addBtn').onclick = () => {
+  document.getElementById('modalTitle').textContent = '添加书签';
+  bookmarkForm.reset();
+  document.getElementById('bookmarkId').value = '';
+  modal.classList.add('active');
+};
+
+document.getElementById('cancelModal').onclick = () => modal.classList.remove('active');
+modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('active'); };
+
+bookmarkForm.onsubmit = (e) => {
+  e.preventDefault();
+  const user = getCurrentUser();
+  const bookmarks = getUserBookmarks(user);
+  const id = document.getElementById('bookmarkId').value;
+  const title = document.getElementById('bmTitle').value.trim();
+  const url = document.getElementById('bmUrl').value.trim();
+  const desc = document.getElementById('bmDesc').value.trim();
+  const tags = document.getElementById('bmTags').value.split(/[,，]/).map(t => t.trim()).filter(Boolean);
+
+  if (id) {
+    const idx = bookmarks.findIndex(b => b.id === id);
+    if (idx !== -1) {
+      bookmarks[idx] = { ...bookmarks[idx], title, url, desc, tags, updatedAt: Date.now() };
+      showToast('书签已更新', 'success');
+    }
+  } else {
+    bookmarks.unshift({
+      id: 'bm_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+      title, url, desc, tags,
+      createdAt: Date.now()
+    });
+    showToast('书签已添加', 'success');
+  }
+  saveUserBookmarks(user, bookmarks);
+  modal.classList.remove('active');
+  renderBookmarks();
+};
+
+function editBookmark(id) {
+  const user = getCurrentUser();
+  const bookmarks = getUserBookmarks(user);
+  const b = bookmarks.find(x => x.id === id);
+  if (!b) return;
+  document.getElementById('modalTitle').textContent = '编辑书签';
+  document.getElementById('bookmarkId').value = b.id;
+  document.getElementById('bmTitle').value = b.title;
+  document.getElementById('bmUrl').value = b.url;
+  document.getElementById('bmDesc').value = b.desc || '';
+  document.getElementById('bmTags').value = (b.tags || []).join(', ');
+  modal.classList.add('active');
+}
+
+// ===== 确认对话框 =====
+let confirmCallback = null;
+const confirmModal = document.getElementById('confirmModal');
+function showConfirm(title, message, callback) {
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMessage').textContent = message;
+  confirmCallback = callback;
+  confirmModal.classList.add('active');
+}
+document.getElementById('confirmCancel').onclick = () => {
+  confirmModal.classList.remove('active');
+  confirmCallback = null;
+};
+document.getElementById('confirmOk').onclick = () => {
+  confirmModal.classList.remove('active');
+  if (confirmCallback) confirmCallback();
+  confirmCallback = null;
+};
+confirmModal.onclick = (e) => { if (e.target === confirmModal) { confirmModal.classList.remove('active'); confirmCallback = null; } };
+function deleteBookmark(id) {
+  showConfirm('删除书签', '确定删除这个书签吗？此操作不可撤销。', () => {
+    const user = getCurrentUser();
+    let bookmarks = getUserBookmarks(user);
+    bookmarks = bookmarks.filter(b => b.id !== id);
+    saveUserBookmarks(user, bookmarks);
+    showToast('书签已删除', 'success');
+    renderBookmarks();
+  });
+}
+
+// ===== 导入导出 =====
+document.getElementById('exportBtn').onclick = () => {
+  const user = getCurrentUser();
+  const bookmarks = getUserBookmarks(user);
+  const data = JSON.stringify({ user, exportedAt: new Date().toISOString(), bookmarks }, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `bookmarks_${user}_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('书签已导出', 'success');
+};
+
+document.getElementById('importBtn').onclick = () => document.getElementById('importFile').click();
+document.getElementById('importFile').onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!Array.isArray(data.bookmarks)) throw new Error('格式错误');
+      const user = getCurrentUser();
+      let bookmarks = getUserBookmarks(user);
+      let added = 0;
+      data.bookmarks.forEach(b => {
+        if (b.title && b.url && !bookmarks.find(x => x.url === b.url)) {
+          bookmarks.unshift({
+            id: 'bm_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+            title: b.title, url: b.url, desc: b.desc || '',
+            tags: b.tags || [], createdAt: Date.now()
+          });
+          added++;
+        }
+      });
+      saveUserBookmarks(user, bookmarks);
+      renderBookmarks();
+      showToast(`成功导入 ${added} 个书签`, 'success');
+    } catch (err) {
+      showToast('导入失败：文件格式错误', 'error');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+};
+
+// ===== 工具函数 =====
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+function escapeAttr(str) {
+  return escapeHtml(str).replace(/"/g, '&quot;');
+}
+
+// ===== 初始化 =====
+renderAuthState();
+</script>
+</body>
+</html>
