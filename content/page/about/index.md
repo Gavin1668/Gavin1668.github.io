@@ -1,5 +1,6 @@
 ---
 title: 关于
+slug: about
 description: 关于我和这个博客
 date: 2026-08-05
 lastmod: 2026-08-05

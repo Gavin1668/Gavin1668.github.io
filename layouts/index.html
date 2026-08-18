@@ -25,7 +25,7 @@
     {{ with index $dailies 0 }}
         <section class="daily-card">
             <div class="daily-card__head">
-                <span class="daily-card__badge">📰 每日资讯</span>
+                <span class="daily-card__badge">📰 每日热点</span>
                 <time>{{ .Date.Format "2006-01-02" }}</time>
             </div>
             <h2 class="daily-card__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
