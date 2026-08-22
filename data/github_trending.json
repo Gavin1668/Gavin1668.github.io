@@ -1,0 +1,82 @@
+[
+  {
+    "rank": 1,
+    "repo": "s1dashu/ip-as-logo-skill",
+    "lang": "",
+    "stars": 3566,
+    "desc": "A compact Agent Skill for highly simplified, rounded, subtly neo-skeuomorphic IP",
+    "url": "https://github.com/s1dashu/ip-as-logo-skill"
+  },
+  {
+    "rank": 2,
+    "repo": "yetone/cumora",
+    "lang": "TypeScript",
+    "stars": 2885,
+    "desc": "Where agent teams gather. Cross-platform team chat where AI agents are first-cla",
+    "url": "https://github.com/yetone/cumora"
+  },
+  {
+    "rank": 3,
+    "repo": "CopilotKit/OpenBot",
+    "lang": "TypeScript",
+    "stars": 2202,
+    "desc": "Open-source AI coworkers that each get a computer of their own: a browser, files",
+    "url": "https://github.com/CopilotKit/OpenBot"
+  },
+  {
+    "rank": 4,
+    "repo": "cinderline/northcinder",
+    "lang": "JavaScript",
+    "stars": 1203,
+    "desc": "Buyer-run, ad-neutral shopping-agent MCP software with deterministic ranking, si",
+    "url": "https://github.com/cinderline/northcinder"
+  },
+  {
+    "rank": 5,
+    "repo": "wang2122/sprix-sage-router",
+    "lang": "Python",
+    "stars": 1145,
+    "desc": "Sprix AI at 屿智同行 — state-aware SELF/COLLABORATE/HANDOFF routing for A2A agent ne",
+    "url": "https://github.com/wang2122/sprix-sage-router"
+  },
+  {
+    "rank": 6,
+    "repo": "vvxw/deploy-vercel",
+    "lang": "JavaScript",
+    "stars": 1044,
+    "desc": "Install Command：npm install",
+    "url": "https://github.com/vvxw/deploy-vercel"
+  },
+  {
+    "rank": 7,
+    "repo": "Tiger3807861189/DeepSeek-V4-J-Space-Capability-Realization-Report",
+    "lang": "",
+    "stars": 1037,
+    "desc": "DeepSeek V4 × J-Space capability realization report — benchmark evidence that J-",
+    "url": "https://github.com/Tiger3807861189/DeepSeek-V4-J-Space-Capability-Realization-Report"
+  },
+  {
+    "rank": 8,
+    "repo": "Leutenegger/watermarks-remover",
+    "lang": "Python",
+    "stars": 930,
+    "desc": "Remove multi-vendor AI provenance traces: Unicode text sanitization, statistical",
+    "url": "https://github.com/Leutenegger/watermarks-remover"
+  },
+  {
+    "rank": 9,
+    "repo": "MengTo/threeui",
+    "lang": "HTML",
+    "stars": 926,
+    "desc": "Open-source ThreeUI Community catalog with live interactive components and compl",
+    "url": "https://github.com/MengTo/threeui"
+  },
+  {
+    "rank": 10,
+    "repo": "Leutenegger/vanity-eth",
+    "lang": "Python",
+    "stars": 803,
+    "desc": "Offline vanity address generator for Bitcoin and Ethereum. CPU multi-process sea",
+    "url": "https://github.com/Leutenegger/vanity-eth"
+  }
+]
