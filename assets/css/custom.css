@@ -353,3 +353,112 @@ body {
 :root[data-scheme=dark] .article-page .article-tags a {
     background: #e0a060 !important;
 }
+
+/* ===================== 信息源卡片（首页：民生热点 + GitHub Trending） ===================== */
+.info-sources {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin: 22px 0;
+}
+.src-card {
+    background: #fff;
+    border: 1px solid #f0e3d6;
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 6px 20px rgba(192, 112, 58, .06);
+}
+.src-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.src-card__badge {
+    background: #c0703a;
+    color: #fff;
+    padding: 2px 11px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: .82rem;
+}
+.src-card__badge--gh {
+    background: #24292e;
+}
+.src-card__auto {
+    color: #a08a78;
+    font-size: .78rem;
+    letter-spacing: .04em;
+}
+.src-card__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.src-card__item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px dashed #f0e3d6;
+    font-size: .92rem;
+}
+.src-card__item:last-child {
+    border-bottom: none;
+}
+.src-card__rank {
+    color: #c0703a;
+    font-weight: 700;
+    font-size: .82rem;
+    min-width: 24px;
+}
+.src-card__item a {
+    color: #3a2e26;
+    text-decoration: none;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.src-card__item a:hover {
+    color: #c0703a;
+}
+.src-card__date,
+.src-card__meta {
+    color: #a08a78;
+    font-size: .78rem;
+    white-space: nowrap;
+}
+
+/* 信息源卡片 —— 暗色模式适配 */
+:root[data-scheme=dark] .src-card {
+    background: #252018;
+    border-color: #3a3228;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
+}
+:root[data-scheme=dark] .src-card__badge {
+    background: #e0a060;
+    color: #252018;
+}
+:root[data-scheme=dark] .src-card__badge--gh {
+    background: #3a3228;
+    color: #f0e6dc;
+}
+:root[data-scheme=dark] .src-card__auto,
+:root[data-scheme=dark] .src-card__date,
+:root[data-scheme=dark] .src-card__meta {
+    color: #8a7a68;
+}
+:root[data-scheme=dark] .src-card__item {
+    border-bottom-color: #3a3228;
+}
+:root[data-scheme=dark] .src-card__item a {
+    color: #f0e6dc;
+}
+:root[data-scheme=dark] .src-card__item a:hover {
+    color: #e0a060;
+}
+:root[data-scheme=dark] .src-card__rank {
+    color: #e0a060;
+}

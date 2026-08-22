@@ -34,6 +34,51 @@
         </section>
     {{ end }}
 
+    {{/* ===== 信息源卡片：每日民生热点 + GitHub Trending（每日 08:00 自动更新） ===== */}}
+    {{ $showNews := default true .Site.Params.enableNewsSource }}
+    {{ $showTrending := default true .Site.Params.enableTrendingSource }}
+    {{ $news := .Site.Data.news }}
+    {{ $trending := .Site.Data.github_trending }}
+    {{ $bjTime := now.UTC.Add (duration "h" 8) }}
+    {{ if or (and $showNews $news) (and $showTrending $trending) }}
+    <section class="info-sources">
+        {{ if and $showNews $news }}
+        <div class="src-card">
+            <div class="src-card__head">
+                <span class="src-card__badge">📰 每日民生热点</span>
+                <span class="src-card__auto" title="每日 08:00 自动更新">AUTO · {{ $bjTime.Format "15:04" }}</span>
+            </div>
+            <ul class="src-card__list">
+                {{ range first (default 5 .Site.Params.newsLimit) $news }}
+                <li class="src-card__item">
+                    <a href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .title }}</a>
+                    <time class="src-card__date">{{ .date }}</time>
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+        {{ end }}
+
+        {{ if and $showTrending $trending }}
+        <div class="src-card">
+            <div class="src-card__head">
+                <span class="src-card__badge src-card__badge--gh">🔥 GitHub Trending</span>
+                <span class="src-card__auto" title="每日 08:00 自动更新">AUTO · {{ $bjTime.Format "15:04" }}</span>
+            </div>
+            <ol class="src-card__list src-card__list--rank">
+                {{ range first (default 10 .Site.Params.trendingLimit) $trending }}
+                <li class="src-card__item">
+                    <span class="src-card__rank">{{ printf "%02d" .rank }}</span>
+                    <a href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .repo }}</a>
+                    <span class="src-card__meta">{{ with .lang }}{{ . }} · {{ end }}★ {{ .stars }}</span>
+                </li>
+                {{ end }}
+            </ol>
+        </div>
+        {{ end }}
+    </section>
+    {{ end }}
+
     {{/* ===== 文章列表（卡片化） ===== */}}
     <section class="article-list">
         {{ range $pag.Pages }}
