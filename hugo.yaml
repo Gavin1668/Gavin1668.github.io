@@ -27,6 +27,16 @@ params:
   rssFullContent: true
   favicon:
 
+  # ===== 每日信息源（scripts/fetch_sources.sh 每日 08:00 自动抓取，deploy.yml 定时重建）=====
+  enableNewsSource: true
+  enableTrendingSource: true
+  newsSourceUrl: "https://www.chinanews.com.cn/rss/society.xml"
+  newsLimit: 5
+  trendingLimit: 10
+  owner: "changjian"
+  socialGithub: "https://github.com/Gavin1668"
+  socialEmail: "changjian2026@126.com"
+
   footer:
     since: 2022
     customText:

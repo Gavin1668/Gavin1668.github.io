@@ -3,10 +3,12 @@ name: Deploy Hugo to GitHub Pages
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: '0 0 * * *'        # 北京时间每日 08:00：拉取每日信息源后重新构建部署
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write              # 允许信息源脚本 commit data/*.json
   pages: write
   id-token: write
 
@@ -28,6 +30,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Fetch daily sources
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: bash scripts/fetch_sources.sh
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Clone theme (shallow)
         run: git clone --depth 1 https://github.com/Gavin1668/hugo-theme-stack.git themes/hugo-theme-stack
