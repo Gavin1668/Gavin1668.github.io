@@ -1,82 +1,82 @@
 [
   {
     "rank": 1,
-    "repo": "s1dashu/ip-as-logo-skill",
-    "lang": "",
-    "stars": 3913,
-    "desc": "A compact Agent Skill for highly simplified, rounded, subtly neo-skeuomorphic IP",
-    "url": "https://github.com/s1dashu/ip-as-logo-skill"
-  },
-  {
-    "rank": 2,
     "repo": "MengTo/threeui",
     "lang": "HTML",
-    "stars": 2932,
+    "stars": 3503,
     "desc": "Open-source ThreeUI Community catalog with live interactive components and compl",
     "url": "https://github.com/MengTo/threeui"
   },
   {
+    "rank": 2,
+    "repo": "b-nnett/grok-bot-0.18-reconstructed",
+    "lang": "TypeScript",
+    "stars": 1786,
+    "desc": "Unofficial source-oriented reconstruction and extension of Grok Bot 0.18.0 for m",
+    "url": "https://github.com/b-nnett/grok-bot-0.18-reconstructed"
+  },
+  {
     "rank": 3,
-    "repo": "wang2122/sprix-sage-router",
-    "lang": "Python",
-    "stars": 1413,
-    "desc": "Sprix AI at 屿智同行 — state-aware SELF/COLLABORATE/HANDOFF routing for A2A agent ne",
-    "url": "https://github.com/wang2122/sprix-sage-router"
+    "repo": "duty1g/x64dbg-mcp-server",
+    "lang": "Zig",
+    "stars": 1233,
+    "desc": "x64dbg-MCP Server is a native MCP (Model Context Protocol) plugin for x64dbg tha",
+    "url": "https://github.com/duty1g/x64dbg-mcp-server"
   },
   {
     "rank": 4,
-    "repo": "vvxw/deploy-vercel",
-    "lang": "JavaScript",
-    "stars": 1216,
-    "desc": "Install Command：npm install",
-    "url": "https://github.com/vvxw/deploy-vercel"
+    "repo": "tobi/walgit",
+    "lang": "Rust",
+    "stars": 1066,
+    "desc": "",
+    "url": "https://github.com/tobi/walgit"
   },
   {
     "rank": 5,
-    "repo": "duty1g/x64dbg-mcp-server",
-    "lang": "Zig",
-    "stars": 895,
-    "desc": "x64dbg-MCP Server is a native MCP (Model Context Protocol) plugin for x64dbg tha",
-    "url": "https://github.com/duty1g/x64dbg-mcp-server"
+    "repo": "cclank/lanshu-create-ai-presenter-video",
+    "lang": "Python",
+    "stars": 837,
+    "desc": "Provider-neutral Codex Skill for producing verified AI presenter videos from a s",
+    "url": "https://github.com/cclank/lanshu-create-ai-presenter-video"
   },
   {
     "rank": 6,
     "repo": "ShadowAqueduct/watermark-remover",
     "lang": "Python",
-    "stars": 760,
+    "stars": 773,
     "desc": "Purge multi-vendor AI watermarks: clean Unicode text, apply statistical rewrite ",
     "url": "https://github.com/ShadowAqueduct/watermark-remover"
   },
   {
     "rank": 7,
-    "repo": "MeteorNOX/DeepSeek-Balance-Whale-Widget",
+    "repo": "nateherkai/scroll-craft",
     "lang": "JavaScript",
-    "stars": 726,
-    "desc": "DeepSeek Harness（DSH）一只住在 DSH 界面右下角的小鲸鱼娘，帮你盯着DeepSeek账户余额。QQ弹弹，支持拖拽吸附、左吸附翻转、数字滚动",
-    "url": "https://github.com/MeteorNOX/DeepSeek-Balance-Whale-Widget"
+    "stars": 640,
+    "desc": "Claude Code skill for premium scroll-driven websites. Scroll becomes the timelin",
+    "url": "https://github.com/nateherkai/scroll-craft"
   },
   {
     "rank": 8,
-    "repo": "DenisSergeevitch/desktop-fly",
+    "repo": "missuo/herdrm",
     "lang": "Swift",
-    "stars": 704,
-    "desc": "A 3D fruit fly living on your macOS desktop, driven by a live spiking simulation",
-    "url": "https://github.com/DenisSergeevitch/desktop-fly"
+    "stars": 622,
+    "desc": "Native macOS console for herdr — all your coding agents and their live terminals",
+    "url": "https://github.com/missuo/herdrm"
   },
   {
     "rank": 9,
-    "repo": "cclank/lanshu-create-ai-presenter-video",
+    "repo": "lanicer/cve-2026-41940-PoC",
     "lang": "Python",
-    "stars": 666,
-    "desc": "Provider-neutral Codex Skill for producing verified AI presenter videos from a s",
-    "url": "https://github.com/cclank/lanshu-create-ai-presenter-video"
+    "stars": 528,
+    "desc": "A cPanel and WHM authentication bypassing tool",
+    "url": "https://github.com/lanicer/cve-2026-41940-PoC"
   },
   {
     "rank": 10,
-    "repo": "missuo/herdrm",
-    "lang": "Swift",
-    "stars": 611,
-    "desc": "Native macOS console for herdr — all your coding agents and their live terminals",
-    "url": "https://github.com/missuo/herdrm"
+    "repo": "Forsy-AI/biosecurity-agent",
+    "lang": "TypeScript",
+    "stars": 513,
+    "desc": "AI agent that builds a live biosecurity world around any target.",
+    "url": "https://github.com/Forsy-AI/biosecurity-agent"
   }
 ]
