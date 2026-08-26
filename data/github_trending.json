@@ -3,7 +3,7 @@
     "rank": 1,
     "repo": "MengTo/threeui",
     "lang": "HTML",
-    "stars": 3503,
+    "stars": 3929,
     "desc": "Open-source ThreeUI Community catalog with live interactive components and compl",
     "url": "https://github.com/MengTo/threeui"
   },
@@ -11,71 +11,71 @@
     "rank": 2,
     "repo": "b-nnett/grok-bot-0.18-reconstructed",
     "lang": "TypeScript",
-    "stars": 1786,
+    "stars": 2563,
     "desc": "Unofficial source-oriented reconstruction and extension of Grok Bot 0.18.0 for m",
     "url": "https://github.com/b-nnett/grok-bot-0.18-reconstructed"
   },
   {
     "rank": 3,
-    "repo": "duty1g/x64dbg-mcp-server",
-    "lang": "Zig",
-    "stars": 1233,
-    "desc": "x64dbg-MCP Server is a native MCP (Model Context Protocol) plugin for x64dbg tha",
-    "url": "https://github.com/duty1g/x64dbg-mcp-server"
+    "repo": "tobi/walgit",
+    "lang": "Rust",
+    "stars": 1559,
+    "desc": "",
+    "url": "https://github.com/tobi/walgit"
   },
   {
     "rank": 4,
-    "repo": "tobi/walgit",
-    "lang": "Rust",
-    "stars": 1066,
-    "desc": "",
-    "url": "https://github.com/tobi/walgit"
+    "repo": "duty1g/x64dbg-mcp-server",
+    "lang": "Zig",
+    "stars": 1383,
+    "desc": "x64dbg-MCP Server is a native MCP (Model Context Protocol) plugin for x64dbg tha",
+    "url": "https://github.com/duty1g/x64dbg-mcp-server"
   },
   {
     "rank": 5,
     "repo": "cclank/lanshu-create-ai-presenter-video",
     "lang": "Python",
-    "stars": 837,
+    "stars": 920,
     "desc": "Provider-neutral Codex Skill for producing verified AI presenter videos from a s",
     "url": "https://github.com/cclank/lanshu-create-ai-presenter-video"
   },
   {
     "rank": 6,
-    "repo": "ShadowAqueduct/watermark-remover",
-    "lang": "Python",
-    "stars": 773,
-    "desc": "Purge multi-vendor AI watermarks: clean Unicode text, apply statistical rewrite ",
-    "url": "https://github.com/ShadowAqueduct/watermark-remover"
-  },
-  {
-    "rank": 7,
     "repo": "nateherkai/scroll-craft",
     "lang": "JavaScript",
-    "stars": 640,
+    "stars": 912,
     "desc": "Claude Code skill for premium scroll-driven websites. Scroll becomes the timelin",
     "url": "https://github.com/nateherkai/scroll-craft"
   },
   {
+    "rank": 7,
+    "repo": "ShadowAqueduct/watermark-remover",
+    "lang": "Python",
+    "stars": 791,
+    "desc": "Purge multi-vendor AI watermarks: clean Unicode text, apply statistical rewrite ",
+    "url": "https://github.com/ShadowAqueduct/watermark-remover"
+  },
+  {
     "rank": 8,
-    "repo": "missuo/herdrm",
-    "lang": "Swift",
-    "stars": 622,
-    "desc": "Native macOS console for herdr — all your coding agents and their live terminals",
-    "url": "https://github.com/missuo/herdrm"
+    "repo": "ApodexAI/FrontierAgent",
+    "lang": "Python",
+    "stars": 590,
+    "desc": "🧩 FrontierAgent, our agent framework, open-sourced alongside it — native command",
+    "url": "https://github.com/ApodexAI/FrontierAgent"
   },
   {
     "rank": 9,
-    "repo": "lanicer/cve-2026-41940-PoC",
-    "lang": "Python",
-    "stars": 528,
-    "desc": "A cPanel and WHM authentication bypassing tool",
-    "url": "https://github.com/lanicer/cve-2026-41940-PoC"
+    "repo": "bryllim/workout-guide",
+    "lang": "Astro",
+    "stars": 535,
+    "desc": "302 open exercise illustrations and a framework-neutral npm package by Bryl Lim",
+    "url": "https://github.com/bryllim/workout-guide"
   },
   {
     "rank": 10,
     "repo": "Forsy-AI/biosecurity-agent",
     "lang": "TypeScript",
-    "stars": 513,
+    "stars": 514,
     "desc": "AI agent that builds a live biosecurity world around any target.",
     "url": "https://github.com/Forsy-AI/biosecurity-agent"
   }
