@@ -3,7 +3,7 @@
     "rank": 1,
     "repo": "MengTo/threeui",
     "lang": "HTML",
-    "stars": 3929,
+    "stars": 4249,
     "desc": "Open-source ThreeUI Community catalog with live interactive components and compl",
     "url": "https://github.com/MengTo/threeui"
   },
@@ -11,7 +11,7 @@
     "rank": 2,
     "repo": "b-nnett/grok-bot-0.18-reconstructed",
     "lang": "TypeScript",
-    "stars": 2563,
+    "stars": 3220,
     "desc": "Unofficial source-oriented reconstruction and extension of Grok Bot 0.18.0 for m",
     "url": "https://github.com/b-nnett/grok-bot-0.18-reconstructed"
   },
@@ -19,7 +19,7 @@
     "rank": 3,
     "repo": "tobi/walgit",
     "lang": "Rust",
-    "stars": 1559,
+    "stars": 2153,
     "desc": "",
     "url": "https://github.com/tobi/walgit"
   },
@@ -27,56 +27,56 @@
     "rank": 4,
     "repo": "duty1g/x64dbg-mcp-server",
     "lang": "Zig",
-    "stars": 1383,
+    "stars": 1485,
     "desc": "x64dbg-MCP Server is a native MCP (Model Context Protocol) plugin for x64dbg tha",
     "url": "https://github.com/duty1g/x64dbg-mcp-server"
   },
   {
     "rank": 5,
-    "repo": "cclank/lanshu-create-ai-presenter-video",
+    "repo": "ApodexAI/FrontierAgent",
     "lang": "Python",
-    "stars": 920,
-    "desc": "Provider-neutral Codex Skill for producing verified AI presenter videos from a s",
-    "url": "https://github.com/cclank/lanshu-create-ai-presenter-video"
+    "stars": 1045,
+    "desc": "🧩 FrontierAgent, our agent framework, open-sourced alongside it — native command",
+    "url": "https://github.com/ApodexAI/FrontierAgent"
   },
   {
     "rank": 6,
     "repo": "nateherkai/scroll-craft",
     "lang": "JavaScript",
-    "stars": 912,
+    "stars": 1039,
     "desc": "Claude Code skill for premium scroll-driven websites. Scroll becomes the timelin",
     "url": "https://github.com/nateherkai/scroll-craft"
   },
   {
     "rank": 7,
-    "repo": "ShadowAqueduct/watermark-remover",
-    "lang": "Python",
-    "stars": 791,
-    "desc": "Purge multi-vendor AI watermarks: clean Unicode text, apply statistical rewrite ",
-    "url": "https://github.com/ShadowAqueduct/watermark-remover"
-  },
-  {
-    "rank": 8,
-    "repo": "ApodexAI/FrontierAgent",
-    "lang": "Python",
-    "stars": 590,
-    "desc": "🧩 FrontierAgent, our agent framework, open-sourced alongside it — native command",
-    "url": "https://github.com/ApodexAI/FrontierAgent"
-  },
-  {
-    "rank": 9,
     "repo": "bryllim/workout-guide",
     "lang": "Astro",
-    "stars": 535,
+    "stars": 879,
     "desc": "302 open exercise illustrations and a framework-neutral npm package by Bryl Lim",
     "url": "https://github.com/bryllim/workout-guide"
   },
   {
-    "rank": 10,
-    "repo": "Forsy-AI/biosecurity-agent",
+    "rank": 8,
+    "repo": "ShadowAqueduct/watermark-remover",
+    "lang": "Python",
+    "stars": 810,
+    "desc": "Purge multi-vendor AI watermarks: clean Unicode text, apply statistical rewrite ",
+    "url": "https://github.com/ShadowAqueduct/watermark-remover"
+  },
+  {
+    "rank": 9,
+    "repo": "wide-trace/open-higgsfield",
     "lang": "TypeScript",
-    "stars": 514,
-    "desc": "AI agent that builds a live biosecurity world around any target.",
-    "url": "https://github.com/Forsy-AI/biosecurity-agent"
+    "stars": 677,
+    "desc": "A studio for image and video generation — one prompt bar, each model’s own setti",
+    "url": "https://github.com/wide-trace/open-higgsfield"
+  },
+  {
+    "rank": 10,
+    "repo": "themartiano/try-omarchy",
+    "lang": "Shell",
+    "stars": 595,
+    "desc": "Try Omarchy on Apple Silicon without any setup.",
+    "url": "https://github.com/themartiano/try-omarchy"
   }
 ]
