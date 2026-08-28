@@ -1,25 +1,25 @@
 [
   {
     "rank": 1,
-    "repo": "MengTo/threeui",
-    "lang": "HTML",
-    "stars": 4249,
-    "desc": "Open-source ThreeUI Community catalog with live interactive components and compl",
-    "url": "https://github.com/MengTo/threeui"
+    "repo": "b-nnett/grok-bot-0.18-reconstructed",
+    "lang": "TypeScript",
+    "stars": 3392,
+    "desc": "Unofficial source-oriented reconstruction and extension of Grok Bot 0.18.0 for m",
+    "url": "https://github.com/b-nnett/grok-bot-0.18-reconstructed"
   },
   {
     "rank": 2,
-    "repo": "b-nnett/grok-bot-0.18-reconstructed",
-    "lang": "TypeScript",
-    "stars": 3220,
-    "desc": "Unofficial source-oriented reconstruction and extension of Grok Bot 0.18.0 for m",
-    "url": "https://github.com/b-nnett/grok-bot-0.18-reconstructed"
+    "repo": "HEJustinSun/my-girlfriend-jingtian-latex",
+    "lang": "TeX",
+    "stars": 3243,
+    "desc": "",
+    "url": "https://github.com/HEJustinSun/my-girlfriend-jingtian-latex"
   },
   {
     "rank": 3,
     "repo": "tobi/walgit",
     "lang": "Rust",
-    "stars": 2153,
+    "stars": 2273,
     "desc": "",
     "url": "https://github.com/tobi/walgit"
   },
@@ -27,7 +27,7 @@
     "rank": 4,
     "repo": "duty1g/x64dbg-mcp-server",
     "lang": "Zig",
-    "stars": 1485,
+    "stars": 1623,
     "desc": "x64dbg-MCP Server is a native MCP (Model Context Protocol) plugin for x64dbg tha",
     "url": "https://github.com/duty1g/x64dbg-mcp-server"
   },
@@ -35,7 +35,7 @@
     "rank": 5,
     "repo": "ApodexAI/FrontierAgent",
     "lang": "Python",
-    "stars": 1045,
+    "stars": 1185,
     "desc": "🧩 FrontierAgent, our agent framework, open-sourced alongside it — native command",
     "url": "https://github.com/ApodexAI/FrontierAgent"
   },
@@ -43,40 +43,40 @@
     "rank": 6,
     "repo": "nateherkai/scroll-craft",
     "lang": "JavaScript",
-    "stars": 1039,
+    "stars": 1118,
     "desc": "Claude Code skill for premium scroll-driven websites. Scroll becomes the timelin",
     "url": "https://github.com/nateherkai/scroll-craft"
   },
   {
     "rank": 7,
-    "repo": "bryllim/workout-guide",
-    "lang": "Astro",
-    "stars": 879,
-    "desc": "302 open exercise illustrations and a framework-neutral npm package by Bryl Lim",
-    "url": "https://github.com/bryllim/workout-guide"
+    "repo": "sapientinc/PRAXIST",
+    "lang": "Python",
+    "stars": 948,
+    "desc": "Autonomous research system for measurable, computer-executable research.",
+    "url": "https://github.com/sapientinc/PRAXIST"
   },
   {
     "rank": 8,
-    "repo": "ShadowAqueduct/watermark-remover",
-    "lang": "Python",
-    "stars": 810,
-    "desc": "Purge multi-vendor AI watermarks: clean Unicode text, apply statistical rewrite ",
-    "url": "https://github.com/ShadowAqueduct/watermark-remover"
+    "repo": "bryllim/workout-guide",
+    "lang": "Astro",
+    "stars": 945,
+    "desc": "302 open exercise illustrations and a framework-neutral npm package by Bryl Lim",
+    "url": "https://github.com/bryllim/workout-guide"
   },
   {
     "rank": 9,
     "repo": "wide-trace/open-higgsfield",
     "lang": "TypeScript",
-    "stars": 677,
+    "stars": 911,
     "desc": "A studio for image and video generation — one prompt bar, each model’s own setti",
     "url": "https://github.com/wide-trace/open-higgsfield"
   },
   {
     "rank": 10,
-    "repo": "themartiano/try-omarchy",
-    "lang": "Shell",
-    "stars": 595,
-    "desc": "Try Omarchy on Apple Silicon without any setup.",
-    "url": "https://github.com/themartiano/try-omarchy"
+    "repo": "ShadowAqueduct/watermark-remover",
+    "lang": "Python",
+    "stars": 822,
+    "desc": "Purge multi-vendor AI watermarks: clean Unicode text, apply statistical rewrite ",
+    "url": "https://github.com/ShadowAqueduct/watermark-remover"
   }
 ]
