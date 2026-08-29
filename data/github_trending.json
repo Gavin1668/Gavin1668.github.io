@@ -1,82 +1,82 @@
 [
   {
     "rank": 1,
-    "repo": "b-nnett/grok-bot-0.18-reconstructed",
-    "lang": "TypeScript",
-    "stars": 3392,
-    "desc": "Unofficial source-oriented reconstruction and extension of Grok Bot 0.18.0 for m",
-    "url": "https://github.com/b-nnett/grok-bot-0.18-reconstructed"
+    "repo": "HEJustinSun/my-girlfriend-jingtian-latex",
+    "lang": "TeX",
+    "stars": 3765,
+    "desc": "",
+    "url": "https://github.com/HEJustinSun/my-girlfriend-jingtian-latex"
   },
   {
     "rank": 2,
-    "repo": "HEJustinSun/my-girlfriend-jingtian-latex",
-    "lang": "TeX",
-    "stars": 3243,
-    "desc": "",
-    "url": "https://github.com/HEJustinSun/my-girlfriend-jingtian-latex"
+    "repo": "b-nnett/grok-bot-0.18-reconstructed",
+    "lang": "TypeScript",
+    "stars": 3413,
+    "desc": "Unofficial source-oriented reconstruction and extension of Grok Bot 0.18.0 for m",
+    "url": "https://github.com/b-nnett/grok-bot-0.18-reconstructed"
   },
   {
     "rank": 3,
     "repo": "tobi/walgit",
     "lang": "Rust",
-    "stars": 2273,
+    "stars": 2306,
     "desc": "",
     "url": "https://github.com/tobi/walgit"
   },
   {
     "rank": 4,
-    "repo": "duty1g/x64dbg-mcp-server",
-    "lang": "Zig",
-    "stars": 1623,
-    "desc": "x64dbg-MCP Server is a native MCP (Model Context Protocol) plugin for x64dbg tha",
-    "url": "https://github.com/duty1g/x64dbg-mcp-server"
-  },
-  {
-    "rank": 5,
-    "repo": "ApodexAI/FrontierAgent",
-    "lang": "Python",
-    "stars": 1185,
-    "desc": "🧩 FrontierAgent, our agent framework, open-sourced alongside it — native command",
-    "url": "https://github.com/ApodexAI/FrontierAgent"
-  },
-  {
-    "rank": 6,
-    "repo": "nateherkai/scroll-craft",
-    "lang": "JavaScript",
-    "stars": 1118,
-    "desc": "Claude Code skill for premium scroll-driven websites. Scroll becomes the timelin",
-    "url": "https://github.com/nateherkai/scroll-craft"
-  },
-  {
-    "rank": 7,
     "repo": "sapientinc/PRAXIST",
     "lang": "Python",
-    "stars": 948,
+    "stars": 2047,
     "desc": "Autonomous research system for measurable, computer-executable research.",
     "url": "https://github.com/sapientinc/PRAXIST"
   },
   {
-    "rank": 8,
-    "repo": "bryllim/workout-guide",
-    "lang": "Astro",
-    "stars": 945,
-    "desc": "302 open exercise illustrations and a framework-neutral npm package by Bryl Lim",
-    "url": "https://github.com/bryllim/workout-guide"
-  },
-  {
-    "rank": 9,
+    "rank": 5,
     "repo": "wide-trace/open-higgsfield",
     "lang": "TypeScript",
-    "stars": 911,
+    "stars": 990,
     "desc": "A studio for image and video generation — one prompt bar, each model’s own setti",
     "url": "https://github.com/wide-trace/open-higgsfield"
   },
   {
-    "rank": 10,
+    "rank": 6,
+    "repo": "bryllim/workout-guide",
+    "lang": "Astro",
+    "stars": 984,
+    "desc": "302 open exercise illustrations and a framework-neutral npm package by Bryl Lim",
+    "url": "https://github.com/bryllim/workout-guide"
+  },
+  {
+    "rank": 7,
+    "repo": "Tencent/WeMM-Embedding",
+    "lang": "Python",
+    "stars": 852,
+    "desc": "WeMM-Embedding is a family of universal multimodal embedding models by the WeCha",
+    "url": "https://github.com/Tencent/WeMM-Embedding"
+  },
+  {
+    "rank": 8,
     "repo": "ShadowAqueduct/watermark-remover",
     "lang": "Python",
-    "stars": 822,
+    "stars": 829,
     "desc": "Purge multi-vendor AI watermarks: clean Unicode text, apply statistical rewrite ",
     "url": "https://github.com/ShadowAqueduct/watermark-remover"
+  },
+  {
+    "rank": 9,
+    "repo": "themartiano/try-omarchy",
+    "lang": "Swift",
+    "stars": 774,
+    "desc": "Run Omarchy on MacOS without any setup.",
+    "url": "https://github.com/themartiano/try-omarchy"
+  },
+  {
+    "rank": 10,
+    "repo": "amosblomqvist/learn",
+    "lang": "TypeScript",
+    "stars": 672,
+    "desc": "My AI learning system.",
+    "url": "https://github.com/amosblomqvist/learn"
   }
 ]
