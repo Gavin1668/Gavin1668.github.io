@@ -3,80 +3,80 @@
     "rank": 1,
     "repo": "HEJustinSun/my-girlfriend-jingtian-latex",
     "lang": "TeX",
-    "stars": 3765,
+    "stars": 3992,
     "desc": "",
     "url": "https://github.com/HEJustinSun/my-girlfriend-jingtian-latex"
   },
   {
     "rank": 2,
-    "repo": "b-nnett/grok-bot-0.18-reconstructed",
-    "lang": "TypeScript",
-    "stars": 3413,
-    "desc": "Unofficial source-oriented reconstruction and extension of Grok Bot 0.18.0 for m",
-    "url": "https://github.com/b-nnett/grok-bot-0.18-reconstructed"
-  },
-  {
-    "rank": 3,
-    "repo": "tobi/walgit",
-    "lang": "Rust",
-    "stars": 2306,
-    "desc": "",
-    "url": "https://github.com/tobi/walgit"
-  },
-  {
-    "rank": 4,
     "repo": "sapientinc/PRAXIST",
     "lang": "Python",
-    "stars": 2047,
+    "stars": 3211,
     "desc": "Autonomous research system for measurable, computer-executable research.",
     "url": "https://github.com/sapientinc/PRAXIST"
   },
   {
-    "rank": 5,
+    "rank": 3,
     "repo": "wide-trace/open-higgsfield",
     "lang": "TypeScript",
-    "stars": 990,
+    "stars": 1075,
     "desc": "A studio for image and video generation — one prompt bar, each model’s own setti",
     "url": "https://github.com/wide-trace/open-higgsfield"
   },
   {
-    "rank": 6,
+    "rank": 4,
     "repo": "bryllim/workout-guide",
     "lang": "Astro",
-    "stars": 984,
+    "stars": 1007,
     "desc": "302 open exercise illustrations and a framework-neutral npm package by Bryl Lim",
     "url": "https://github.com/bryllim/workout-guide"
   },
   {
-    "rank": 7,
+    "rank": 5,
+    "repo": "XiaoDuoYa/codex-with-chatgpt",
+    "lang": "TypeScript",
+    "stars": 994,
+    "desc": "ChatGPT thinks. Codex works. Use ChatGPT as the planning brain while keeping the",
+    "url": "https://github.com/XiaoDuoYa/codex-with-chatgpt"
+  },
+  {
+    "rank": 6,
     "repo": "Tencent/WeMM-Embedding",
     "lang": "Python",
-    "stars": 852,
+    "stars": 913,
     "desc": "WeMM-Embedding is a family of universal multimodal embedding models by the WeCha",
     "url": "https://github.com/Tencent/WeMM-Embedding"
   },
   {
+    "rank": 7,
+    "repo": "amosblomqvist/learn",
+    "lang": "TypeScript",
+    "stars": 792,
+    "desc": "My AI learning system.",
+    "url": "https://github.com/amosblomqvist/learn"
+  },
+  {
     "rank": 8,
-    "repo": "ShadowAqueduct/watermark-remover",
-    "lang": "Python",
-    "stars": 829,
-    "desc": "Purge multi-vendor AI watermarks: clean Unicode text, apply statistical rewrite ",
-    "url": "https://github.com/ShadowAqueduct/watermark-remover"
+    "repo": "MetaMask-AI/metamask-desktop",
+    "lang": "CSS",
+    "stars": 777,
+    "desc": "🌐 🔌 The MetaMask desktop app enables browsing Ethereum blockchain enabled websit",
+    "url": "https://github.com/MetaMask-AI/metamask-desktop"
   },
   {
     "rank": 9,
-    "repo": "themartiano/try-omarchy",
-    "lang": "Swift",
-    "stars": 774,
-    "desc": "Run Omarchy on MacOS without any setup.",
-    "url": "https://github.com/themartiano/try-omarchy"
+    "repo": "Nanako0129/sepia",
+    "lang": "",
+    "stars": 698,
+    "desc": "De-AI writing skill for Claude Code, Codex, Grok Build, and Antigravity — narrat",
+    "url": "https://github.com/Nanako0129/sepia"
   },
   {
     "rank": 10,
-    "repo": "amosblomqvist/learn",
-    "lang": "TypeScript",
-    "stars": 672,
-    "desc": "My AI learning system.",
-    "url": "https://github.com/amosblomqvist/learn"
+    "repo": "yding-git/personal-edge-proxy",
+    "lang": "",
+    "stars": 691,
+    "desc": "A practical multi-inbound, multi-outbound personal proxy setup with Xray, Hyster",
+    "url": "https://github.com/yding-git/personal-edge-proxy"
   }
 ]
