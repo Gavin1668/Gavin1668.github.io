@@ -3,7 +3,7 @@
     "rank": 1,
     "repo": "sapientinc/PRAXIST",
     "lang": "Python",
-    "stars": 4538,
+    "stars": 5462,
     "desc": "Autonomous research system for measurable, computer-executable research.",
     "url": "https://github.com/sapientinc/PRAXIST"
   },
@@ -11,7 +11,7 @@
     "rank": 2,
     "repo": "HEJustinSun/my-girlfriend-jingtian-latex",
     "lang": "TeX",
-    "stars": 4159,
+    "stars": 4197,
     "desc": "",
     "url": "https://github.com/HEJustinSun/my-girlfriend-jingtian-latex"
   },
@@ -19,12 +19,20 @@
     "rank": 3,
     "repo": "XiaoDuoYa/codex-with-chatgpt",
     "lang": "TypeScript",
-    "stars": 1492,
+    "stars": 1919,
     "desc": "ChatGPT thinks. Codex works. Use ChatGPT as the planning brain while keeping the",
     "url": "https://github.com/XiaoDuoYa/codex-with-chatgpt"
   },
   {
     "rank": 4,
+    "repo": "Nanako0129/sepia",
+    "lang": "",
+    "stars": 1259,
+    "desc": "De-AI writing skill for any Agent Skills-compatible agent (77+ via the Skills CL",
+    "url": "https://github.com/Nanako0129/sepia"
+  },
+  {
+    "rank": 5,
     "repo": "MetaMask-AI/metamask-desktop",
     "lang": "CSS",
     "stars": 1228,
@@ -32,51 +40,43 @@
     "url": "https://github.com/MetaMask-AI/metamask-desktop"
   },
   {
-    "rank": 5,
+    "rank": 6,
     "repo": "wide-trace/open-higgsfield",
     "lang": "TypeScript",
-    "stars": 1091,
+    "stars": 1147,
     "desc": "A studio for image and video generation — one prompt bar, each model’s own setti",
     "url": "https://github.com/wide-trace/open-higgsfield"
   },
   {
-    "rank": 6,
-    "repo": "Nanako0129/sepia",
-    "lang": "",
-    "stars": 967,
-    "desc": "De-AI writing skill for Claude Code, Codex, Grok Build, and Antigravity — narrat",
-    "url": "https://github.com/Nanako0129/sepia"
-  },
-  {
     "rank": 7,
-    "repo": "Tencent/WeMM-Embedding",
-    "lang": "Python",
-    "stars": 946,
-    "desc": "WeMM-Embedding is a family of universal multimodal embedding models by the WeCha",
-    "url": "https://github.com/Tencent/WeMM-Embedding"
+    "repo": "cbrock84/headcount",
+    "lang": "Markdown",
+    "stars": 867,
+    "desc": "An agent organization for Claude Code, structured as a company — 15+ departments",
+    "url": "https://github.com/cbrock84/headcount"
   },
   {
     "rank": 8,
     "repo": "tradecatlabs/shulihuazixuecongshu",
     "lang": "Python",
-    "stars": 808,
+    "stars": 831,
     "desc": "",
     "url": "https://github.com/tradecatlabs/shulihuazixuecongshu"
   },
   {
     "rank": 9,
-    "repo": "jub0t/WolfCut",
-    "lang": "TypeScript",
-    "stars": 741,
-    "desc": "Free & Open-Source CapCut replacement.",
-    "url": "https://github.com/jub0t/WolfCut"
+    "repo": "crmne/fastpotify",
+    "lang": "Rust",
+    "stars": 790,
+    "desc": "Spotify, native and fast. One lightweight Rust app for your whole library, local",
+    "url": "https://github.com/crmne/fastpotify"
   },
   {
     "rank": 10,
-    "repo": "cbrock84/headcount",
-    "lang": "Markdown",
-    "stars": 736,
-    "desc": "An agent organization for Claude Code, structured as a company — 15+ departments",
-    "url": "https://github.com/cbrock84/headcount"
+    "repo": "damejan80/tokentab",
+    "lang": "Python",
+    "stars": 735,
+    "desc": "A CLI that reads Claude Code, Codex, and Gemini CLI session logs and works out h",
+    "url": "https://github.com/damejan80/tokentab"
   }
 ]
