@@ -3,31 +3,31 @@
     "rank": 1,
     "repo": "sapientinc/PRAXIST",
     "lang": "Python",
-    "stars": 5462,
+    "stars": 6262,
     "desc": "Autonomous research system for measurable, computer-executable research.",
     "url": "https://github.com/sapientinc/PRAXIST"
   },
   {
     "rank": 2,
-    "repo": "HEJustinSun/my-girlfriend-jingtian-latex",
-    "lang": "TeX",
-    "stars": 4197,
-    "desc": "",
-    "url": "https://github.com/HEJustinSun/my-girlfriend-jingtian-latex"
-  },
-  {
-    "rank": 3,
     "repo": "XiaoDuoYa/codex-with-chatgpt",
     "lang": "TypeScript",
-    "stars": 1919,
+    "stars": 2157,
     "desc": "ChatGPT thinks. Codex works. Use ChatGPT as the planning brain while keeping the",
     "url": "https://github.com/XiaoDuoYa/codex-with-chatgpt"
   },
   {
+    "rank": 3,
+    "repo": "crmne/fastpotify",
+    "lang": "Rust",
+    "stars": 1577,
+    "desc": "Spotify, native and fast. One lightweight Rust app for your whole library, local",
+    "url": "https://github.com/crmne/fastpotify"
+  },
+  {
     "rank": 4,
     "repo": "Nanako0129/sepia",
-    "lang": "",
-    "stars": 1259,
+    "lang": "Python",
+    "stars": 1367,
     "desc": "De-AI writing skill for any Agent Skills-compatible agent (77+ via the Skills CL",
     "url": "https://github.com/Nanako0129/sepia"
   },
@@ -35,48 +35,48 @@
     "rank": 5,
     "repo": "MetaMask-AI/metamask-desktop",
     "lang": "CSS",
-    "stars": 1228,
+    "stars": 1229,
     "desc": "🌐 🔌 The MetaMask desktop app enables browsing Ethereum blockchain enabled websit",
     "url": "https://github.com/MetaMask-AI/metamask-desktop"
   },
   {
     "rank": 6,
-    "repo": "wide-trace/open-higgsfield",
-    "lang": "TypeScript",
-    "stars": 1147,
-    "desc": "A studio for image and video generation — one prompt bar, each model’s own setti",
-    "url": "https://github.com/wide-trace/open-higgsfield"
+    "repo": "damejan80/tokentab",
+    "lang": "Python",
+    "stars": 1139,
+    "desc": "A CLI that reads Claude Code, Codex, and Gemini CLI session logs and works out h",
+    "url": "https://github.com/damejan80/tokentab"
   },
   {
     "rank": 7,
     "repo": "cbrock84/headcount",
     "lang": "Markdown",
-    "stars": 867,
+    "stars": 964,
     "desc": "An agent organization for Claude Code, structured as a company — 15+ departments",
     "url": "https://github.com/cbrock84/headcount"
   },
   {
     "rank": 8,
+    "repo": "jprx/darwin-vm",
+    "lang": "Python",
+    "stars": 891,
+    "desc": "Run iOS/ macOS in Qemu. Virtual iPhone 17, 16, 15, 14, 13, 12 and M5-M1 Apple Si",
+    "url": "https://github.com/jprx/darwin-vm"
+  },
+  {
+    "rank": 9,
     "repo": "tradecatlabs/shulihuazixuecongshu",
     "lang": "Python",
-    "stars": 831,
+    "stars": 848,
     "desc": "",
     "url": "https://github.com/tradecatlabs/shulihuazixuecongshu"
   },
   {
-    "rank": 9,
-    "repo": "crmne/fastpotify",
-    "lang": "Rust",
-    "stars": 790,
-    "desc": "Spotify, native and fast. One lightweight Rust app for your whole library, local",
-    "url": "https://github.com/crmne/fastpotify"
-  },
-  {
     "rank": 10,
-    "repo": "damejan80/tokentab",
+    "repo": "GangTailorUpgrade/CoomeRtool",
     "lang": "Python",
-    "stars": 735,
-    "desc": "A CLI that reads Claude Code, Codex, and Gemini CLI session logs and works out h",
-    "url": "https://github.com/damejan80/tokentab"
+    "stars": 833,
+    "desc": "Coomer Tool",
+    "url": "https://github.com/GangTailorUpgrade/CoomeRtool"
   }
 ]
