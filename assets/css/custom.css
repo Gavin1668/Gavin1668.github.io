@@ -462,3 +462,451 @@ body {
 :root[data-scheme=dark] .src-card__rank {
     color: #e0a060;
 }
+
+/* ===========================================================
+   首页 Hero —— 个人展示区增强
+   =========================================================== */
+.site-hero__greeting {
+    color: #a08a78;
+    margin: 0 0 2px;
+    font-size: .95rem;
+    letter-spacing: .18em;
+}
+.site-hero__title {
+    font-size: 2.3rem;
+}
+.site-hero__role {
+    color: #c0703a;
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin: 4px 0 8px;
+}
+.site-hero__skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    list-style: none;
+    margin: 0 0 20px;
+    padding: 0;
+}
+.site-hero__skill {
+    background: #fff;
+    border: 1px solid #f0e3d6;
+    color: #6f6258;
+    font-size: .8rem;
+    padding: 3px 12px;
+    border-radius: 999px;
+}
+.site-hero__cta {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+.site-hero__btn {
+    background: #c0703a;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .92rem;
+    padding: 9px 22px;
+    border-radius: 999px;
+    transition: background .15s ease, transform .15s ease;
+}
+.site-hero__btn:hover {
+    background: #a85e2e;
+    transform: translateY(-1px);
+}
+.site-hero__btn--ghost {
+    background: transparent;
+    color: #c0703a;
+    border: 1.5px solid #c0703a;
+}
+.site-hero__btn--ghost:hover {
+    background: rgba(192, 112, 58, .08);
+    color: #a85e2e;
+}
+.site-hero__social {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: .88rem;
+}
+.site-hero__social a {
+    color: #8a7a6e;
+    text-decoration: none;
+}
+.site-hero__social a:hover {
+    color: #c0703a;
+    text-decoration: underline;
+}
+
+/* ===================== 板块导航（作品集 / 随笔 / 工具） ===================== */
+.sections-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 8px 0 26px;
+}
+.section-tile {
+    background: #fff;
+    border: 1px solid #f0e3d6;
+    border-radius: 14px;
+    padding: 20px 16px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(192, 112, 58, .06);
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+.section-tile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px rgba(192, 112, 58, .14);
+}
+.section-tile__icon {
+    font-size: 1.7rem;
+    display: block;
+    margin-bottom: 8px;
+}
+.section-tile__title {
+    color: #3a2e26;
+    font-size: 1.02rem;
+    margin: 0 0 4px;
+}
+.section-tile__desc {
+    color: #a08a78;
+    font-size: .8rem;
+    margin: 0;
+}
+
+/* ===================== 首页文章区标题 ===================== */
+.home-section {
+    margin: 8px 0 6px;
+}
+.home-section__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 0 0 14px;
+}
+.home-section__title {
+    color: #3a2e26;
+    font-size: 1.25rem;
+    margin: 0;
+}
+.home-section__more {
+    color: #c0703a;
+    font-size: .88rem;
+    text-decoration: none;
+    font-weight: 600;
+}
+.home-section__more:hover {
+    text-decoration: underline;
+}
+
+/* ===================== 作品集卡片 ===================== */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 22px 0;
+}
+.portfolio-card {
+    background: #fff;
+    border: 1px solid #f0e3d6;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(192, 112, 58, .06);
+    display: flex;
+    flex-direction: column;
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+.portfolio-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px rgba(192, 112, 58, .14);
+}
+.portfolio-card__icon {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+}
+.portfolio-card__title {
+    margin: 0 0 6px;
+    font-size: 1.1rem;
+}
+.portfolio-card__title a {
+    color: #3a2e26;
+    text-decoration: none;
+}
+.portfolio-card__title a:hover {
+    color: #c0703a;
+}
+.portfolio-card__desc {
+    color: #6f6258;
+    font-size: .9rem;
+    line-height: 1.65;
+    margin: 0 0 12px;
+    flex: 1;
+}
+.portfolio-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+.portfolio-card__tag {
+    background: #fbf3ec;
+    color: #b35a25;
+    font-size: .76rem;
+    padding: 2px 10px;
+    border-radius: 999px;
+}
+.portfolio-card__link {
+    color: #c0703a;
+    font-weight: 600;
+    font-size: .9rem;
+    text-decoration: none;
+}
+.portfolio-card__link:hover {
+    text-decoration: underline;
+}
+
+/* ===================== 工具中心卡片 ===================== */
+.tools-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 22px 0;
+}
+.tool-card {
+    background: #fff;
+    border: 1px solid #f0e3d6;
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(192, 112, 58, .06);
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+.tool-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(192, 112, 58, .14);
+}
+.tool-card__icon {
+    font-size: 1.7rem;
+}
+.tool-card__body {
+    flex: 1;
+}
+.tool-card__title {
+    color: #3a2e26;
+    font-size: 1.05rem;
+    margin: 0 0 3px;
+}
+.tool-card__desc {
+    color: #6f6258;
+    font-size: .88rem;
+    margin: 0 0 6px;
+}
+.tool-card__tag {
+    display: inline-block;
+    background: #fbf3ec;
+    color: #b35a25;
+    font-size: .74rem;
+    padding: 1px 9px;
+    border-radius: 999px;
+}
+.tool-card__arrow {
+    color: #c0703a;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+/* ===================== 新增组件 —— 暗色模式 ===================== */
+:root[data-scheme=dark] .site-hero__greeting {
+    color: #a89888;
+}
+:root[data-scheme=dark] .site-hero__role {
+    color: #e0a060;
+}
+:root[data-scheme=dark] .site-hero__skill {
+    background: #252018;
+    border-color: #3a3228;
+    color: #b8a898;
+}
+:root[data-scheme=dark] .site-hero__btn {
+    background: #e0a060;
+    color: #252018;
+}
+:root[data-scheme=dark] .site-hero__btn:hover {
+    background: #c88a4d;
+}
+:root[data-scheme=dark] .site-hero__btn--ghost {
+    background: transparent;
+    color: #e0a060;
+    border-color: #e0a060;
+}
+:root[data-scheme=dark] .site-hero__btn--ghost:hover {
+    background: rgba(224, 160, 96, .1);
+    color: #f0c49a;
+}
+:root[data-scheme=dark] .site-hero__social a {
+    color: #a89888;
+}
+:root[data-scheme=dark] .site-hero__social a:hover {
+    color: #e0a060;
+}
+:root[data-scheme=dark] .section-tile {
+    background: #252018;
+    border-color: #3a3228;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
+}
+:root[data-scheme=dark] .section-tile:hover {
+    box-shadow: 0 10px 26px rgba(0, 0, 0, .4);
+}
+:root[data-scheme=dark] .section-tile__title,
+:root[data-scheme=dark] .home-section__title {
+    color: #f0e6dc;
+}
+:root[data-scheme=dark] .section-tile__desc {
+    color: #8a7a68;
+}
+:root[data-scheme=dark] .home-section__more {
+    color: #e0a060;
+}
+:root[data-scheme=dark] .portfolio-card,
+:root[data-scheme=dark] .tool-card {
+    background: #252018;
+    border-color: #3a3228;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
+}
+:root[data-scheme=dark] .portfolio-card:hover,
+:root[data-scheme=dark] .tool-card:hover {
+    box-shadow: 0 10px 26px rgba(0, 0, 0, .4);
+}
+:root[data-scheme=dark] .portfolio-card__title a,
+:root[data-scheme=dark] .tool-card__title {
+    color: #f0e6dc;
+}
+:root[data-scheme=dark] .portfolio-card__title a:hover {
+    color: #e0a060;
+}
+:root[data-scheme=dark] .portfolio-card__desc,
+:root[data-scheme=dark] .tool-card__desc {
+    color: #b8a898;
+}
+:root[data-scheme=dark] .portfolio-card__tag,
+:root[data-scheme=dark] .tool-card__tag {
+    background: #3a3228;
+    color: #e0a060;
+}
+:root[data-scheme=dark] .portfolio-card__link,
+:root[data-scheme=dark] .tool-card__arrow {
+    color: #e0a060;
+}
+
+/* ===================== 响应式 ===================== */
+@media (max-width: 640px) {
+    .sections-grid {
+        grid-template-columns: 1fr;
+    }
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+    .site-hero__title {
+        font-size: 1.9rem;
+    }
+}
+
+/* ===========================================================
+   全站顶部导航栏
+   =========================================================== */
+.site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250, 246, 240, .92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid #f0e3d6;
+}
+.site-nav__inner {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+.site-nav__brand {
+    color: #3a2e26;
+    font-weight: 700;
+    font-size: 1.02rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.site-nav__brand:hover {
+    color: #c0703a;
+}
+.site-nav__links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.site-nav__link {
+    color: #6f6258;
+    text-decoration: none;
+    font-size: .85rem;
+    padding: 5px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: background .15s ease, color .15s ease;
+}
+.site-nav__link:hover {
+    color: #c0703a;
+    background: #fbf3ec;
+}
+.site-nav__link--active {
+    color: #c0703a;
+    background: #fbf3ec;
+    font-weight: 600;
+}
+
+:root[data-scheme=dark] .site-nav {
+    background: rgba(26, 22, 18, .92);
+    border-bottom-color: #3a3228;
+}
+:root[data-scheme=dark] .site-nav__brand {
+    color: #f0e6dc;
+}
+:root[data-scheme=dark] .site-nav__brand:hover {
+    color: #e0a060;
+}
+:root[data-scheme=dark] .site-nav__link {
+    color: #b8a898;
+}
+:root[data-scheme=dark] .site-nav__link:hover {
+    color: #e0a060;
+    background: #2e2820;
+}
+:root[data-scheme=dark] .site-nav__link--active {
+    color: #e0a060;
+    background: #2e2820;
+}
+
+@media (max-width: 640px) {
+    .site-nav__inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+    .site-nav__links {
+        justify-content: flex-start;
+    }
+}

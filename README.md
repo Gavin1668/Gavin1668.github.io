@@ -1,6 +1,6 @@
 # Gavin's Blog
 
-基于 [Hugo](https://gohugo.io/) + [hugo-theme-stack](https://github.com/CaiJimmy/hugo-theme-stack) 构建的个人技术博客，托管于 GitHub Pages。
+基于 [Hugo](https://gohugo.io/) + [hugo-theme-stack](https://github.com/CaiJimmy/hugo-theme-stack) 构建的个人主页，托管于 GitHub Pages。包含四大板块：**个人展示 / 作品集 / 随笔 / 网页工具**。
 
 ## 技术栈
 
@@ -33,14 +33,19 @@ hugo --minify
 ├── archetypes/       # 文章模板
 ├── assets/           # Hugo Pipes 处理的资源（CSS、图片）
 ├── content/          # 内容
-│   ├── post/         # 博客文章
+│   ├── post/         # 博客文章（技术）
+│   ├── essay/        # 随笔
+│   ├── portfolio/    # 作品集（每个子目录一个项目）
 │   ├── daily/        # 每日日报（自动生成）
-│   ├── page/         # 独立页面（关于、归档、搜索）
+│   ├── page/         # 独立页面（关于、归档、搜索、工具中心）
 │   └── recommended/  # 推荐页
 ├── data/             # 数据文件
 │   ├── github_trending.json  # GitHub Trending Top 10（每日自动抓取）
 │   └── news.json             # 民生热点 Top 5（每日自动抓取）
 ├── layouts/          # 自定义布局（覆盖主题）
+│   ├── _default/baseof.html  # 全站顶部导航栏
+│   ├── portfolio/list.html   # 作品集卡片网格
+│   └── page/tools.html       # 工具中心卡片
 ├── static/           # 静态资源（工具页面、robots.txt 等）
 ├── scripts/          # 自动化脚本
 │   ├── gen_daily.py          # 每日 RSS 日报生成
@@ -48,8 +53,18 @@ hugo --minify
 ├── .github/workflows/
 │   ├── deploy.yml    # 部署到 GitHub Pages（含每日 08:00 信息源定时任务）
 │   └── daily.yml     # 每日自动生成日报
-└── hugo.yaml         # Hugo 配置
+└── hugo.yaml         # Hugo 配置（含首页 Hero 参数、timeZone）
 ```
+
+## 常用操作
+
+**新增随笔/文章**：在 `content/essay/` 或 `content/post/` 下新建 `xxx/index.md`，改 `draft: false` 后 push 即自动部署。
+
+**新增作品**：在 `content/portfolio/` 下新建目录 + `index.md`（含 `icon`、`link`、`tags` 字段），作品集会以卡片形式自动展示。
+
+**新增网页工具**：把静态 HTML 放入 `static/tools/`，再在 `content/page/tools/index.md` 的 `tools` 列表追加一条即可。
+
+**修改首页展示**：`hugo.yaml` 的 `params.hero` 控制首页姓名、职位、技能标签等。
 
 ## 自动日报
 

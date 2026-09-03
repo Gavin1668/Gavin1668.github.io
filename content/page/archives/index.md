@@ -5,7 +5,7 @@ date: 2026-08-05
 layout: archives
 menu:
   main:
-    weight: 2
+    weight: 5
     params:
       icon: archives
 ---
