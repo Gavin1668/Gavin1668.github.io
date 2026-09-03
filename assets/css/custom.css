@@ -910,3 +910,27 @@ body {
         justify-content: flex-start;
     }
 }
+
+/* ===================== 顶部导航 —— 明暗切换按钮 ===================== */
+.site-nav__toggle {
+    background: transparent;
+    border: 1px solid #f0e3d6;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: .9rem;
+    line-height: 1;
+    cursor: pointer;
+    margin-left: 4px;
+    transition: background .15s ease, border-color .15s ease;
+}
+.site-nav__toggle:hover {
+    background: #fbf3ec;
+    border-color: #c0703a;
+}
+:root[data-scheme=dark] .site-nav__toggle {
+    border-color: #3a3228;
+}
+:root[data-scheme=dark] .site-nav__toggle:hover {
+    background: #2e2820;
+    border-color: #e0a060;
+}
