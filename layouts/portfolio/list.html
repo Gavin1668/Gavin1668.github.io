@@ -1,0 +1,47 @@
+{{ define "main" }}
+    <header>
+        <div class="section-card">
+            <h1 class="section-term">{{ .Title }}</h1>
+            {{ with .Params.description }}
+                <h2 class="section-description">{{ . }}</h2>
+            {{ end }}
+        </div>
+    </header>
+
+    <section class="portfolio-grid">
+        {{ range .Pages.ByDate.Reverse }}
+        <article class="portfolio-card">
+            {{ with .Params.icon }}
+                <span class="portfolio-card__icon">{{ . }}</span>
+            {{ end }}
+            <h3 class="portfolio-card__title">
+                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </h3>
+            {{ with .Params.description }}
+                <p class="portfolio-card__desc">{{ . }}</p>
+            {{ end }}
+            {{ with .Params.tags }}
+                <div class="portfolio-card__tags">
+                    {{ range . }}
+                        <span class="portfolio-card__tag">{{ . }}</span>
+                    {{ end }}
+                </div>
+            {{ end }}
+            {{ with .Params.link }}
+                <a class="portfolio-card__link" href="{{ . | relURL }}" {{ if hasPrefix . "http" }}target="_blank" rel="noopener noreferrer"{{ end }}>访问 →</a>
+            {{ end }}
+        </article>
+        {{ end }}
+    </section>
+
+    {{ with .Content }}
+        <div class="section-card portfolio-intro">
+            {{ . }}
+        </div>
+    {{ end }}
+
+    {{- partial "footer/footer" . -}}
+{{ end }}
+
+{{ define "left-sidebar" }}{{ end }}
+{{ define "right-sidebar" }}{{ end }}

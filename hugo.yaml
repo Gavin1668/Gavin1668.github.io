@@ -10,11 +10,12 @@ languages:
   zh-cn:
     languageName: 中文
     title: Gavin's Blog
-    description: Gavin 的技术博客：分享 Hugo / GitHub Pages 搭建折腾、编程实践与读书笔记。
+    description: Gavin 的个人主页：电机结构设计工程师，收录作品集、技术博客、随笔与自研网页工具。
     weight: 1
 
 DefaultContentLanguage: zh-cn
 hasCJKLanguage: true
+timeZone: Asia/Shanghai
 
 permalinks:
   post: /p/:slug/
@@ -23,9 +24,26 @@ permalinks:
 params:
   mainSections:
     - post
+    - essay
   featuredImageField: image
   rssFullContent: true
   favicon:
+
+  # ===== 首页 Hero（个人展示区，可按需修改） =====
+  hero:
+    greeting: "你好，我是"
+    name: "Gavin"
+    role: "步进 / BLDC 电机结构开发工程师"
+    tagline: "3 年电机结构设计经验 · 专注样机管理、BOM 维护与 GD&T 尺寸链分析"
+    skills:
+      - 结构设计
+      - BLDC
+      - 步进电机
+      - GD&T
+      - 尺寸链
+      - BOM 管理
+      - 样机管理
+      - CAD
 
   # ===== 每日信息源（scripts/fetch_sources.sh 每日 08:00 自动抓取，deploy.yml 定时重建）=====
   enableNewsSource: true
@@ -46,8 +64,8 @@ params:
     lastUpdated: 2006-01-02 15:04
 
   sidebar:
-    emoji: 💻
-    subtitle: 代码、思考与生活。
+    emoji: 🛠️
+    subtitle: 电机结构设计工程师 · 作品 / 随笔 / 工具。
     avatar:
       enabled: true
       local: true
@@ -100,15 +118,18 @@ params:
     content:
       enabled: true
   seo:
-    description: "Gavin 的技术博客：分享 Hugo / GitHub Pages 搭建折腾、编程实践与读书笔记。"
+    description: "Gavin 的个人主页：电机结构设计工程师，收录作品集、技术博客、随笔与自研网页工具。"
     keywords:
-      - Hugo
-      - GitHub Pages
-      - 技术博客
-      - 编程
-      - 电机工程
+      - Gavin
+      - 个人主页
+      - 作品集
+      - 电机结构设计
       - BLDC
       - 步进电机
+      - GD&T
+      - 尺寸链
+      - Hugo
+      - GitHub Pages
 
 menu:
   main:
@@ -116,19 +137,7 @@ menu:
     - identifier: recommended
       name: 推荐
       url: /recommended/
-      weight: 4
-      params:
-        icon: messages
-    - identifier: dimensional-chain
-      name: 尺寸链计算
-      url: /tools/dimensional-chain-calculator.html
-      weight: 5
-      params:
-        icon: link
-    - identifier: bookmarks
-      name: 书签
-      url: /tools/bookmarks.html
-      weight: 6
+      weight: 7
       params:
         icon: messages
 

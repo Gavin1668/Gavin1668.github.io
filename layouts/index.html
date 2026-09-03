@@ -2,22 +2,78 @@
     {{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
     {{ $notHidden := where .Site.RegularPages "Params.hidden" "!=" true }}
     {{ $filtered := ($pages | intersect $notHidden) }}
-    {{ $pag := .Paginate ($filtered) }}
+    {{ $pag := .Paginate $filtered }}
 
-    {{/* ===== 顶部 Hero（仿 zhujay 风格） ===== */}}
+    {{/* ===== Hero：个人展示区 ===== */}}
     <section class="site-hero">
         {{ with .Site.Params.sidebar.avatar }}
             {{ if .enabled }}
-                <img class="site-hero__avatar" src="{{ .src | relURL }}" alt="{{ $.Site.Title }}">
+                <img class="site-hero__avatar" src="{{ .src | relURL }}" alt="{{ $.Site.Params.hero.name | default $.Site.Title }}">
             {{ end }}
         {{ end }}
-        <h1 class="site-hero__title">{{ .Site.Title }}</h1>
-        {{ with .Site.Params.sidebar.subtitle }}<p class="site-hero__subtitle">{{ . }}</p>{{ end }}
-        <nav class="site-hero__nav">
-            {{ range .Site.Menus.main }}
-                <a href="{{ .URL | relURL }}">{{ .Name }}</a>
+        {{ with .Site.Params.hero }}
+            <p class="site-hero__greeting">{{ .greeting }}</p>
+            <h1 class="site-hero__title">{{ .name }}</h1>
+            <p class="site-hero__role">{{ .role }}</p>
+            {{ with .tagline }}<p class="site-hero__subtitle">{{ . }}</p>{{ end }}
+            {{ with .skills }}
+            <ul class="site-hero__skills">
+                {{ range . }}
+                <li class="site-hero__skill">{{ . }}</li>
+                {{ end }}
+            </ul>
             {{ end }}
+        {{ end }}
+        <div class="site-hero__cta">
+            <a class="site-hero__btn" href="/portfolio/">作品集</a>
+            <a class="site-hero__btn" href="/essay/">随笔</a>
+            <a class="site-hero__btn" href="/tools/">网页工具</a>
+            <a class="site-hero__btn site-hero__btn--ghost" href="/about/">关于我</a>
+        </div>
+        <nav class="site-hero__social">
+            {{ with .Site.Params.socialGithub }}
+                <a href="{{ . }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+            {{ end }}
+            {{ with .Site.Params.socialEmail }}
+                <a href="mailto:{{ . }}">Email</a>
+            {{ end }}
+            <a href="/index.xml">RSS</a>
         </nav>
+    </section>
+
+    {{/* ===== 板块导航：作品集 / 随笔 / 工具 ===== */}}
+    <section class="sections-grid">
+        <a class="section-tile" href="/portfolio/">
+            <span class="section-tile__icon">📦</span>
+            <h3 class="section-tile__title">作品集</h3>
+            <p class="section-tile__desc">做过的项目与工具</p>
+        </a>
+        <a class="section-tile" href="/essay/">
+            <span class="section-tile__icon">✍️</span>
+            <h3 class="section-tile__title">随笔</h3>
+            <p class="section-tile__desc">记录生活与思考</p>
+        </a>
+        <a class="section-tile" href="/tools/">
+            <span class="section-tile__icon">🧰</span>
+            <h3 class="section-tile__title">网页工具</h3>
+            <p class="section-tile__desc">自研在线小工具</p>
+        </a>
+    </section>
+
+    {{/* ===== 最新文章（技术文章 + 随笔） ===== */}}
+    <section class="home-section">
+        <div class="home-section__head">
+            <h2 class="home-section__title">最新文章</h2>
+            <a class="home-section__more" href="/archives/">更多 →</a>
+        </div>
+        <div class="article-list">
+            {{ range $pag.Pages }}
+                {{ if ne .Section "daily" }}
+                    {{ partial "article-list/default" . }}
+                {{ end }}
+            {{ end }}
+        </div>
+        {{- partial "pagination.html" . -}}
     </section>
 
     {{/* ===== 最新日报卡片 ===== */}}
@@ -68,7 +124,7 @@
             <ol class="src-card__list src-card__list--rank">
                 {{ range first (default 10 .Site.Params.trendingLimit) $trending }}
                 <li class="src-card__item">
-                    <span class="src-card__rank">{{ printf "%02d" .rank }}</span>
+                    <span class="src-card__rank">{{ printf "%02d" (int .rank) }}</span>
                     <a href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .repo }}</a>
                     <span class="src-card__meta">{{ with .lang }}{{ . }} · {{ end }}★ {{ .stars }}</span>
                 </li>
@@ -79,16 +135,6 @@
     </section>
     {{ end }}
 
-    {{/* ===== 文章列表（卡片化） ===== */}}
-    <section class="article-list">
-        {{ range $pag.Pages }}
-            {{ if ne .Section "daily" }}
-                {{ partial "article-list/default" . }}
-            {{ end }}
-        {{ end }}
-    </section>
-
-    {{- partial "pagination.html" . -}}
     {{- partial "footer/footer" . -}}
 {{ end }}
 

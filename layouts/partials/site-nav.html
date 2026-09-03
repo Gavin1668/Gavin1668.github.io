@@ -1,0 +1,13 @@
+{{/* 全站顶部导航栏 */}}
+<nav class="site-nav">
+    <div class="site-nav__inner">
+        <a class="site-nav__brand" href="{{ .Site.Home.RelPermalink }}">
+            {{ with .Site.Params.hero.name }}{{ . }}{{ else }}{{ .Site.Title }}{{ end }}
+        </a>
+        <div class="site-nav__links">
+            {{ range .Site.Menus.main }}
+                <a class="site-nav__link{{ if or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }} site-nav__link--active{{ end }}" href="{{ .URL | relLangURL }}">{{ .Name }}</a>
+            {{ end }}
+        </div>
+    </div>
+</nav>
