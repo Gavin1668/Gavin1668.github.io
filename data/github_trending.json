@@ -1,82 +1,82 @@
 [
   {
     "rank": 1,
-    "repo": "sapientinc/PRAXIST",
-    "lang": "Python",
-    "stars": 6262,
-    "desc": "Autonomous research system for measurable, computer-executable research.",
-    "url": "https://github.com/sapientinc/PRAXIST"
-  },
-  {
-    "rank": 2,
     "repo": "XiaoDuoYa/codex-with-chatgpt",
     "lang": "TypeScript",
-    "stars": 2157,
+    "stars": 2293,
     "desc": "ChatGPT thinks. Codex works. Use ChatGPT as the planning brain while keeping the",
     "url": "https://github.com/XiaoDuoYa/codex-with-chatgpt"
   },
   {
-    "rank": 3,
-    "repo": "crmne/fastpotify",
-    "lang": "Rust",
-    "stars": 1577,
-    "desc": "Spotify, native and fast. One lightweight Rust app for your whole library, local",
-    "url": "https://github.com/crmne/fastpotify"
-  },
-  {
-    "rank": 4,
+    "rank": 2,
     "repo": "Nanako0129/sepia",
     "lang": "Python",
-    "stars": 1367,
+    "stars": 1637,
     "desc": "De-AI writing skill for any Agent Skills-compatible agent (77+ via the Skills CL",
     "url": "https://github.com/Nanako0129/sepia"
   },
   {
-    "rank": 5,
+    "rank": 3,
     "repo": "MetaMask-AI/metamask-desktop",
     "lang": "CSS",
-    "stars": 1229,
+    "stars": 1230,
     "desc": "🌐 🔌 The MetaMask desktop app enables browsing Ethereum blockchain enabled websit",
     "url": "https://github.com/MetaMask-AI/metamask-desktop"
   },
   {
-    "rank": 6,
-    "repo": "damejan80/tokentab",
-    "lang": "Python",
-    "stars": 1139,
-    "desc": "A CLI that reads Claude Code, Codex, and Gemini CLI session logs and works out h",
-    "url": "https://github.com/damejan80/tokentab"
-  },
-  {
-    "rank": 7,
+    "rank": 4,
     "repo": "cbrock84/headcount",
     "lang": "Markdown",
-    "stars": 964,
+    "stars": 1123,
     "desc": "An agent organization for Claude Code, structured as a company — 15+ departments",
     "url": "https://github.com/cbrock84/headcount"
   },
   {
-    "rank": 8,
-    "repo": "jprx/darwin-vm",
+    "rank": 5,
+    "repo": "GangTailorUpgrade/undress-service",
     "lang": "Python",
-    "stars": 891,
-    "desc": "Run iOS/ macOS in Qemu. Virtual iPhone 17, 16, 15, 14, 13, 12 and M5-M1 Apple Si",
-    "url": "https://github.com/jprx/darwin-vm"
+    "stars": 942,
+    "desc": "Dress AI Sponsor",
+    "url": "https://github.com/GangTailorUpgrade/undress-service"
+  },
+  {
+    "rank": 6,
+    "repo": "chrisgreg/boop",
+    "lang": "Go",
+    "stars": 687,
+    "desc": "A tiny, self-hosted notification inbox for developers. Something happened in one",
+    "url": "https://github.com/chrisgreg/boop"
+  },
+  {
+    "rank": 7,
+    "repo": "rakanki911/DLSS5-Swapper",
+    "lang": "JavaScript",
+    "stars": 679,
+    "desc": "DLSS 5 Swapper is a powerful, easy-to-use tool for installing, managing, and res",
+    "url": "https://github.com/rakanki911/DLSS5-Swapper"
+  },
+  {
+    "rank": 8,
+    "repo": "shadcn-ui/cn",
+    "lang": "TypeScript",
+    "stars": 629,
+    "desc": "cn is a new engine for Tailwind class merging and conflict resolution. It replac",
+    "url": "https://github.com/shadcn-ui/cn"
   },
   {
     "rank": 9,
-    "repo": "tradecatlabs/shulihuazixuecongshu",
-    "lang": "Python",
-    "stars": 848,
-    "desc": "",
-    "url": "https://github.com/tradecatlabs/shulihuazixuecongshu"
+    "repo": "jlrouzies-fr/DLSS5-Feeder",
+    "lang": "C++",
+    "stars": 607,
+    "desc": "DLSS 5 neural rendering in D3D11/D12/Vulkan games that ship without any DLSS — f",
+    "url": "https://github.com/jlrouzies-fr/DLSS5-Feeder"
   },
   {
     "rank": 10,
-    "repo": "GangTailorUpgrade/CoomeRtool",
+    "repo": "2akouwu/reverify",
     "lang": "Python",
-    "stars": 833,
-    "desc": "Coomer Tool",
-    "url": "https://github.com/GangTailorUpgrade/CoomeRtool"
+    "stars": 595,
+    "desc": "Verified reverse engineering: AI RE grounded on deterministic tools - results ch",
+    "url": "https://github.com/2akouwu/reverify"
   }
 ]
