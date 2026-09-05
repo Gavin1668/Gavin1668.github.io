@@ -1,82 +1,82 @@
 [
   {
     "rank": 1,
+    "repo": "lnkiai/m3e-canvas",
+    "lang": "TypeScript",
+    "stars": 2163,
+    "desc": "Sketch Material 3 Expressive screens in the browser and turn them into vibe-codi",
+    "url": "https://github.com/lnkiai/m3e-canvas"
+  },
+  {
+    "rank": 2,
     "repo": "anthropics/commerce-agents",
     "lang": "Python",
-    "stars": 1635,
+    "stars": 1944,
     "desc": "Reference blueprint for building shopping and merchant agents with Claude. Examp",
     "url": "https://github.com/anthropics/commerce-agents"
   },
   {
-    "rank": 2,
-    "repo": "rakanki911/DLSS5-Swapper",
-    "lang": "JavaScript",
-    "stars": 1130,
-    "desc": "DLSS 5 Swapper is a powerful, easy-to-use tool for installing, managing, and res",
-    "url": "https://github.com/rakanki911/DLSS5-Swapper"
-  },
-  {
     "rank": 3,
-    "repo": "GangTailorUpgrade/undress-service",
-    "lang": "Python",
-    "stars": 1019,
-    "desc": "Dress AI Sponsor",
-    "url": "https://github.com/GangTailorUpgrade/undress-service"
+    "repo": "shadcn-ui/cn",
+    "lang": "TypeScript",
+    "stars": 1112,
+    "desc": "cn is a new engine for Tailwind class merging and conflict resolution. It replac",
+    "url": "https://github.com/shadcn-ui/cn"
   },
   {
     "rank": 4,
-    "repo": "shadcn-ui/cn",
-    "lang": "TypeScript",
-    "stars": 985,
-    "desc": "cn is a new engine for Tailwind class merging and conflict resolution. It replac",
-    "url": "https://github.com/shadcn-ui/cn"
+    "repo": "GangTailorUpgrade/undress-service",
+    "lang": "Python",
+    "stars": 1060,
+    "desc": "Dress AI Sponsor",
+    "url": "https://github.com/GangTailorUpgrade/undress-service"
   },
   {
     "rank": 5,
     "repo": "2akouwu/reverify",
     "lang": "Python",
-    "stars": 806,
+    "stars": 890,
     "desc": "Anti-hallucination for AI agents that read binaries. The model proposes, determi",
     "url": "https://github.com/2akouwu/reverify"
   },
   {
     "rank": 6,
-    "repo": "jlrouzies-fr/DLSS5-Feeder",
-    "lang": "C++",
-    "stars": 673,
-    "desc": "DLSS 5 neural rendering in D3D11/D12/Vulkan games that ship without any DLSS — f",
-    "url": "https://github.com/jlrouzies-fr/DLSS5-Feeder"
+    "repo": "nahrek/polyledger",
+    "lang": "Python",
+    "stars": 614,
+    "desc": "Resumable Polymarket indexer: CLOB market metadata plus on-chain trades from Pol",
+    "url": "https://github.com/nahrek/polyledger"
   },
   {
     "rank": 7,
-    "repo": "lnkiai/m3e-canvas",
-    "lang": "TypeScript",
-    "stars": 542,
-    "desc": "Sketch Material 3 Expressive screens in the browser and turn them into vibe-codi",
-    "url": "https://github.com/lnkiai/m3e-canvas"
-  },
-  {
-    "rank": 8,
     "repo": "MSNightmare/FalconFlank",
     "lang": "C",
-    "stars": 432,
+    "stars": 506,
     "desc": "Crowdstrike Falcon 0day Privilege Escalation Vulnerability",
     "url": "https://github.com/MSNightmare/FalconFlank"
   },
   {
+    "rank": 8,
+    "repo": "Merserk/dlss5-visual-enhancer",
+    "lang": "Python",
+    "stars": 494,
+    "desc": "DLSS 5 Neural Video & Image Enhancer with Frame Interpolation",
+    "url": "https://github.com/Merserk/dlss5-visual-enhancer"
+  },
+  {
     "rank": 9,
-    "repo": "Ryze-AI-Adgent/open-seo-mcp-skills",
-    "lang": "Shell",
-    "stars": 422,
-    "desc": "Open-source SEO + GEO skills for Claude — keyword research, rank tracking, site ",
-    "url": "https://github.com/Ryze-AI-Adgent/open-seo-mcp-skills"
+    "repo": "danielblnc/DLSS-NR-on-AMD",
+    "lang": "",
+    "stars": 483,
+    "desc": "Run DLSS 5 Neural Rendering on your AMD GPU. Magic!",
+    "url": "https://github.com/danielblnc/DLSS-NR-on-AMD"
   },
   {
     "rank": 10,
-    "repo": "Merserk/dlss5-visual-enhancer",
-    "lang": "Python",
-    "stars": 398,
-    "desc": "DLSS 5 Neural Video & Image Enhancer with Frame Interpolation",
-    "url": "https://github.com/Merserk/dlss5-visual-enhancer"
+    "repo": "codejunkie99/fable-orchestrator",
+    "lang": "Shell",
+    "stars": 473,
+    "desc": "Fable 5.1 orchestrates. GPT-5.6 Luna and DeepSeek V4 Flash implement.",
+    "url": "https://github.com/codejunkie99/fable-orchestrator"
   }
 ]
