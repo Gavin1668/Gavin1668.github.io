@@ -3,80 +3,80 @@
     "rank": 1,
     "repo": "lnkiai/m3e-canvas",
     "lang": "TypeScript",
-    "stars": 4339,
+    "stars": 4739,
     "desc": "Sketch Material 3 Expressive screens in the browser and turn them into vibe-codi",
     "url": "https://github.com/lnkiai/m3e-canvas"
   },
   {
     "rank": 2,
-    "repo": "anthropics/commerce-agents",
-    "lang": "Python",
-    "stars": 2250,
-    "desc": "Reference blueprint for building shopping and merchant agents with Claude. Examp",
-    "url": "https://github.com/anthropics/commerce-agents"
-  },
-  {
-    "rank": 3,
     "repo": "ashemag/human-atlas",
     "lang": "TypeScript",
-    "stars": 1434,
+    "stars": 2079,
     "desc": "Open-source 3D anatomy explorer: 2,234 selectable BodyParts3D meshes, system lay",
     "url": "https://github.com/ashemag/human-atlas"
   },
   {
-    "rank": 4,
+    "rank": 3,
     "repo": "Rion-Wu-tech/wechat-intelligence-hub",
     "lang": "Python",
-    "stars": 1276,
+    "stars": 1852,
     "desc": "Local-first WeChat intelligence system with a read-only CLI, Codex skills, searc",
     "url": "https://github.com/Rion-Wu-tech/wechat-intelligence-hub"
   },
   {
-    "rank": 5,
+    "rank": 4,
     "repo": "pierrenade/short-video-generator-AI",
     "lang": "Python",
-    "stars": 971,
+    "stars": 1184,
     "desc": "Free open-source project designed for turning youtube-viedos into viral short vi",
     "url": "https://github.com/pierrenade/short-video-generator-AI"
+  },
+  {
+    "rank": 5,
+    "repo": "vinzdg/codenotch",
+    "lang": "Swift",
+    "stars": 949,
+    "desc": "A macOS app that pins usage limits from Claude Code, Cursor, Codex, and Antigrav",
+    "url": "https://github.com/vinzdg/codenotch"
   },
   {
     "rank": 6,
     "repo": "anthropics/fermats-last-theorem",
     "lang": "Lean",
-    "stars": 860,
+    "stars": 944,
     "desc": "",
     "url": "https://github.com/anthropics/fermats-last-theorem"
   },
   {
     "rank": 7,
-    "repo": "yczz/oc-english",
-    "lang": "JavaScript",
-    "stars": 839,
-    "desc": "养成类游戏英语学习",
-    "url": "https://github.com/yczz/oc-english"
+    "repo": "EverettFish/holo-card-studio",
+    "lang": "Python",
+    "stars": 916,
+    "desc": "Turn the user's description or uploaded reference into a finished, editable Blen",
+    "url": "https://github.com/EverettFish/holo-card-studio"
   },
   {
     "rank": 8,
     "repo": "danielblnc/DLSS-NR-on-AMD",
     "lang": "",
-    "stars": 783,
+    "stars": 865,
     "desc": "Run DLSS 5 Neural Rendering on your AMD GPU. Magic!",
     "url": "https://github.com/danielblnc/DLSS-NR-on-AMD"
   },
   {
     "rank": 9,
-    "repo": "vinzdg/codenotch",
-    "lang": "Swift",
-    "stars": 732,
-    "desc": "A macOS app that pins usage limits from Claude Code, Cursor, Codex, and Antigrav",
-    "url": "https://github.com/vinzdg/codenotch"
+    "repo": "ahujasid/camera-to-blender",
+    "lang": "JavaScript",
+    "stars": 709,
+    "desc": "Take a photo of real objects, and paste them in Blender",
+    "url": "https://github.com/ahujasid/camera-to-blender"
   },
   {
     "rank": 10,
-    "repo": "nahrek/polyledger",
-    "lang": "Python",
-    "stars": 620,
-    "desc": "Resumable Polymarket indexer: CLOB market metadata plus on-chain trades from Pol",
-    "url": "https://github.com/nahrek/polyledger"
+    "repo": "Albert-Weasker/niubigeo",
+    "lang": "TypeScript",
+    "stars": 679,
+    "desc": "Open-source AI brand visibility and competitor reports",
+    "url": "https://github.com/Albert-Weasker/niubigeo"
   }
 ]
