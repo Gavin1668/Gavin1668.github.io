@@ -1,0 +1,7 @@
+# Netlify 构建设置（用于 CMS 的 Netlify 载体站点；正式部署仍由 GitHub Actions 完成）
+[build]
+  command = "git submodule update --init --recursive && hugo --gc --minify"
+  publish = "public"
+
+[build.environment]
+  HUGO_VERSION = "0.145.0"
