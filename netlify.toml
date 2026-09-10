@@ -1,6 +1,6 @@
 # Netlify 构建设置（用于 CMS 的 Netlify 载体站点；正式部署仍由 GitHub Actions 完成）
 [build]
-  command = "git submodule update --init --recursive && hugo --gc --minify"
+  command = "git clone --depth 1 https://github.com/Gavin1668/hugo-theme-stack.git themes/hugo-theme-stack && hugo --gc --minify"
   publish = "public"
 
 [build.environment]
