@@ -1,5 +1,6 @@
 ---
 title: 尺寸链计算器
+slug: dimensional-chain
 description: 机械尺寸链自动计算工具，支持极值法与统计法，依据 GB/T 5847-2004。
 icon: 📐
 link: /tools/dimensional-chain-calculator.html

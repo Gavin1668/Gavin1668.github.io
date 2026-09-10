@@ -1,5 +1,6 @@
 ---
 title: Gavin's Blog
+slug: gavin-blog
 description: 本站：基于 Hugo + hugo-theme-stack 的个人主页，记录技术、随笔与工具。
 icon: 📦
 link: https://github.com/Gavin1668/Gavin1668.github.io

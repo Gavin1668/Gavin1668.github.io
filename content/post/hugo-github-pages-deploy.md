@@ -1,5 +1,6 @@
 ---
 title: "Hugo + GitHub Pages 从零部署踩坑实录"
+slug: hugo-github-pages-deploy
 description: "记录从安装 Hugo、用 hugo-theme-stack 搭站，到通过 GitHub Pages 自动部署上线的完整流程，以及途中踩过的 baseurl、主题子模块、草稿不发布、404 样式丢失、自定义域名等真实坑。"
 date: 2026-08-11
 lastmod: 2026-08-11

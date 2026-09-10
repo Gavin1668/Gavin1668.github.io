@@ -21,6 +21,7 @@ collections:
     identifier_field: title
     fields:
       - { label: "标题", name: "title", widget: "string" }
+      - { label: "链接别名 (slug)", name: "slug", widget: "string", hint: "决定 URL：/p/<slug>/，建议英文小写+短横线，创建后勿改", required: false }
       - { label: "摘要", name: "description", widget: "text", required: false }
       - { label: "发布日期", name: "date", widget: "datetime" }
       - { label: "最后更新", name: "lastmod", widget: "datetime", required: false }
@@ -38,6 +39,7 @@ collections:
     identifier_field: title
     fields:
       - { label: "标题", name: "title", widget: "string" }
+      - { label: "链接别名 (slug)", name: "slug", widget: "string", hint: "决定 URL：/portfolio/<slug>/，建议英文小写+短横线", required: false }
       - { label: "描述", name: "description", widget: "text", required: false }
       - { label: "图标", name: "icon", widget: "string", required: false }
       - { label: "链接", name: "link", widget: "string", required: false }

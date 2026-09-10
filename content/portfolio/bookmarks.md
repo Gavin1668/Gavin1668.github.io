@@ -1,5 +1,6 @@
 ---
 title: 书签收藏夹
+slug: bookmarks
 description: 常用网站分类收纳与快速检索入口，我的个人网络导航。
 icon: 🔖
 link: /tools/bookmarks.html

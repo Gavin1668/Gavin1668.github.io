@@ -1,5 +1,6 @@
 ---
 title: 你好，世界！
+slug: hello-world
 description: 第一篇博客文章，记录博客搭建的过程。
 date: 2026-08-05
 lastmod: 2026-08-05
