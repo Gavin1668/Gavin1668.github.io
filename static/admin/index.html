@@ -5,17 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>内容管理后台</title>
   <!-- 指定 CMS 配置文件；版本号变更可强制绕过 CDN/浏览器缓存 -->
-  <link rel="cms-config-url" type="text/yaml" href="config.yml?v=20260911" />
+  <link rel="cms-config-url" type="text/yaml" href="config.yml?v=20260911b" />
 </head>
 <body>
-  <!-- Netlify Identity 登录弹窗（Git Gateway 认证依赖；显式指定 Netlify 站点身份端点） -->
+  <!-- Netlify Identity 登录弹窗（Git Gateway 认证依赖）。
+       APIUrl 必须指向 Netlify 载体站点的身份端点（博客在 GitHub Pages，非 Netlify 域名）。
+       包装 init：Decap 可能在 'init' 事件错过 2.5s 后以无参数方式重新调用 init()，
+       若不加包装会把 APIUrl 重置为当前站点域名导致 404，包装后强制保留我们的 APIUrl。 -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
-    if (window.netlifyIdentity) {
-      netlifyIdentity.init({
-        APIUrl: 'https://gavin1668-blog-cms.netlify.app/.netlify/identity'
-      });
-    }
+    (function () {
+      var API = 'https://gavin1668-blog-cms.netlify.app/.netlify/identity';
+      if (window.netlifyIdentity) {
+        var orig = netlifyIdentity.init.bind(netlifyIdentity);
+        netlifyIdentity.init = function (opts) {
+          return orig(Object.assign({}, opts || {}, { APIUrl: API }));
+        };
+        netlifyIdentity.init();
+      }
+    })();
   </script>
   <!-- Decap CMS 可视化后台 -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
