@@ -1,16 +1,13 @@
 # Decap CMS 配置 · Gavin's Blog
 # 管理页面：https://gavin1668.github.io/admin/
+# Git Gateway backend：基于 Netlify Identity 认证，无需自建 OAuth 弹窗回传。
+# 依赖 Netlify 站点 gavin1668-blog-cms 已启用 Identity + Git Gateway。
 backend:
-  name: github
-  repo: Gavin1668/Gavin1668.github.io
+  name: git-gateway
   branch: main
-  # 使用 Netlify 的 OAuth 认证代理（无需把站点迁移到 Netlify，仅借用其 GitHub 登录服务）
-  base_url: https://api.netlify.com
-  auth_endpoint: auth
-  # site_domain 会作为 site_id 查询参数发给 api.netlify.com/auth，
-  # 用于定位 Netlify 上已安装 GitHub OAuth Provider 的站点。
-  # 必须用站点 API ID（UUID），站点名会返回 404。
-  site_domain: 16440471-442c-4580-adb2-aa1b68a5b3c6
+  # 显式指定 Netlify 站点的身份/网关端点（博客部署在 GitHub Pages，非 Netlify 域名）
+  identity_url: https://gavin1668-blog-cms.netlify.app/.netlify/identity
+  gateway_url: https://gavin1668-blog-cms.netlify.app/.netlify/git
 
 # 图片等媒体文件存储位置（Hugo 会复制到站点根目录 /img/）
 media_folder: static/img
