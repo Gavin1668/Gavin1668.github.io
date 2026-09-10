@@ -1,3 +1,6 @@
 {{/* 自定义样式通过 Hugo Pipes 处理，自动 minify + fingerprint */}}
 {{ $custom := resources.Get "css/custom.css" | minify | resources.Fingerprint "sha256" }}
 <link rel="stylesheet" href="{{ $custom.RelPermalink }}">
+
+{{/* Netlify Identity widget：全站引入，用于 CMS（Decap）Git Gateway 登录的 OAuth 回调处理 */}}
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
