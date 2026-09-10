@@ -7,6 +7,9 @@ backend:
   # 使用 Netlify 的 OAuth 认证代理（无需把站点迁移到 Netlify，仅借用其 GitHub 登录服务）
   base_url: https://api.netlify.com
   auth_endpoint: auth
+  # site_domain 会作为 site_id 查询参数发给 api.netlify.com/auth，
+  # 用于定位 Netlify 上已安装 GitHub OAuth Provider 的站点（goldcitynb）
+  site_domain: goldcitynb
 
 # 图片等媒体文件存储位置（Hugo 会复制到站点根目录 /img/）
 media_folder: static/img
