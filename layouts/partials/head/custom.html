@@ -4,3 +4,17 @@
 
 {{/* Netlify Identity widget：全站引入，用于 CMS（Decap）Git Gateway 登录的 OAuth 回调处理 */}}
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  // OAuth 回调页（Netlify 站点域名）登录成功后，把 token 带回 GitHub Pages 上的 CMS 后台。
+  // CMS 部署在 gavin1668.github.io，而 Identity 会话在 netlify.app 域，跨域无法共享，
+  // 因此通过 hash 传递 access_token，由 /admin/ 页面的 widget 恢复会话。
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on('login', function (user) {
+      if (window.location.hostname.indexOf('netlify.app') !== -1) {
+        user.jwt().then(function (token) {
+          window.location.href = 'https://gavin1668.github.io/admin/?v=20260911#access_token=' + encodeURIComponent(token);
+        });
+      }
+    });
+  }
+</script>
