@@ -1,0 +1,80 @@
+# Decap CMS 配置 · Gavin's Blog
+# 管理页面：https://gavin1668.github.io/admin/
+backend:
+  name: github
+  repo: Gavin1668/Gavin1668.github.io
+  branch: main
+  # 使用 Netlify 的 OAuth 认证代理（无需把站点迁移到 Netlify，仅借用其 GitHub 登录服务）
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+
+# 图片等媒体文件存储位置（Hugo 会复制到站点根目录 /img/）
+media_folder: static/img
+public_folder: /img
+
+collections:
+  - name: post
+    label: 文章
+    folder: content/post
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "摘要", name: "description", widget: "text", required: false }
+      - { label: "发布日期", name: "date", widget: "datetime" }
+      - { label: "最后更新", name: "lastmod", widget: "datetime", required: false }
+      - { label: "分类", name: "categories", widget: "list", required: false }
+      - { label: "标签", name: "tags", widget: "list", required: false }
+      - { label: "封面图", name: "image", widget: "image", required: false }
+      - { label: "草稿", name: "draft", widget: "boolean", default: false, required: false }
+      - { label: "正文", name: "body", widget: "markdown" }
+
+  - name: portfolio
+    label: 作品集
+    folder: content/portfolio
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "描述", name: "description", widget: "text", required: false }
+      - { label: "图标", name: "icon", widget: "string", required: false }
+      - { label: "链接", name: "link", widget: "string", required: false }
+      - { label: "标签", name: "tags", widget: "list", required: false }
+      - { label: "日期", name: "date", widget: "datetime", required: false }
+      - { label: "正文", name: "body", widget: "markdown", required: false }
+
+  - name: essay
+    label: 随笔
+    folder: content/essay
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "日期", name: "date", widget: "datetime", required: false }
+      - { label: "描述", name: "description", widget: "text", required: false }
+      - { label: "正文", name: "body", widget: "markdown", required: false }
+
+  - name: recommended
+    label: 推荐
+    files:
+      - name: recommended
+        label: 推荐页内容
+        file: content/recommended/_index.md
+        fields:
+          - { label: "标题", name: "title", widget: "string" }
+          - { label: "描述", name: "description", widget: "text", required: false }
+          - { label: "正文", name: "body", widget: "markdown" }
+
+  - name: about
+    label: 关于我
+    files:
+      - name: about
+        label: 关于我页面
+        file: content/page/about.md
+        fields:
+          - { label: "标题", name: "title", widget: "string" }
+          - { label: "描述", name: "description", widget: "text", required: false }
+          - { label: "正文", name: "body", widget: "markdown" }
