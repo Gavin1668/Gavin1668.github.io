@@ -1,6 +1,7 @@
 # Netlify 构建设置（用于 CMS 的 Netlify 载体站点；正式部署仍由 GitHub Actions 完成）
 [build]
-  command = "git clone --depth 1 https://github.com/Gavin1668/hugo-theme-stack.git themes/hugo-theme-stack && hugo --gc --minify"
+  # 先清理可能残留的主题目录（Netlify 构建缓存会保留上次 clone 结果），再克隆主题并构建
+  command = "rm -rf themes/hugo-theme-stack && git clone --depth 1 https://github.com/Gavin1668/hugo-theme-stack.git themes/hugo-theme-stack && hugo --gc --minify"
   publish = "public"
 
 [build.environment]
