@@ -1,121 +1,250 @@
+{{ define "body-class" }}home-v2{{ end }}
+
 {{ define "main" }}
-    {{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
-    {{ $notHidden := where .Site.RegularPages "Params.hidden" "!=" true }}
-    {{ $filtered := ($pages | intersect $notHidden) }}
-    {{ $pag := .Paginate $filtered }}
+{{- $posts := where .Site.RegularPages "Type" "in" .Site.Params.mainSections -}}
+{{- $notHidden := where .Site.RegularPages "Params.hidden" "!=" true -}}
+{{- $filtered := ($posts | intersect $notHidden).ByDate.Reverse -}}
 
-    {{/* ===== Hero：个人展示区 ===== */}}
-    <section class="site-hero">
-        {{ with .Site.Params.sidebar.avatar }}
-            {{ if .enabled }}
-                <img class="site-hero__avatar" src="{{ .src | relURL }}" alt="{{ $.Site.Params.hero.name | default $.Site.Title }}">
-            {{ end }}
-        {{ end }}
-        {{ with .Site.Params.hero }}
-            <p class="site-hero__greeting">{{ .greeting }}</p>
-            <h1 class="site-hero__title">{{ .name }}</h1>
-            <p class="site-hero__role">{{ .role }}</p>
-            {{ with .tagline }}<p class="site-hero__subtitle">{{ . }}</p>{{ end }}
-            {{ with .skills }}
-            <ul class="site-hero__skills">
-                {{ range . }}
-                <li class="site-hero__skill">{{ . }}</li>
-                {{ end }}
-            </ul>
-            {{ end }}
-        {{ end }}
-        <div class="site-hero__cta">
-            <a class="site-hero__btn" href="/portfolio/">作品集</a>
-            <a class="site-hero__btn" href="/essay/">随笔</a>
-            <a class="site-hero__btn" href="/tools/">网页工具</a>
-            <a class="site-hero__btn site-hero__btn--ghost" href="/about/">关于我</a>
-        </div>
-        <nav class="site-hero__social">
-            {{ with .Site.Params.socialGithub }}
-                <a href="{{ . }}" target="_blank" rel="noopener noreferrer">GitHub</a>
-            {{ end }}
-            {{ with .Site.Params.socialEmail }}
-                <a href="mailto:{{ . }}">Email</a>
-            {{ end }}
-            <a href="/index.xml">RSS</a>
-        </nav>
-    </section>
+{{- /* 推荐文章：按 config featuredPosts 顺序匹配 slug */ -}}
+{{- $bySlug := dict -}}
+{{- range $filtered -}}
+    {{- $bySlug = merge $bySlug (dict .Params.slug .) -}}
+{{- end -}}
 
-    {{/* ===== 板块导航：作品集 / 随笔 / 工具 ===== */}}
-    <section class="sections-grid">
-        <a class="section-tile" href="/portfolio/">
-            <span class="section-tile__icon">📦</span>
-            <h3 class="section-tile__title">作品集</h3>
-            <p class="section-tile__desc">做过的项目与工具</p>
-        </a>
-        <a class="section-tile" href="/essay/">
-            <span class="section-tile__icon">✍️</span>
-            <h3 class="section-tile__title">随笔</h3>
-            <p class="section-tile__desc">记录生活与思考</p>
-        </a>
-        <a class="section-tile" href="/tools/">
-            <span class="section-tile__icon">🧰</span>
-            <h3 class="section-tile__title">网页工具</h3>
-            <p class="section-tile__desc">自研在线小工具</p>
-        </a>
-    </section>
+<style>
+/* ===== 首页沉浸式两列（home-v2）===== */
+body.home-v2{background:#1A1A1A;}
+body.home-v2 .site-nav{display:none;}
+body.home-v2 .container.main-container{max-width:1280px;padding:0 0;}
+body.home-v2 .container.main-container .main{padding:0;}
+body.home-v2 .site-footer{display:none;}
 
-    {{/* ===== 最新文章（技术文章 + 随笔） ===== */}}
-    <section class="home-section">
-        <div class="home-section__head">
-            <h2 class="home-section__title">最新文章</h2>
-            <a class="home-section__more" href="/archives/">更多 →</a>
-        </div>
-        <div class="article-list">
-            {{ range $pag.Pages }}
-                {{ if ne .Section "daily" }}
-                    {{ partial "article-list/default" . }}
-                {{ end }}
-            {{ end }}
-        </div>
-        {{- partial "pagination.html" . -}}
-    </section>
+.home-v2-app{--ink:#1A1A1A;--sub:#5C6470;--line:rgba(26,26,26,.12);--accent:#E8500E;--mono:'JetBrains Mono',monospace;
+  color:var(--ink);min-height:100vh;position:relative;font-family:'Noto Sans SC',sans-serif;}
+.home-v2-app *{box-sizing:border-box;margin:0;padding:0;}
+.home-v2-app a{text-decoration:none;color:inherit;}
+.home-v2-app .wall{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;transition:opacity .4s ease;}
+.home-v2-app .tint{position:fixed;inset:0;z-index:1;background:rgba(255,255,255,.38);}
+.home-v2-app .stage{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 40px;}
+.home-v2-app header{display:flex;align-items:center;justify-content:space-between;padding:26px 0 20px;}
+.home-v2-app .logo{font-size:21px;font-weight:900;letter-spacing:.02em;}
+.home-v2-app .logo em{font-style:normal;color:var(--accent);}
+.home-v2-app .hright{display:flex;align-items:center;gap:22px;}
+.home-v2-app .nav{display:flex;gap:24px;font-size:13.5px;color:var(--sub);}
+.home-v2-app .nav a{transition:color .18s;}
+.home-v2-app .nav a:hover,.home-v2-app .nav a.on{color:var(--ink);font-weight:600;}
+.home-v2-app .wallbtn{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#fff;background:rgba(26,26,26,.82);border:none;border-radius:99px;padding:9px 16px;cursor:pointer;transition:background .2s,transform .15s;font-family:'Noto Sans SC',sans-serif;}
+.home-v2-app .wallbtn:hover{background:var(--accent);transform:translateY(-1px);}
+.home-v2-app .wallbtn .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);transition:background .2s;}
+.home-v2-app .wallbtn:hover .dot{background:#fff;}
+.home-v2-app .layout{display:grid;grid-template-columns:1fr 320px;gap:24px;padding-bottom:30px;}
+.home-v2-app .colL{min-width:0;display:flex;flex-direction:column;gap:24px;max-height:calc(100vh - 160px);overflow-y:auto;padding-right:6px;scrollbar-width:thin;}
+.home-v2-app .colR{min-width:0;display:flex;flex-direction:column;gap:24px;}
+.home-v2-app .mod{background:rgba(255,255,255,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.55);border-radius:22px;box-shadow:0 12px 40px rgba(20,25,40,.10);overflow:hidden;}
+.home-v2-app .mod-head{display:flex;align-items:baseline;justify-content:space-between;padding:22px 24px 0;}
+.home-v2-app .mod-head h3{font-family:'Noto Serif SC',serif;font-size:19px;font-weight:900;color:var(--ink);}
+.home-v2-app .mod-head .sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--sub);}
+.home-v2-app .mod-body{padding:14px 24px 20px;}
+.home-v2-app .post{display:grid;grid-template-columns:84px 1fr;gap:18px;padding:17px 0;border-bottom:1px solid var(--line);position:relative;transition:padding-left .2s ease;}
+.home-v2-app .post:last-child{border-bottom:none;}
+.home-v2-app .post::before{content:'';position:absolute;left:-22px;top:16px;bottom:16px;width:2px;background:transparent;transition:background .2s;}
+.home-v2-app .post:hover::before{background:var(--accent);}
+.home-v2-app .post .date{font-family:var(--mono);font-size:11.5px;color:var(--sub);padding-top:4px;letter-spacing:.05em;}
+.home-v2-app .post .p-title{font-size:16px;font-weight:600;line-height:1.55;transition:color .18s;}
+.home-v2-app .post:hover .p-title{color:var(--accent);}
+.home-v2-app .post .p-meta{display:flex;gap:9px;align-items:center;margin-bottom:7px;}
+.home-v2-app .post .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--accent);border:1px solid rgba(232,80,14,.4);padding:2px 8px;border-radius:2px;}
+.home-v2-app .post .p-ex{font-size:12.5px;color:var(--sub);line-height:1.75;margin-top:6px;font-weight:300;}
+.home-v2-app .post .pick{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:#fff;background:var(--accent);padding:2px 8px;border-radius:2px;}
+.home-v2-app .about{padding:28px 24px 22px;text-align:center;}
+.home-v2-app .about img{width:86px;height:86px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 6px 18px rgba(20,25,40,.16);}
+.home-v2-app .about .nm{font-family:'Noto Serif SC',serif;font-size:22px;font-weight:900;margin-top:14px;color:var(--ink);}
+.home-v2-app .about .rl{font-size:12.5px;color:var(--sub);line-height:1.85;margin-top:10px;}
+.home-v2-app .about .links{display:flex;gap:10px;justify-content:center;margin-top:16px;}
+.home-v2-app .about .links a{font-family:var(--mono);font-size:11px;color:var(--sub);border:1px solid var(--line);padding:6px 14px;border-radius:99px;transition:color .18s,border-color .18s;}
+.home-v2-app .about .links a:hover{color:var(--accent);border-color:var(--accent);}
+.home-v2-app .hot{list-style:none;counter-reset:h;}
+.home-v2-app .hot li{counter-increment:h;display:flex;gap:14px;align-items:baseline;padding:11px 0;border-bottom:1px dashed var(--line);font-size:12.5px;line-height:1.7;color:var(--sub);}
+.home-v2-app .hot li:last-child{border-bottom:none;}
+.home-v2-app .hot li::before{content:'0' counter(h);font-family:var(--mono);font-style:normal;font-weight:700;color:var(--accent);font-size:12px;}
+.home-v2-app .hot li:hover{color:var(--ink);}
+.home-v2-app .hot li a:hover{color:var(--ink);}
+.home-v2-app footer.hv2-footer{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:6px 40px 26px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--sub);letter-spacing:.05em;}
+.home-v2-app .picker{position:fixed;right:28px;bottom:28px;z-index:6;width:300px;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:18px;box-shadow:0 18px 50px rgba(20,25,40,.22);padding:16px;transform:translateY(16px);opacity:0;pointer-events:none;transition:transform .25s ease,opacity .25s ease;}
+.home-v2-app .picker.open{transform:translateY(0);opacity:1;pointer-events:auto;}
+.home-v2-app .picker h5{font-size:13px;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;color:var(--ink);}
+.home-v2-app .picker h5 .g{font-family:var(--mono);font-size:10px;color:var(--sub);letter-spacing:.14em;font-weight:400;}
+.home-v2-app .pw-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.home-v2-app .pw{position:relative;border-radius:12px;overflow:hidden;height:84px;cursor:pointer;border:2px solid transparent;transition:border-color .18s,transform .15s;}
+.home-v2-app .pw:hover{transform:translateY(-2px);}
+.home-v2-app .pw.on{border-color:var(--accent);}
+.home-v2-app .pw img{width:100%;height:100%;object-fit:cover;display:block;}
+.home-v2-app .pw span{position:absolute;left:0;right:0;bottom:0;padding:3px 6px;font-size:10px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.7));}
+@media (max-width:900px){
+  .home-v2-app .layout{grid-template-columns:1fr;}
+  .home-v2-app .colR{display:none;}
+  .home-v2-app .colL{max-height:none;}
+  .home-v2-app .stage{padding:0 16px;}
+  .home-v2-app .nav{display:none;}
+  .home-v2-app .post{grid-template-columns:1fr;gap:6px;}
+  .home-v2-app footer.hv2-footer{padding:6px 16px 22px;}
+}
+</style>
 
-    {{/* ===== 最新日报卡片 ===== */}}
-    {{ $dailies := (where .Site.RegularPages "Section" "daily").ByDate.Reverse }}
-    {{ with index $dailies 0 }}
-        <section class="daily-card">
-            <div class="daily-card__head">
-                <span class="daily-card__badge">📰 每日热点</span>
-                <time>{{ .Date.Format "2006-01-02" }}</time>
+<div class="home-v2-app">
+    <div class="wall" id="wall" style="background-image:url('{{ "img/wallpapers/spongebob-seaside.jpg" | relURL }}');"></div>
+    <div class="tint"></div>
+
+    <div class="stage">
+        <header>
+            <div class="logo">Gavin<em>'s</em> Blog</div>
+            <div class="hright">
+                <nav class="nav">
+                    {{ range .Site.Menus.main }}
+                        <a href="{{ .URL | relLangURL }}">{{ .Name }}</a>
+                    {{ end }}
+                </nav>
+                <button class="wallbtn" id="wallbtn" type="button"><span class="dot"></span>更换壁纸</button>
             </div>
-            <h2 class="daily-card__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-            <p class="daily-card__excerpt">{{ .Plain | truncate 120 }}</p>
-            <a class="daily-card__more" href="{{ .RelPermalink }}">阅读全文 →</a>
-        </section>
-    {{ end }}
+        </header>
 
-    {{/* ===== 信息源卡片：每日民生热点（每日 08:00 自动更新） ===== */}}
-    {{ $showNews := default true .Site.Params.enableNewsSource }}
-    {{ $news := .Site.Data.news }}
-    {{ $bjTime := now.UTC.Add (duration "h" 8) }}
-    {{ if and $showNews $news }}
-    <section class="info-sources">
-        <div class="src-card">
-            <div class="src-card__head">
-                <span class="src-card__badge">📰 每日民生热点</span>
-                <span class="src-card__auto" title="每日 08:00 自动更新">AUTO · {{ $bjTime.Format "15:04" }}</span>
-            </div>
-            <ul class="src-card__list src-card__list--grid">
-                {{ range first (default 5 .Site.Params.newsLimit) $news }}
-                <li class="src-card__item">
-                    <a href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .title }}</a>
-                    <time class="src-card__date">{{ .date }}</time>
-                </li>
+        <main class="layout">
+            <section class="colL">
+                {{/* ===== 最近文章 ===== */}}
+                <div class="mod">
+                    <div class="mod-head"><h3>最近文章</h3><span class="sub">RECENT POSTS</span></div>
+                    <div class="mod-body">
+                        {{ range $filtered }}
+                        <article class="post">
+                            <div class="date">{{ .Date.Format "2006-01-02" }}</div>
+                            <div class="p-body">
+                                <div class="p-meta">
+                                    {{ with .Params.categories }}{{ if gt (len .) 0 }}<span class="tag">{{ index . 0 }}</span>{{ end }}{{ end }}
+                                </div>
+                                <a class="p-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                                <div class="p-ex">{{ with .Description }}{{ . | truncate 90 }}{{ else }}{{ .Summary | plainify | truncate 90 }}{{ end }}</div>
+                            </div>
+                        </article>
+                        {{ end }}
+                    </div>
+                </div>
+
+                {{/* ===== 推荐文章 ===== */}}
+                <div class="mod">
+                    <div class="mod-head"><h3>推荐文章</h3><span class="sub">EDITOR'S PICK</span></div>
+                    <div class="mod-body">
+                        {{ range .Site.Params.featuredPosts }}
+                            {{ $slug := . }}
+                            {{ with index $bySlug $slug }}
+                            <article class="post">
+                                <div class="date">{{ .Date.Format "2006-01-02" }}</div>
+                                <div class="p-body">
+                                    <div class="p-meta"><span class="pick">精选</span></div>
+                                    <a class="p-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                                    <div class="p-ex">{{ with .Description }}{{ . | truncate 90 }}{{ else }}{{ .Summary | plainify | truncate 90 }}{{ end }}</div>
+                                </div>
+                            </article>
+                            {{ end }}
+                        {{ end }}
+                    </div>
+                </div>
+            </section>
+
+            <aside class="colR">
+                {{/* ===== 自我介绍 ===== */}}
+                <div class="mod about">
+                    {{ with .Site.Params.sidebar.avatar }}{{ if .enabled }}<img src="{{ .src | relURL }}" alt="Gavin">{{ end }}{{ end }}
+                    <div class="nm">{{ with .Site.Params.hero.name }}{{ . }}{{ else }}{{ .Site.Title }}{{ end }}</div>
+                    <div class="rl">{{ with .Site.Params.hero.role }}{{ . }}<br>{{ end }}{{ with .Site.Params.sidebar.subtitle }}{{ . }}{{ end }}</div>
+                    <div class="links">
+                        {{ with .Site.Params.socialGithub }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">GitHub</a>{{ end }}
+                        {{ with .Site.Params.socialEmail }}<a href="mailto:{{ . }}">Email</a>{{ end }}
+                        <a href="{{ "index.xml" | relURL }}">RSS</a>
+                    </div>
+                </div>
+
+                {{/* ===== 今日热门 ===== */}}
+                {{ $news := .Site.Data.news }}
+                {{ if $news }}
+                <div class="mod">
+                    <div class="mod-head"><h3>今日热门</h3><span class="sub">HOT</span></div>
+                    <div class="mod-body">
+                        <ol class="hot">
+                            {{ range first (default 5 .Site.Params.newsLimit) $news }}
+                            <li><a href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .title }}</a></li>
+                            {{ end }}
+                        </ol>
+                    </div>
+                </div>
                 {{ end }}
-            </ul>
-        </div>
-    </section>
-    {{ end }}
+            </aside>
+        </main>
+    </div>
 
-    {{- partial "footer/footer" . -}}
+    <footer class="hv2-footer">
+        <span>© {{ with .Site.Params.footer.since }}{{ . }}{{ else }}2022{{ end }}-2026 GAVIN'S BLOG</span>
+        <span>HUGO · GITHUB PAGES · WEEKLY</span>
+    </footer>
+
+    <div class="picker" id="picker">
+        <h5>更换背景壁纸 <span class="g">6 PRESETS</span></h5>
+        <div class="pw-grid" id="pwGrid"></div>
+    </div>
+</div>
+
+<script>
+(function () {
+    var walls = [
+        { name: '海绵宝宝 · 海滨', url: '{{ "img/wallpapers/spongebob-seaside.jpg" | relURL }}' },
+        { name: '海绵宝宝 · 海底', url: '{{ "img/wallpapers/spongebob-ocean.jpg" | relURL }}' },
+        { name: '海绵宝宝 · 后视镜', url: '{{ "img/wallpapers/spongebob-rearview.jpg" | relURL }}' },
+        { name: '乔布斯 · 倚栏', url: '{{ "img/wallpapers/jobs-railing.jpg" | relURL }}' },
+        { name: '乔布斯 · 手势', url: '{{ "img/wallpapers/jobs-gesture.jpg" | relURL }}' },
+        { name: '乔布斯 · 握拳', url: '{{ "img/wallpapers/jobs-fist.jpg" | relURL }}' }
+    ];
+    var wall = document.getElementById('wall');
+    var btn = document.getElementById('wallbtn');
+    var picker = document.getElementById('picker');
+    var grid = document.getElementById('pwGrid');
+    if (!wall || !btn || !picker || !grid) return;
+    var cur = 0;
+    function render() {
+        grid.innerHTML = '';
+        walls.forEach(function (w, i) {
+            var d = document.createElement('div');
+            d.className = 'pw' + (i === cur ? ' on' : '');
+            var img = document.createElement('img');
+            img.src = w.url;
+            img.alt = w.name;
+            var sp = document.createElement('span');
+            sp.textContent = w.name;
+            d.appendChild(img);
+            d.appendChild(sp);
+            d.onclick = function () { set(i); };
+            grid.appendChild(d);
+        });
+    }
+    function set(i) {
+        cur = i;
+        wall.style.opacity = 0;
+        setTimeout(function () {
+            wall.style.backgroundImage = 'url(' + walls[i].url + ')';
+            wall.style.opacity = 1;
+        }, 220);
+        var items = grid.querySelectorAll('.pw');
+        items.forEach(function (el, idx) { el.classList.toggle('on', idx === cur); });
+    }
+    btn.onclick = function () { picker.classList.toggle('open'); };
+    document.addEventListener('click', function (e) {
+        if (picker && !picker.contains(e.target) && e.target !== btn && !(btn && btn.contains(e.target))) {
+            picker.classList.remove('open');
+        }
+    });
+    render();
+})();
+</script>
 {{ end }}
 
-{{/* 隐藏左右侧栏，首页改为纯净单栏 */}}
+{{/* 首页自绘两列，隐藏主题侧栏 */}}
 {{ define "left-sidebar" }}{{ end }}
 {{ define "right-sidebar" }}{{ end }}

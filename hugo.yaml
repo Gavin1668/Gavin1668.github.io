@@ -55,6 +55,12 @@ params:
   socialGithub: "https://github.com/Gavin1668"
   socialEmail: "changjian2026@126.com"
 
+  # ===== 首页推荐文章（按 slug 匹配，顺序即展示顺序） =====
+  featuredPosts:
+    - sankuaifa-ai-assistant
+    - kuachishu-k
+    - hugo-github-pages-deploy
+
   footer:
     since: 2022
     customText:
