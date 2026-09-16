@@ -6,8 +6,8 @@
         <link rel="preload" as="image" href="{{ "img/wallpapers/spongebob-seaside.webp" | relURL }}">
         <style>
         /* ===== 全站壁纸系统（所有页面共用） ===== */
-        .gb-wall{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;transition:opacity .4s ease;}
-        .gb-tint{position:fixed;inset:0;z-index:1;background:rgba(255,255,255,.35);}
+        .gb-wall{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;transition:opacity .4s ease;pointer-events:none;}
+        .gb-tint{position:fixed;inset:0;z-index:1;background:rgba(255,255,255,.35);pointer-events:none;}
         html[data-scheme="dark"] .gb-tint{background:rgba(10,12,16,.48);}
         /* 顶部导航毛玻璃 */
         .site-nav{position:relative;z-index:3;background:rgba(255,255,255,.72) !important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.4);}
