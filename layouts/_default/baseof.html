@@ -3,9 +3,46 @@
     <head>
         {{- partial "head/head.html" . -}}
         {{- block "head" . -}}{{ end }}
+        <link rel="preload" as="image" href="{{ "img/wallpapers/spongebob-seaside.webp" | relURL }}">
+        <style>
+        /* ===== 全站壁纸系统（所有页面共用） ===== */
+        .gb-wall{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;transition:opacity .4s ease;}
+        .gb-tint{position:fixed;inset:0;z-index:1;background:rgba(255,255,255,.35);}
+        html[data-scheme="dark"] .gb-tint{background:rgba(10,12,16,.48);}
+        /* 顶部导航毛玻璃 */
+        .site-nav{background:rgba(255,255,255,.72) !important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.4);}
+        html[data-scheme="dark"] .site-nav{background:rgba(18,20,24,.78) !important;}
+        /* 内容区毛玻璃面板（首页除外：首页自绘两列） */
+        body:not(.home-v2) .container.main-container{background:rgba(255,255,255,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.55);border-radius:26px;box-shadow:0 14px 44px rgba(20,25,40,.12);margin-top:20px;padding:0 28px 28px;}
+        html[data-scheme="dark"] body:not(.home-v2) .container.main-container{background:rgba(18,20,24,.9);}
+        body:not(.home-v2) .site-footer{background:rgba(255,255,255,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:16px;padding:14px 18px;margin:20px auto 28px;}
+        html[data-scheme="dark"] body:not(.home-v2) .site-footer{background:rgba(18,20,24,.6);}
+        /* 壁纸切换按钮（浮动，右下角） */
+        .wallbtn-fab{position:fixed;right:26px;bottom:26px;z-index:8;display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#fff;background:rgba(26,26,26,.82);border:none;border-radius:99px;padding:11px 18px;cursor:pointer;box-shadow:0 8px 24px rgba(20,25,40,.28);transition:background .2s,transform .15s;font-family:'Noto Sans SC',sans-serif;}
+        .wallbtn-fab:hover{background:#E8500E;transform:translateY(-1px);}
+        .wallbtn-fab .dot{width:8px;height:8px;border-radius:50%;background:#E8500E;transition:background .2s;}
+        .wallbtn-fab:hover .dot{background:#fff;}
+        body.home-v2 .wallbtn-fab{display:none;}
+        /* 壁纸选择面板 */
+        .picker{position:fixed;right:26px;bottom:84px;z-index:9;width:300px;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:18px;box-shadow:0 18px 50px rgba(20,25,40,.22);padding:16px;transform:translateY(16px);opacity:0;pointer-events:none;transition:transform .25s ease,opacity .25s ease;font-family:'Noto Sans SC',sans-serif;}
+        .picker.open{transform:translateY(0);opacity:1;pointer-events:auto;}
+        .picker h5{font-size:13px;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;color:#1A1A1A;}
+        .picker h5 .g{font-family:'JetBrains Mono',monospace;font-size:10px;color:#5C6470;letter-spacing:.14em;font-weight:400;}
+        .pw-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+        .pw{position:relative;border-radius:12px;overflow:hidden;height:84px;cursor:pointer;border:2px solid transparent;transition:border-color .18s,transform .15s;}
+        .pw:hover{transform:translateY(-2px);}
+        .pw.on{border-color:#E8500E;}
+        .pw img{width:100%;height:100%;object-fit:cover;display:block;}
+        .pw span{position:absolute;left:0;right:0;bottom:0;padding:3px 6px;font-size:10px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.7));}
+        @media (max-width:640px){.wallbtn-fab{padding:9px 14px;}.picker{right:14px;bottom:78px;width:272px;}body:not(.home-v2) .container.main-container{padding:0 14px 20px;border-radius:18px;}}
+        </style>
     </head>
     <body class="{{ block `body-class` . }}{{ end }}">
         {{- partial "head/colorScheme" . -}}
+
+        {{/* 全站壁纸背景层 */}}
+        <div class="gb-wall" id="wall" style="background-image:url('{{ "img/wallpapers/spongebob-seaside.webp" | relURL }}');"></div>
+        <div class="gb-tint"></div>
 
         {{/* 全站顶部导航栏（个人主页需要稳定的页面间导航） */}}
         {{ partial "site-nav" . }}
@@ -27,5 +64,78 @@
             </main>
         </div>
         {{ partial "footer/include.html" . }}
+
+        {{/* 全站壁纸切换按钮与面板 */}}
+        <button class="wallbtn-fab" id="wallbtn-fab" type="button"><span class="dot"></span>更换壁纸</button>
+        <div class="picker" id="picker">
+            <h5>更换背景壁纸 <span class="g">6 PRESETS</span></h5>
+            <div class="pw-grid" id="pwGrid"></div>
+        </div>
+        <script>
+        (function () {
+            var walls = [
+                { name: '海绵宝宝 · 海滨', url: '{{ "img/wallpapers/spongebob-seaside.webp" | relURL }}', thumb: '{{ "img/wallpapers/th-spongebob-seaside.webp" | relURL }}' },
+                { name: '海绵宝宝 · 海底', url: '{{ "img/wallpapers/spongebob-ocean.webp" | relURL }}', thumb: '{{ "img/wallpapers/th-spongebob-ocean.webp" | relURL }}' },
+                { name: '海绵宝宝 · 后视镜', url: '{{ "img/wallpapers/spongebob-rearview.webp" | relURL }}', thumb: '{{ "img/wallpapers/th-spongebob-rearview.webp" | relURL }}' },
+                { name: '乔布斯 · 倚栏', url: '{{ "img/wallpapers/jobs-railing.webp" | relURL }}', thumb: '{{ "img/wallpapers/th-jobs-railing.webp" | relURL }}' },
+                { name: '乔布斯 · 手势', url: '{{ "img/wallpapers/jobs-gesture.webp" | relURL }}', thumb: '{{ "img/wallpapers/th-jobs-gesture.webp" | relURL }}' },
+                { name: '乔布斯 · 握拳', url: '{{ "img/wallpapers/jobs-fist.webp" | relURL }}', thumb: '{{ "img/wallpapers/th-jobs-fist.webp" | relURL }}' }
+            ];
+            var wall = document.getElementById('wall');
+            var fab = document.getElementById('wallbtn-fab');
+            var picker = document.getElementById('picker');
+            var grid = document.getElementById('pwGrid');
+            var cur = 0;
+            var loaded = {};
+            function preload(i) { if (loaded[i]) return; loaded[i] = true; var img = new Image(); img.src = walls[i].url; }
+            function preloadAll() { walls.forEach(function (_, i) { preload(i); }); }
+            function render() {
+                if (!grid) return;
+                grid.innerHTML = '';
+                walls.forEach(function (w, i) {
+                    var d = document.createElement('div');
+                    d.className = 'pw' + (i === cur ? ' on' : '');
+                    var img = document.createElement('img');
+                    img.src = w.thumb;
+                    img.alt = w.name;
+                    img.loading = 'lazy';
+                    var sp = document.createElement('span');
+                    sp.textContent = w.name;
+                    d.appendChild(img);
+                    d.appendChild(sp);
+                    d.onclick = function () { set(i); };
+                    grid.appendChild(d);
+                });
+            }
+            function set(i) {
+                cur = i;
+                preload(i);
+                if (wall) { wall.style.opacity = 0; }
+                setTimeout(function () {
+                    if (wall) { wall.style.backgroundImage = 'url(' + walls[i].url + ')'; wall.style.opacity = 1; }
+                }, 220);
+                var items = grid ? grid.querySelectorAll('.pw') : [];
+                items.forEach(function (el, idx) { el.classList.toggle('on', idx === cur); });
+            }
+            function toggle() {
+                if (!picker) return;
+                picker.classList.toggle('open');
+                if (picker.classList.contains('open')) preloadAll();
+            }
+            window.GBWall = { toggle: toggle, set: set, preloadAll: preloadAll };
+            if (fab) fab.onclick = toggle;
+            document.addEventListener('click', function (e) {
+                if (picker && !picker.contains(e.target) && (!fab || !fab.contains(e.target)) && e.target.id !== 'wallbtn') {
+                    picker.classList.remove('open');
+                }
+            });
+            render();
+            if (window.requestIdleCallback) {
+                window.requestIdleCallback(preloadAll, { timeout: 3000 });
+            } else {
+                setTimeout(preloadAll, 1200);
+            }
+        })();
+        </script>
     </body>
 </html>

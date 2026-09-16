@@ -1,9 +1,5 @@
 {{ define "body-class" }}home-v2{{ end }}
 
-{{ define "head" }}
-    <link rel="preload" as="image" href="{{ "img/wallpapers/spongebob-seaside.webp" | relURL }}">
-{{ end }}
-
 {{ define "main" }}
 {{- $posts := where .Site.RegularPages "Type" "in" .Site.Params.mainSections -}}
 {{- $notHidden := where .Site.RegularPages "Params.hidden" "!=" true -}}
@@ -96,9 +92,6 @@ body.home-v2 .site-footer{display:none;}
 </style>
 
 <div class="home-v2-app">
-    <div class="wall" id="wall" style="background-image:url('{{ "img/wallpapers/spongebob-seaside.webp" | relURL }}');"></div>
-    <div class="tint"></div>
-
     <div class="stage">
         <header>
             <div class="logo">Gavin<em>'s</em> Blog</div>
@@ -108,7 +101,7 @@ body.home-v2 .site-footer{display:none;}
                         <a href="{{ .URL | relLangURL }}">{{ .Name }}</a>
                     {{ end }}
                 </nav>
-                <button class="wallbtn" id="wallbtn" type="button"><span class="dot"></span>更换壁纸</button>
+                <button class="wallbtn" id="wallbtn" type="button" onclick="if(window.GBWall)GBWall.toggle()"><span class="dot"></span>更换壁纸</button>
             </div>
         </header>
 
@@ -189,85 +182,7 @@ body.home-v2 .site-footer{display:none;}
         <span>© {{ with .Site.Params.footer.since }}{{ . }}{{ else }}2022{{ end }}-2026 GAVIN'S BLOG</span>
         <span>HUGO · GITHUB PAGES · WEEKLY</span>
     </footer>
-
-    <div class="picker" id="picker">
-        <h5>更换背景壁纸 <span class="g">6 PRESETS</span></h5>
-        <div class="pw-grid" id="pwGrid"></div>
-    </div>
 </div>
-
-<script>
-(function () {
-    var walls = [
-        { name: '海绵宝宝 · 海滨', url: '{{ "img/wallpapers/spongebob-seaside.webp" | relURL }}', thumb: '{{ "img/wallpapers/th-spongebob-seaside.webp" | relURL }}' },
-        { name: '海绵宝宝 · 海底', url: '{{ "img/wallpapers/spongebob-ocean.webp" | relURL }}', thumb: '{{ "img/wallpapers/th-spongebob-ocean.webp" | relURL }}' },
-        { name: '海绵宝宝 · 后视镜', url: '{{ "img/wallpapers/spongebob-rearview.webp" | relURL }}', thumb: '{{ "img/wallpapers/th-spongebob-rearview.webp" | relURL }}' },
-        { name: '乔布斯 · 倚栏', url: '{{ "img/wallpapers/jobs-railing.webp" | relURL }}', thumb: '{{ "img/wallpapers/th-jobs-railing.webp" | relURL }}' },
-        { name: '乔布斯 · 手势', url: '{{ "img/wallpapers/jobs-gesture.webp" | relURL }}', thumb: '{{ "img/wallpapers/th-jobs-gesture.webp" | relURL }}' },
-        { name: '乔布斯 · 握拳', url: '{{ "img/wallpapers/jobs-fist.webp" | relURL }}', thumb: '{{ "img/wallpapers/th-jobs-fist.webp" | relURL }}' }
-    ];
-    var wall = document.getElementById('wall');
-    var btn = document.getElementById('wallbtn');
-    var picker = document.getElementById('picker');
-    var grid = document.getElementById('pwGrid');
-    if (!wall || !btn || !picker || !grid) return;
-    var cur = 0;
-    var loaded = {};
-    function preload(i) {
-        if (loaded[i]) return;
-        loaded[i] = true;
-        var img = new Image();
-        img.src = walls[i].url;
-    }
-    function preloadAll() {
-        walls.forEach(function (_, i) { preload(i); });
-    }
-    function render() {
-        grid.innerHTML = '';
-        walls.forEach(function (w, i) {
-            var d = document.createElement('div');
-            d.className = 'pw' + (i === cur ? ' on' : '');
-            var img = document.createElement('img');
-            img.src = w.thumb;
-            img.alt = w.name;
-            img.loading = 'lazy';
-            var sp = document.createElement('span');
-            sp.textContent = w.name;
-            d.appendChild(img);
-            d.appendChild(sp);
-            d.onclick = function () { set(i); };
-            grid.appendChild(d);
-        });
-    }
-    function set(i) {
-        cur = i;
-        preload(i);
-        wall.style.opacity = 0;
-        setTimeout(function () {
-            wall.style.backgroundImage = 'url(' + walls[i].url + ')';
-            wall.style.opacity = 1;
-        }, 220);
-        var items = grid.querySelectorAll('.pw');
-        items.forEach(function (el, idx) { el.classList.toggle('on', idx === cur); });
-    }
-    btn.onclick = function () {
-        picker.classList.toggle('open');
-        if (picker.classList.contains('open')) preloadAll();
-    };
-    document.addEventListener('click', function (e) {
-        if (picker && !picker.contains(e.target) && e.target !== btn && !(btn && btn.contains(e.target))) {
-            picker.classList.remove('open');
-        }
-    });
-    render();
-    /* 首屏渲染完成后后台预加载全部壁纸，切换即时无等待 */
-    if (window.requestIdleCallback) {
-        window.requestIdleCallback(preloadAll, { timeout: 3000 });
-    } else {
-        setTimeout(preloadAll, 1200);
-    }
-})();
-</script>
 {{ end }}
 
 {{/* 首页自绘两列，隐藏主题侧栏 */}}

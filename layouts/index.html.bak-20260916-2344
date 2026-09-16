@@ -1,0 +1,121 @@
+{{ define "main" }}
+    {{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+    {{ $notHidden := where .Site.RegularPages "Params.hidden" "!=" true }}
+    {{ $filtered := ($pages | intersect $notHidden) }}
+    {{ $pag := .Paginate $filtered }}
+
+    {{/* ===== Hero：个人展示区 ===== */}}
+    <section class="site-hero">
+        {{ with .Site.Params.sidebar.avatar }}
+            {{ if .enabled }}
+                <img class="site-hero__avatar" src="{{ .src | relURL }}" alt="{{ $.Site.Params.hero.name | default $.Site.Title }}">
+            {{ end }}
+        {{ end }}
+        {{ with .Site.Params.hero }}
+            <p class="site-hero__greeting">{{ .greeting }}</p>
+            <h1 class="site-hero__title">{{ .name }}</h1>
+            <p class="site-hero__role">{{ .role }}</p>
+            {{ with .tagline }}<p class="site-hero__subtitle">{{ . }}</p>{{ end }}
+            {{ with .skills }}
+            <ul class="site-hero__skills">
+                {{ range . }}
+                <li class="site-hero__skill">{{ . }}</li>
+                {{ end }}
+            </ul>
+            {{ end }}
+        {{ end }}
+        <div class="site-hero__cta">
+            <a class="site-hero__btn" href="/portfolio/">作品集</a>
+            <a class="site-hero__btn" href="/essay/">随笔</a>
+            <a class="site-hero__btn" href="/tools/">网页工具</a>
+            <a class="site-hero__btn site-hero__btn--ghost" href="/about/">关于我</a>
+        </div>
+        <nav class="site-hero__social">
+            {{ with .Site.Params.socialGithub }}
+                <a href="{{ . }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+            {{ end }}
+            {{ with .Site.Params.socialEmail }}
+                <a href="mailto:{{ . }}">Email</a>
+            {{ end }}
+            <a href="/index.xml">RSS</a>
+        </nav>
+    </section>
+
+    {{/* ===== 板块导航：作品集 / 随笔 / 工具 ===== */}}
+    <section class="sections-grid">
+        <a class="section-tile" href="/portfolio/">
+            <span class="section-tile__icon">📦</span>
+            <h3 class="section-tile__title">作品集</h3>
+            <p class="section-tile__desc">做过的项目与工具</p>
+        </a>
+        <a class="section-tile" href="/essay/">
+            <span class="section-tile__icon">✍️</span>
+            <h3 class="section-tile__title">随笔</h3>
+            <p class="section-tile__desc">记录生活与思考</p>
+        </a>
+        <a class="section-tile" href="/tools/">
+            <span class="section-tile__icon">🧰</span>
+            <h3 class="section-tile__title">网页工具</h3>
+            <p class="section-tile__desc">自研在线小工具</p>
+        </a>
+    </section>
+
+    {{/* ===== 最新文章（技术文章 + 随笔） ===== */}}
+    <section class="home-section">
+        <div class="home-section__head">
+            <h2 class="home-section__title">最新文章</h2>
+            <a class="home-section__more" href="/archives/">更多 →</a>
+        </div>
+        <div class="article-list">
+            {{ range $pag.Pages }}
+                {{ if ne .Section "daily" }}
+                    {{ partial "article-list/default" . }}
+                {{ end }}
+            {{ end }}
+        </div>
+        {{- partial "pagination.html" . -}}
+    </section>
+
+    {{/* ===== 最新日报卡片 ===== */}}
+    {{ $dailies := (where .Site.RegularPages "Section" "daily").ByDate.Reverse }}
+    {{ with index $dailies 0 }}
+        <section class="daily-card">
+            <div class="daily-card__head">
+                <span class="daily-card__badge">📰 每日热点</span>
+                <time>{{ .Date.Format "2006-01-02" }}</time>
+            </div>
+            <h2 class="daily-card__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+            <p class="daily-card__excerpt">{{ .Plain | truncate 120 }}</p>
+            <a class="daily-card__more" href="{{ .RelPermalink }}">阅读全文 →</a>
+        </section>
+    {{ end }}
+
+    {{/* ===== 信息源卡片：每日民生热点（每日 08:00 自动更新） ===== */}}
+    {{ $showNews := default true .Site.Params.enableNewsSource }}
+    {{ $news := .Site.Data.news }}
+    {{ $bjTime := now.UTC.Add (duration "h" 8) }}
+    {{ if and $showNews $news }}
+    <section class="info-sources">
+        <div class="src-card">
+            <div class="src-card__head">
+                <span class="src-card__badge">📰 每日民生热点</span>
+                <span class="src-card__auto" title="每日 08:00 自动更新">AUTO · {{ $bjTime.Format "15:04" }}</span>
+            </div>
+            <ul class="src-card__list src-card__list--grid">
+                {{ range first (default 5 .Site.Params.newsLimit) $news }}
+                <li class="src-card__item">
+                    <a href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .title }}</a>
+                    <time class="src-card__date">{{ .date }}</time>
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+    </section>
+    {{ end }}
+
+    {{- partial "footer/footer" . -}}
+{{ end }}
+
+{{/* 隐藏左右侧栏，首页改为纯净单栏 */}}
+{{ define "left-sidebar" }}{{ end }}
+{{ define "right-sidebar" }}{{ end }}
