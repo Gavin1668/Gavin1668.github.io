@@ -34,6 +34,23 @@
         .pw.on{border-color:#E8500E;}
         .pw img{width:100%;height:100%;object-fit:cover;display:block;}
         .pw span{position:absolute;left:0;right:0;bottom:0;padding:3px 6px;font-size:10px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.7));}
+        .custom-wall{margin-top:14px;padding-top:14px;border-top:1px solid #eee;}
+        .custom-wall-title{font-size:12px;font-weight:600;color:#666;margin-bottom:8px;}
+        .custom-wall input{
+            width:100%;padding:8px 10px;border:1px solid #e0e0e0;
+            border-radius:8px;font-size:12px;outline:none;
+            box-sizing:border-box;margin-bottom:8px;
+        }
+        .custom-wall input:focus{border-color:#E8500E;}
+        .custom-wall-btns{display:flex;gap:8px;}
+        .custom-wall-btns button{
+            flex:1;padding:7px;border:none;border-radius:8px;
+            background:#E8500E;color:#fff;font-size:12px;
+            cursor:pointer;
+        }
+        .custom-wall-btns button.reset{
+            background:#f0f0f0;color:#666;
+        }
         @media (max-width:640px){.wallbtn-fab{padding:9px 14px;}.picker{right:14px;bottom:78px;width:272px;}body:not(.home-v2) .container.main-container{padding:0 14px 20px;border-radius:18px;}}
         </style>
     </head>
@@ -84,6 +101,15 @@
         <div class="picker" id="picker">
             <h5>更换背景壁纸 <span class="g">6 PRESETS</span></h5>
             <div class="pw-grid" id="pwGrid"></div>
+            {{/* 自定义壁纸（登录用户可用） */}}
+            <div class="custom-wall" id="customWallArea" style="display:none;">
+                <div class="custom-wall-title">自定义壁纸</div>
+                <input type="text" id="customWallUrl" placeholder="粘贴图片链接（https://...）">
+                <div class="custom-wall-btns">
+                    <button onclick="applyCustomWall()">应用</button>
+                    <button onclick="resetWall()" class="reset">恢复默认</button>
+                </div>
+            </div>
         </div>
         <script>
         (function () {
@@ -149,6 +175,49 @@
             } else {
                 setTimeout(preloadAll, 1200);
             }
+            
+            // 自定义壁纸功能
+            window.applyCustomWall = function() {
+                var url = document.getElementById('customWallUrl').value.trim();
+                if (!url) { alert('请输入图片链接'); return; }
+                if (!url.startsWith('http')) { alert('请输入完整的图片链接，以 http 开头'); return; }
+                
+                // 存到 localStorage
+                localStorage.setItem('customWallUrl', url);
+                localStorage.setItem('wallMode', 'custom');
+                
+                // 应用壁纸
+                if (wall) { wall.style.opacity = 0; }
+                setTimeout(function () {
+                    if (wall) { wall.style.backgroundImage = 'url(' + url + ')'; wall.style.opacity = 1; }
+                }, 220);
+            };
+            
+            window.resetWall = function() {
+                localStorage.removeItem('customWallUrl');
+                localStorage.removeItem('wallMode');
+                set(0); // 恢复第一张预设
+            };
+            
+            // 页面加载时恢复自定义壁纸
+            (function restoreCustomWall() {
+                var mode = localStorage.getItem('wallMode');
+                var customUrl = localStorage.getItem('customWallUrl');
+                if (mode === 'custom' && customUrl && wall) {
+                    wall.style.backgroundImage = 'url(' + customUrl + ')';
+                }
+            })();
+            
+            // 登录后显示自定义壁纸区域
+            setInterval(function() {
+                var area = document.getElementById('customWallArea');
+                if (!area) return;
+                if (typeof getCurrentUser === 'function' && getCurrentUser()) {
+                    area.style.display = 'block';
+                } else {
+                    area.style.display = 'none';
+                }
+            }, 1000);
         })();
         </script>
     </body>
