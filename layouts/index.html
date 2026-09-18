@@ -88,6 +88,23 @@ body.home-v2 .site-footer{display:none;}
 .home-v2-app .msg-item .msg-name{font-size:13px;font-weight:600;color:var(--ink);}
 .home-v2-app .msg-item .msg-time{font-size:11px;color:var(--sub);margin-left:auto;}
 .home-v2-app .msg-item .msg-content{font-size:13px;color:var(--sub);line-height:1.6;padding-left:32px;}
+.home-v2-app .msg-item .msg-delete{
+    font-size:11px;color:#cf1322;cursor:pointer;
+    margin-left:8px;opacity:.6;transition:opacity .2s;
+}
+.home-v2-app .msg-item .msg-delete:hover{opacity:1;}
+.home-v2-app .msg-pagination{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:12px;padding-top:12px;border-top:1px solid var(--line);
+}
+.home-v2-app .msg-pagination button{
+    padding:6px 12px;border:1px solid var(--line);border-radius:8px;
+    background:transparent;color:var(--sub);font-size:12px;
+    cursor:pointer;transition:all .2s;
+}
+.home-v2-app .msg-pagination button:hover{border-color:var(--accent);color:var(--accent);}
+.home-v2-app .msg-pagination button:disabled{opacity:.4;cursor:not-allowed;}
+.home-v2-app .msg-pagination #msgPageInfo{font-size:12px;color:var(--sub);}
 .home-v2-app .msg-login-tip{text-align:center;padding:12px 0;}
 .home-v2-app .msg-login-tip button{
     padding:8px 20px;border:none;border-radius:20px;
@@ -319,6 +336,11 @@ body.home-v2 .site-footer{display:none;}
                         <div class="msg-list" id="msgList">
                             <div class="msg-empty">还没有留言，来抢沙发吧~</div>
                         </div>
+                        <div class="msg-pagination" id="msgPagination" style="display:none;">
+                            <button id="msgPrevBtn" onclick="prevPage()">上一页</button>
+                            <span id="msgPageInfo">1 / 1</span>
+                            <button id="msgNextBtn" onclick="nextPage()">下一页</button>
+                        </div>
                         <div class="msg-input-area" id="msgInputArea">
                             <div class="msg-login-tip" id="msgLoginTip">
                                 <button onclick="openAuthModal('login')">登录后留言</button>
@@ -374,20 +396,31 @@ function escapeHtml(str) {
         .replace(/'/g, '&#039;');
 }
 
+// 留言分页
+var currentPage = 1;
+var pageSize = 10;
+var totalCount = 0;
+
 // 留言频率限制（前端：10秒内不能重复发）
 var lastSubmitTime = 0;
 
-async function fetchMessages() {
-    const { data, error } = await supabaseClient
+async function fetchMessages(page) {
+    var from = (page - 1) * pageSize;
+    var to = from + pageSize - 1;
+    
+    const { data, error, count } = await supabaseClient
         .from('messages')
-        .select('*')
+        .select('*', { count: 'exact' })
         .eq('approved', true)
         .order('created_at', { ascending: false })
-        .limit(50);
+        .range(from, to);
+    
     if (error) {
         console.error('获取留言失败:', error);
+        totalCount = 0;
         return [];
     }
+    totalCount = count || 0;
     return data || [];
 }
 
@@ -395,8 +428,11 @@ function renderMessages(msgs) {
     var list = document.getElementById('msgList');
     if (!list) return;
     
+    var currentUser = getCurrentUser();
+    
     if (!msgs || msgs.length === 0) {
         list.innerHTML = '<div class="msg-empty">还没有留言，来抢沙发吧~</div>';
+        document.getElementById('msgPagination').style.display = 'none';
         return;
     }
     
@@ -404,15 +440,80 @@ function renderMessages(msgs) {
         var name = escapeHtml(m.user_name || '匿名用户');
         var time = m.created_at ? new Date(m.created_at).toLocaleString('zh-CN') : '';
         var content = escapeHtml(m.content || '');
+        var deleteBtn = '';
+        // 如果是当前用户的留言，显示删除按钮
+        if (currentUser && m.user_id === currentUser.id) {
+            deleteBtn = '<span class="msg-delete" onclick="deleteMessage(' + m.id + ', this)">删除</span>';
+        }
         return '<div class="msg-item">' +
             '<div class="msg-head">' +
                 '<span class="msg-avatar">' + name.charAt(0) + '</span>' +
                 '<span class="msg-name">' + name + '</span>' +
                 '<span class="msg-time">' + time + '</span>' +
+                deleteBtn +
             '</div>' +
             '<div class="msg-content">' + content + '</div>' +
         '</div>';
     }).join('');
+    
+    // 更新分页按钮
+    updatePagination();
+}
+
+function updatePagination() {
+    var pagination = document.getElementById('msgPagination');
+    var totalPages = Math.ceil(totalCount / pageSize);
+    
+    if (totalPages <= 1) {
+        pagination.style.display = 'none';
+        return;
+    }
+    
+    pagination.style.display = 'flex';
+    document.getElementById('msgPageInfo').textContent = currentPage + ' / ' + totalPages;
+    document.getElementById('msgPrevBtn').disabled = currentPage <= 1;
+    document.getElementById('msgNextBtn').disabled = currentPage >= totalPages;
+}
+
+async function prevPage() {
+    if (currentPage <= 1) return;
+    currentPage--;
+    var msgs = await fetchMessages(currentPage);
+    renderMessages(msgs);
+}
+
+async function nextPage() {
+    var totalPages = Math.ceil(totalCount / pageSize);
+    if (currentPage >= totalPages) return;
+    currentPage++;
+    var msgs = await fetchMessages(currentPage);
+    renderMessages(msgs);
+}
+
+// 删除留言
+async function deleteMessage(id, el) {
+    if (!confirm('确定要删除这条留言吗？')) return;
+    
+    try {
+        const { error } = await supabaseClient
+            .from('messages')
+            .delete()
+            .eq('id', id);
+        
+        if (error) throw error;
+        
+        // 从页面移除
+        var item = el.closest('.msg-item');
+        if (item) item.remove();
+        
+        // 如果当前页删空了，回到上一页
+        var list = document.getElementById('msgList');
+        if (list.children.length === 0 && currentPage > 1) {
+            prevPage();
+        }
+    } catch (err) {
+        alert('删除失败：' + (err.message || '请稍后再试'));
+    }
 }
 
 function updateMsgInputArea() {
@@ -488,7 +589,8 @@ async function submitMessage() {
 
 // 初始化留言板
 document.addEventListener('DOMContentLoaded', async function() {
-    var msgs = await fetchMessages();
+    currentPage = 1;
+    var msgs = await fetchMessages(currentPage);
     renderMessages(msgs);
     updateMsgInputArea();
     updateUserPanel();

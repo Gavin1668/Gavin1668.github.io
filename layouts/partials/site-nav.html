@@ -1,26 +1,11 @@
-<style>
-.site-nav__auth-btn{
-    padding:6px 16px;border:none;border-radius:20px;
-    background:#E8500E;color:#fff;font-size:13px;font-weight:500;
-    cursor:pointer;transition:all .2s;
-}
-.site-nav__auth-btn:hover{background:#d1460c;}
-.site-nav__user{display:flex;align-items:center;gap:8px;}
-.nav-user-avatar{
-    width:28px;height:28px;border-radius:50%;
-    background:#E8500E;color:#fff;
-    display:flex;align-items:center;justify-content:center;
-    font-size:12px;font-weight:600;
-}
-.nav-user-name{font-size:13px;color:var(--text-color);}
-.nav-logout-btn{
-    padding:4px 10px;border:1px solid var(--card-border);border-radius:12px;
-    background:transparent;color:var(--text-light);font-size:12px;
-    cursor:pointer;transition:all .2s;
-}
-.nav-logout-btn:hover{border-color:#E8500E;color:#E8500E;}
-</style>
 {{/* 全站顶部导航栏 */}}
+<style>
+.site-nav__toggle{
+    width:36px;height:36px;border:none;border-radius:50%;
+    background:transparent;cursor:pointer;font-size:18px;
+    display:flex;align-items:center;justify-content:center;
+}
+</style>
 <nav class="site-nav">
     <div class="site-nav__inner">
         <a class="site-nav__brand" href="{{ .Site.Home.RelPermalink }}">
@@ -30,12 +15,6 @@
             {{ range .Site.Menus.main }}
                 <a class="site-nav__link{{ if or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }} site-nav__link--active{{ end }}" href="{{ .URL | relLangURL }}">{{ .Name }}</a>
             {{ end }}
-            <button class="site-nav__auth-btn" id="navLoginBtn" type="button" onclick="openAuthModal('login')">登录</button>
-            <div class="site-nav__user" id="navUser" style="display:none;">
-                <span class="nav-user-avatar" id="navUserAvatar">U</span>
-                <span class="nav-user-name" id="navUserName">用户</span>
-                <button class="nav-logout-btn" onclick="logout()">退出</button>
-            </div>
             <button class="site-nav__toggle" id="site-nav-theme" type="button" aria-label="切换明暗模式" title="切换明暗模式">🌙</button>
         </div>
     </div>
@@ -60,3 +39,4 @@
     render();
 })();
 </script>
+

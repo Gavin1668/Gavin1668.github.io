@@ -177,14 +177,58 @@
             }
             
             // 自定义壁纸功能
-            window.applyCustomWall = function() {
+            // 允许的图片域名白名单
+            var allowedWallDomains = [
+                'unsplash.com', 'images.unsplash.com',
+                'pixabay.com', 'cdn.pixabay.com',
+                'pexels.com', 'images.pexels.com',
+                'githubusercontent.com', 'github.io',
+                'doubaocdn.com', 'aka.doubaocdn.com',
+                'imgur.com', 'i.imgur.com',
+                'cloudflare.com', 'imagedelivery.net'
+            ];
+            
+            function isAllowedWallUrl(url) {
+                try {
+                    var domain = new URL(url).hostname.toLowerCase();
+                    return allowedWallDomains.some(function(d) {
+                        return domain === d || domain.endsWith('.' + d);
+                    });
+                } catch (e) {
+                    return false;
+                }
+            }
+            
+            window.applyCustomWall = async function() {
                 var url = document.getElementById('customWallUrl').value.trim();
                 if (!url) { alert('请输入图片链接'); return; }
                 if (!url.startsWith('http')) { alert('请输入完整的图片链接，以 http 开头'); return; }
                 
-                // 存到 localStorage
+                // URL 域名白名单校验
+                if (!isAllowedWallUrl(url)) {
+                    alert('暂不支持该域名的图片，支持：Unsplash、Pexels、Pixabay、GitHub 等常见图床');
+                    return;
+                }
+                
+                // 存到 localStorage（本地备份）
                 localStorage.setItem('customWallUrl', url);
                 localStorage.setItem('wallMode', 'custom');
+                
+                // 存到 Supabase（同步到云端）
+                var user = getCurrentUser();
+                if (user && typeof supabaseClient !== 'undefined') {
+                    try {
+                        await supabaseClient
+                            .from('user_settings')
+                            .upsert({
+                                user_id: user.id,
+                                wallpaper_url: url,
+                                updated_at: new Date().toISOString()
+                            });
+                    } catch (e) {
+                        console.warn('保存壁纸到云端失败:', e);
+                    }
+                }
                 
                 // 应用壁纸
                 if (wall) { wall.style.opacity = 0; }
@@ -193,16 +237,51 @@
                 }, 220);
             };
             
-            window.resetWall = function() {
+            window.resetWall = async function() {
                 localStorage.removeItem('customWallUrl');
                 localStorage.removeItem('wallMode');
+                
+                // 云端也重置
+                var user = getCurrentUser();
+                if (user && typeof supabaseClient !== 'undefined') {
+                    try {
+                        await supabaseClient
+                            .from('user_settings')
+                            .upsert({
+                                user_id: user.id,
+                                wallpaper_url: null,
+                                updated_at: new Date().toISOString()
+                            });
+                    } catch (e) {}
+                }
+                
                 set(0); // 恢复第一张预设
             };
             
             // 页面加载时恢复自定义壁纸
-            (function restoreCustomWall() {
+            (async function restoreCustomWall() {
+                // 先从 localStorage 读
                 var mode = localStorage.getItem('wallMode');
                 var customUrl = localStorage.getItem('customWallUrl');
+                
+                // 如果登录了，从 Supabase 同步
+                if (typeof getCurrentUser === 'function' && getCurrentUser() && typeof supabaseClient !== 'undefined') {
+                    try {
+                        var user = getCurrentUser();
+                        var { data } = await supabaseClient
+                            .from('user_settings')
+                            .select('wallpaper_url')
+                            .eq('user_id', user.id)
+                            .single();
+                        
+                        if (data && data.wallpaper_url) {
+                            customUrl = data.wallpaper_url;
+                            localStorage.setItem('customWallUrl', customUrl);
+                            localStorage.setItem('wallMode', 'custom');
+                        }
+                    } catch (e) {}
+                }
+                
                 if (mode === 'custom' && customUrl && wall) {
                     wall.style.backgroundImage = 'url(' + customUrl + ')';
                 }
