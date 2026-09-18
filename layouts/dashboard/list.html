@@ -61,19 +61,42 @@
   .cal-grid .cell .lunar { font-size: 9px; opacity: 0.7; display: block; }
 
   /* Bookmarks */
+  .bm-tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+  .bm-tab {
+    padding: 4px 12px; border-radius: 20px; font-size: 12px;
+    background: rgba(128,128,128,0.15); border: none; cursor: pointer;
+    color: inherit; transition: 0.2s;
+  }
+  .bm-tab.active { background: #667eea; color: #fff; }
+  .bm-tab .del-group { margin-left: 4px; opacity: 0.6; }
   .bm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); gap: 10px; }
-  .bm-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: inherit; font-size: 10px; text-align: center; }
+  .bm-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: inherit; font-size: 10px; text-align: center; position: relative; }
   .bm-item .favicon {
     width: 42px; height: 42px; border-radius: 10px;
     background: #667eea; color: #fff;
     display: flex; align-items: center; justify-content: center;
     font-size: 18px; margin-bottom: 3px;
   }
+  .bm-item .bm-actions {
+    position: absolute; top: -4px; right: -4px; display: none; gap: 2px;
+  }
+  .bm-item:hover .bm-actions { display: flex; }
+  .bm-actions button {
+    width: 16px; height: 16px; border-radius: 50%; border: none;
+    background: rgba(0,0,0,0.6); color: #fff; font-size: 10px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    line-height: 1;
+  }
   .bm-add {
     width: 42px; height: 42px; border-radius: 10px;
     border: 2px dashed rgba(128,128,128,0.4); background: none;
     color: inherit; cursor: pointer; font-size: 18px;
     display: flex; align-items: center; justify-content: center;
+  }
+  .bm-new-group {
+    padding: 4px 12px; border-radius: 20px; font-size: 12px;
+    background: none; border: 1px dashed rgba(128,128,128,0.4);
+    color: inherit; cursor: pointer;
   }
 
   /* Countdown */
@@ -157,6 +180,7 @@
 
     <div class="dash-card" data-id="bookmarks">
       <h3>常用网站 <button class="close-btn" onclick="dashRemove(this)">×</button></h3>
+      <div class="bm-tabs" id="bmTabs"></div>
       <div class="bm-grid" id="dashBmGrid"></div>
     </div>
 
@@ -285,27 +309,109 @@ function dashRenderCal(){
   document.getElementById('calGrid').innerHTML=html;
 }
 
-// Bookmarks
-const dashDefaultBms=[
-  {name:'GitHub',url:'https://github.com',icon:'🐙'},
-  {name:'掘金',url:'https://juejin.cn',icon:'💎'},
-  {name:'少数派',url:'https://sspai.com',icon:'📰'},
-  {name:'MDN',url:'https://developer.mozilla.org',icon:'📘'},
+// Bookmarks (grouped, WeTab style)
+const dashDefaultBmGroups = [
+  {
+    id: 'g1', name: '常用',
+    bookmarks: [
+      {name:'GitHub',url:'https://github.com',icon:'🐙'},
+      {name:'掘金',url:'https://juejin.cn',icon:'💎'},
+      {name:'少数派',url:'https://sspai.com',icon:'📰'},
+      {name:'MDN',url:'https://developer.mozilla.org',icon:'📘'},
+    ]
+  },
+  {
+    id: 'g2', name: '工具',
+    bookmarks: [
+      {name:'尺寸链',url:'/tools/',icon:'📐'},
+      {name:'书签夹',url:'/tools/',icon:'🔖'},
+    ]
+  }
 ];
-function dashGetBms(){return JSON.parse(localStorage.getItem('dashBms')||JSON.stringify(dashDefaultBms));}
+let dashActiveGroup = 'g1';
+function dashGetBmGroups(){
+  const saved = localStorage.getItem('dashBmGroups');
+  if(saved) return JSON.parse(saved);
+  localStorage.setItem('dashBmGroups', JSON.stringify(dashDefaultBmGroups));
+  return dashDefaultBmGroups;
+}
+function dashSaveBmGroups(g){ localStorage.setItem('dashBmGroups', JSON.stringify(g)); }
+function dashRenderBmTabs(){
+  const groups = dashGetBmGroups();
+  document.getElementById('bmTabs').innerHTML = groups.map(g =>
+    `<button class="bm-tab ${g.id===dashActiveGroup?'active':''}" onclick="dashSwitchGroup('${g.id}')">${g.name}${groups.length>1?`<span class="del-group" onclick="event.stopPropagation();dashDeleteGroup('${g.id}')">×</span>`:''}</button>`
+  ).join('') + `<button class="bm-new-group" onclick="dashNewGroup()">+ 分组</button>`;
+}
+function dashSwitchGroup(id){ dashActiveGroup = id; dashRenderBmTabs(); dashRenderBms(); }
 function dashRenderBms(){
-  document.getElementById('dashBmGrid').innerHTML=dashGetBms().map(b=>
-    '<a class="bm-item" href="'+b.url+'" target="_blank" title="'+b.name+'"><div class="favicon">'+(b.icon||'🔗')+'</div>'+b.name+'</a>'
-  ).join('')+'<button class="bm-add" onclick="dashAddBm()">+</button>';
+  const groups = dashGetBmGroups();
+  const group = groups.find(g => g.id === dashActiveGroup) || groups[0];
+  if(!group) { document.getElementById('dashBmGrid').innerHTML=''; return; }
+  document.getElementById('dashBmGrid').innerHTML = group.bookmarks.map((b,i) =>
+    `<div class="bm-item">
+      <a href="${b.url}" target="_blank" title="${b.name}" style="text-decoration:none;color:inherit">
+        <div class="favicon">${b.icon||'🔗'}</div>${b.name}
+      </a>
+      <div class="bm-actions">
+        <button onclick="dashEditBm(${i})" title="编辑">✏️</button>
+        <button onclick="dashDeleteBm(${i})" title="删除">×</button>
+      </div>
+    </div>`
+  ).join('') + `<button class="bm-add" onclick="dashAddBm()">+</button>`;
+}
+function dashNewGroup(){
+  dashShowModal(`<h4>新建分组</h4><input id="newGName" placeholder="分组名称"><div class="actions"><button class="btn-secondary" onclick="dashCloseModal()">取消</button><button class="btn-primary" onclick="dashSaveNewGroup()">保存</button></div>`);
+}
+function dashSaveNewGroup(){
+  const name = document.getElementById('newGName').value.trim();
+  if(!name) return;
+  const groups = dashGetBmGroups();
+  const id = 'g' + Date.now();
+  groups.push({id, name, bookmarks: []});
+  dashSaveBmGroups(groups);
+  dashActiveGroup = id;
+  dashRenderBmTabs(); dashRenderBms(); dashCloseModal();
+}
+function dashDeleteGroup(id){
+  if(!confirm('确定删除这个分组？')) return;
+  let groups = dashGetBmGroups();
+  groups = groups.filter(g => g.id !== id);
+  if(groups.length === 0) groups.push({id:'g1', name:'常用', bookmarks:[]});
+  dashSaveBmGroups(groups);
+  dashActiveGroup = groups[0].id;
+  dashRenderBmTabs(); dashRenderBms();
 }
 function dashAddBm(){
-  dashShowModal('<h4>添加书签</h4><input id="bmN" placeholder="名称"><input id="bmU" placeholder="网址"><input id="bmI" placeholder="图标 emoji"><div class="actions"><button class="btn-secondary" onclick="dashCloseModal()">取消</button><button class="btn-primary" onclick="dashSaveBm()">保存</button></div>');
+  dashShowModal(`<h4>添加书签</h4><input id="bmN" placeholder="名称"><input id="bmU" placeholder="网址"><input id="bmI" placeholder="图标 emoji"><div class="actions"><button class="btn-secondary" onclick="dashCloseModal()">取消</button><button class="btn-primary" onclick="dashSaveBm()">保存</button></div>`);
 }
-function dashSaveBm(){
-  const n=document.getElementById('bmN').value.trim();const u=document.getElementById('bmU').value.trim();const i=document.getElementById('bmI').value.trim()||'🔗';
-  if(!n||!u)return;const bms=dashGetBms();bms.push({name:n,url:u.startsWith('http')?u:'https://'+u,icon:i});
-  localStorage.setItem('dashBms',JSON.stringify(bms));dashRenderBms();dashCloseModal();
+function dashEditBm(idx){
+  const groups = dashGetBmGroups();
+  const group = groups.find(g => g.id === dashActiveGroup);
+  const bm = group.bookmarks[idx];
+  dashShowModal(`<h4>编辑书签</h4><input id="bmN" placeholder="名称" value="${bm.name}"><input id="bmU" placeholder="网址" value="${bm.url}"><input id="bmI" placeholder="图标 emoji" value="${bm.icon||''}"><div class="actions"><button class="btn-secondary" onclick="dashCloseModal()">取消</button><button class="btn-primary" onclick="dashSaveBm(${idx})">保存</button></div>`);
 }
+function dashSaveBm(editIdx){
+  const n = document.getElementById('bmN').value.trim();
+  const u = document.getElementById('bmU').value.trim();
+  const i = document.getElementById('bmI').value.trim() || '🔗';
+  if(!n || !u) return;
+  const groups = dashGetBmGroups();
+  const group = groups.find(g => g.id === dashActiveGroup);
+  const bm = {name:n, url:u.startsWith('http')?u:'https://'+u, icon:i};
+  if(editIdx !== undefined) group.bookmarks[editIdx] = bm;
+  else group.bookmarks.push(bm);
+  dashSaveBmGroups(groups);
+  dashRenderBms(); dashCloseModal();
+}
+function dashDeleteBm(idx){
+  if(!confirm('确定删除这个书签？')) return;
+  const groups = dashGetBmGroups();
+  const group = groups.find(g => g.id === dashActiveGroup);
+  group.bookmarks.splice(idx, 1);
+  dashSaveBmGroups(groups);
+  dashRenderBms();
+}
+dashRenderBmTabs();
 dashRenderBms();
 
 // Countdown
