@@ -63,7 +63,8 @@
                 {{- block "main" . }}{{- end }}
             </main>
         </div>
-        {{ partial "footer/include.html" . }}
+        {{/* 隐藏主题自带页脚（Built with Hugo） */}}
+        {{/* partial "footer/include.html" . */}}
 
         {{/* Supabase JS SDK */}}
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
