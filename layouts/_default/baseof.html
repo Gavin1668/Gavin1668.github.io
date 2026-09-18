@@ -107,8 +107,10 @@
                 <input type="text" id="customWallUrl" placeholder="粘贴图片链接（https://...）">
                 <div class="custom-wall-btns">
                     <button onclick="applyCustomWall()">应用</button>
+                    <button onclick="document.getElementById('wallpaperUploadInput').click()">上传本地图片</button>
                     <button onclick="resetWall()" class="reset">恢复默认</button>
                 </div>
+                <input type="file" id="wallpaperUploadInput" accept="image/*" style="display:none;" onchange="uploadWallpaper(this)">
             </div>
         </div>
         <script>
@@ -185,7 +187,8 @@
                 'githubusercontent.com', 'github.io',
                 'doubaocdn.com', 'aka.doubaocdn.com',
                 'imgur.com', 'i.imgur.com',
-                'cloudflare.com', 'imagedelivery.net'
+                'cloudflare.com', 'imagedelivery.net',
+                'supabase.co' // 加上 Supabase Storage 的域名
             ];
             
             function isAllowedWallUrl(url) {
@@ -242,6 +245,83 @@
                 setTimeout(function () {
                     if (wall) { wall.style.backgroundImage = 'url(' + url + ')'; wall.style.opacity = 1; }
                 }, 220);
+            };
+            
+            // 上传本地图片作为壁纸
+            window.uploadWallpaper = async function(input) {
+                var file = input.files[0];
+                if (!file) return;
+                
+                // 检查邮箱是否已验证
+                var user = (typeof getCurrentUser === 'function') ? getCurrentUser() : null;
+                if (!user || !user.email_confirmed_at) {
+                    alert('请先完成邮箱验证，才能使用自定义壁纸功能');
+                    return;
+                }
+                
+                // 检查文件类型
+                if (!file.type.startsWith('image/')) {
+                    alert('请选择图片文件');
+                    return;
+                }
+                
+                // 检查文件大小（最大 5MB）
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('图片大小不能超过 5MB');
+                    return;
+                }
+                
+                alert('正在上传图片...');
+                
+                try {
+                    // 生成文件名：user_id/时间戳.扩展名
+                    var ext = file.name.split('.').pop();
+                    var fileName = 'wallpapers/' + user.id + '/' + Date.now() + '.' + ext;
+                    
+                    // 上传到 Supabase Storage
+                    const { data, error } = await supabaseClient.storage
+                        .from('wallpapers')
+                        .upload(fileName, file, {
+                            cacheControl: '3600',
+                            upsert: true
+                        });
+                    
+                    if (error) throw error;
+                    
+                    // 获取公开 URL
+                    const { data: urlData } = supabaseClient.storage
+                        .from('wallpapers')
+                        .getPublicUrl(fileName);
+                    
+                    var publicUrl = urlData.publicUrl;
+                    
+                    // 存到 localStorage
+                    localStorage.setItem('customWallUrl', publicUrl);
+                    localStorage.setItem('wallMode', 'custom');
+                    
+                    // 存到 Supabase（同步到云端）
+                    await supabaseClient
+                        .from('user_settings')
+                        .upsert({
+                            user_id: user.id,
+                            wallpaper_url: publicUrl,
+                            updated_at: new Date().toISOString()
+                        });
+                    
+                    // 应用壁纸
+                    if (wall) { wall.style.opacity = 0; }
+                    setTimeout(function () {
+                        if (wall) { wall.style.backgroundImage = 'url(' + publicUrl + ')'; wall.style.opacity = 1; }
+                    }, 220);
+                    
+                    alert('壁纸上传成功！');
+                } catch (err) {
+                    console.error('上传失败:', err);
+                    alert('上传失败：' + (err.message || '请稍后再试'));
+                }
+                
+                // 清空 input，方便下次上传同一文件
+                input.value = '';
             };
             
             window.resetWall = async function() {

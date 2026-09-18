@@ -74,6 +74,50 @@
     </div>
 </div>
 
+{{/* 个人资料设置弹窗 */}}
+<div class="auth-modal" id="profileModal" style="display:none;">
+    <div class="auth-modal-mask" onclick="closeProfileModal()"></div>
+    <div class="auth-modal-box">
+        <button class="auth-close" onclick="closeProfileModal()">×</button>
+        <h3 class="auth-title">个人资料设置</h3>
+        
+        <div class="auth-field">
+            <label>当前头像</label>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+                <span class="user-avatar" id="profileAvatarPreview" style="width:48px;height:48px;border-radius:50%;background:#E8500E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;">U</span>
+                <div style="flex:1;">
+                    <input type="text" id="profileAvatarUrl" placeholder="头像图片 URL（可选）" style="font-size:13px;">
+                </div>
+            </div>
+        </div>
+        
+        <div class="auth-field">
+            <label>昵称</label>
+            <input type="text" id="profileNickname" placeholder="输入你的昵称">
+        </div>
+        
+        <div class="auth-field">
+            <label>邮箱</label>
+            <input type="email" id="profileEmail" disabled style="background:#f5f5f5;color:#999;">
+        </div>
+        
+        <div class="auth-field">
+            <label>注册时间</label>
+            <input type="text" id="profileCreatedAt" disabled style="background:#f5f5f5;color:#999;">
+        </div>
+        
+        <hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
+        
+        <div class="auth-field">
+            <label>修改密码（留空则不修改）</label>
+            <input type="password" id="profileNewPassword" placeholder="新密码（至少6位）">
+        </div>
+        
+        <div class="auth-error" id="profileError" style="display:none;"></div>
+        <button class="auth-submit" onclick="saveProfile()">保存修改</button>
+    </div>
+</div>
+
 <style>
 .auth-modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;}
 .auth-modal-mask{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);}
@@ -505,6 +549,88 @@ async function logout() {
         location.reload();
     } catch (err) {
         alert('退出失败，请稍后再试');
+    }
+}
+
+// ===== 个人资料设置 =====
+function openProfileModal() {
+    if (!currentUser) return;
+    
+    var user = currentUser;
+    var name = user.user_metadata?.name || '用户' + (user.id || '').slice(0, 5);
+    var avatarUrl = user.user_metadata?.avatar_url || '';
+    var email = user.email || '';
+    var createdAt = user.created_at ? new Date(user.created_at).toLocaleString('zh-CN') : '';
+    
+    document.getElementById('profileNickname').value = name;
+    document.getElementById('profileAvatarUrl').value = avatarUrl;
+    document.getElementById('profileEmail').value = email;
+    document.getElementById('profileCreatedAt').value = createdAt;
+    
+    // 更新头像预览
+    var avatarPreview = document.getElementById('profileAvatarPreview');
+    if (avatarUrl) {
+        avatarPreview.innerHTML = '<img src="' + avatarUrl + '" style="width:48px;height:48px;border-radius:50%;object-fit:cover;">';
+    } else {
+        avatarPreview.textContent = name.charAt(0).toUpperCase();
+    }
+    
+    document.getElementById('profileError').style.display = 'none';
+    document.getElementById('profileModal').style.display = 'flex';
+}
+
+function closeProfileModal() {
+    document.getElementById('profileModal').style.display = 'none';
+    document.getElementById('profileError').style.display = 'none';
+}
+
+async function saveProfile() {
+    if (!currentUser) return;
+    
+    var nickname = document.getElementById('profileNickname').value.trim();
+    var avatarUrl = document.getElementById('profileAvatarUrl').value.trim();
+    var newPassword = document.getElementById('profileNewPassword').value;
+    
+    if (!nickname) {
+        document.getElementById('profileError').textContent = '昵称不能为空';
+        document.getElementById('profileError').style.display = 'block';
+        return;
+    }
+    
+    try {
+        var updateData = {
+            data: {
+                name: nickname,
+                avatar_url: avatarUrl
+            }
+        };
+        
+        // 如果要修改密码
+        if (newPassword) {
+            if (newPassword.length < 6) {
+                document.getElementById('profileError').textContent = '新密码至少6位';
+                document.getElementById('profileError').style.display = 'block';
+                return;
+            }
+            updateData.password = newPassword;
+        }
+        
+        const { data, error } = await supabaseClient.auth.updateUser(updateData);
+        
+        if (error) throw error;
+        
+        // 更新本地 currentUser
+        currentUser = data.user;
+        
+        alert('保存成功！');
+        closeProfileModal();
+        
+        // 更新界面显示
+        updateNavUser();
+        if (window.updateUserPanel) updateUserPanel();
+    } catch (err) {
+        document.getElementById('profileError').textContent = translateError(err.message);
+        document.getElementById('profileError').style.display = 'block';
     }
 }
 
