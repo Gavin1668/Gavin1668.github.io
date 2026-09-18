@@ -152,11 +152,13 @@ function translateError(errMsg) {
     const msg = errMsg.toLowerCase();
     if (msg.includes('invalid login credentials')) return '邮箱或密码错误';
     if (msg.includes('user already registered')) return '该邮箱已注册，请直接登录';
-    if (msg.includes('email not confirmed')) return '邮箱未验证，请先查收验证邮件';
-    if (msg.includes('password should be at least')) return '密码至少6位';
-    if (msg.includes('invalid email')) return '邮箱格式不正确';
+    if (msg.includes('email not confirmed')) return '邮箱尚未验证，请先查收邮件并完成验证';
+    if (msg.includes('password should be at least')) return '密码至少需要 6 位字符';
+    if (msg.includes('invalid email')) return '邮箱格式不正确，请检查后重试';
     if (msg.includes('supabaseclient is not defined')) return '系统初始化中，请刷新页面重试';
-    if (msg.includes('fetch failed')) return '网络连接失败，请检查网络';
+    if (msg.includes('fetch failed')) return '网络连接失败，请检查网络后重试';
+    if (msg.includes('email rate limit exceeded')) return '操作过于频繁，请稍后再试';
+    if (msg.includes('signup disabled')) return '注册功能暂未开启，请联系站长';
     return errMsg;
 }
 
@@ -292,7 +294,7 @@ async function handleRegister() {
         });
         if (error) throw error;
         closeAuthModal();
-        alert('注册成功！欢迎 ' + name + '\n\n请查收邮箱验证链接，完成验证后即可正常使用。');
+        alert('注册成功！欢迎 ' + name + '\n\n我们已向您的邮箱发送了验证链接，请点击邮件中的链接完成验证后，再登录使用。');
     } catch (err) {
         showError('registerError', translateError(err.message));
     }
@@ -303,8 +305,9 @@ async function logout() {
     try {
         await supabaseClient.auth.signOut();
         alert('已退出登录');
+        location.reload();
     } catch (err) {
-        alert('退出失败');
+        alert('退出失败，请稍后再试');
     }
 }
 
