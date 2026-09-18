@@ -5,66 +5,30 @@
             {{ with .Site.Params.hero.name }}{{ . }}{{ else }}{{ .Site.Title }}{{ end }}
         </a>
         <div class="site-nav__links">
-            <div class="nav-search">
-                <input type="text" id="navSearchInput" placeholder="搜索文章..." autocomplete="off">
-            </div>
             {{ range .Site.Menus.main }}
-                {{ if ne .Identifier "search" }}
                 <a class="site-nav__link{{ if or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }} site-nav__link--active{{ end }}" href="{{ .URL | relLangURL }}">{{ .Name }}</a>
-                {{ end }}
             {{ end }}
             <button class="site-nav__toggle" id="site-nav-theme" type="button" aria-label="切换明暗模式" title="切换明暗模式">🌙</button>
         </div>
     </div>
 </nav>
-<style>
-.nav-search { position: relative; margin-right: 8px; }
-.nav-search input {
-    width: 140px; padding: 6px 12px; border: 1px solid rgba(128,128,128,0.25);
-    border-radius: 20px; font-size: 13px; background: rgba(255,255,255,0.6);
-    color: inherit; outline: none; transition: width 0.3s, background 0.3s;
-}
-.nav-search input:focus { width: 200px; background: rgba(255,255,255,0.95); }
-html[data-scheme="dark"] .nav-search input {
-    background: rgba(30,30,40,0.6); border-color: rgba(128,128,128,0.3);
-}
-html[data-scheme="dark"] .nav-search input:focus { background: rgba(40,40,55,0.95); }
-@media (max-width: 768px) {
-    .nav-search input { width: 90px; }
-    .nav-search input:focus { width: 130px; }
-}
-</style>
 <script>
 (function () {
     var btn = document.getElementById('site-nav-theme');
-    if (btn) {
-        var key = 'StackColorScheme';
-        function current() {
-            return document.documentElement.getAttribute('data-scheme') || 'auto';
-        }
-        function render() {
-            btn.textContent = (current() === 'dark') ? '☀️' : '🌙';
-        }
-        btn.addEventListener('click', function () {
-            var next = (current() === 'dark') ? 'light' : 'dark';
-            try { localStorage.setItem(key, next); } catch (e) {}
-            document.documentElement.setAttribute('data-scheme', next);
-            render();
-        });
+    if (!btn) return;
+    var key = 'StackColorScheme';
+    function current() {
+        return document.documentElement.getAttribute('data-scheme') || 'auto';
+    }
+    function render() {
+        btn.textContent = (current() === 'dark') ? '☀️' : '🌙';
+    }
+    btn.addEventListener('click', function () {
+        var next = (current() === 'dark') ? 'light' : 'dark';
+        try { localStorage.setItem(key, next); } catch (e) {}
+        document.documentElement.setAttribute('data-scheme', next);
         render();
-    }
-
-    // Nav search
-    var searchInput = document.getElementById('navSearchInput');
-    if (searchInput) {
-        searchInput.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') {
-                var q = searchInput.value.trim();
-                if (q) {
-                    window.location.href = '/search/?q=' + encodeURIComponent(q);
-                }
-            }
-        });
-    }
+    });
+    render();
 })();
 </script>

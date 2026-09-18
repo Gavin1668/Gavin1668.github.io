@@ -77,6 +77,21 @@ body.home-v2 .site-footer{display:none;}
 .home-v2-app .hot li:hover{color:var(--ink);}
 .home-v2-app .hot li a:hover{color:var(--ink);}
 .home-v2-app footer.hv2-footer{position:relative;flex-shrink:0;max-width:1200px;margin:0 auto;padding:6px 40px 26px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--sub);letter-spacing:.05em;}
+.home-v2-app .home-search{display:flex;gap:10px;max-width:600px;margin:10px auto 24px;flex-shrink:0;}
+.home-v2-app .home-search input{
+    flex:1;padding:13px 22px;border:1px solid rgba(255,255,255,.5);
+    border-radius:50px;background:rgba(255,255,255,.75);backdrop-filter:blur(16px);
+    color:var(--ink);font-size:15px;outline:none;
+    box-shadow:0 8px 28px rgba(20,25,40,.10);
+}
+.home-v2-app .home-search input:focus{background:rgba(255,255,255,.95);}
+.home-v2-app .home-search button{
+    padding:13px 28px;border:none;border-radius:50px;
+    background:var(--accent);color:#fff;font-size:15px;font-weight:600;
+    cursor:pointer;transition:transform .15s,background .2s;
+}
+.home-v2-app .home-search button:hover{transform:translateY(-1px);}
+@media (max-width:900px){.home-v2-app .home-search{margin:10px 16px 20px;}}
 .home-v2-app .picker{position:fixed;right:28px;bottom:28px;z-index:6;width:300px;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:18px;box-shadow:0 18px 50px rgba(20,25,40,.22);padding:16px;transform:translateY(16px);opacity:0;pointer-events:none;transition:transform .25s ease,opacity .25s ease;}
 .home-v2-app .picker.open{transform:translateY(0);opacity:1;pointer-events:auto;}
 .home-v2-app .picker h5{font-size:13px;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;color:var(--ink);}
@@ -115,6 +130,11 @@ body.home-v2 .site-footer{display:none;}
                 <button class="wallbtn" id="wallbtn" type="button" onclick="if(window.GBWall)GBWall.toggle()"><span class="dot"></span>更换壁纸</button>
             </div>
         </header>
+
+        <div class="home-search">
+            <input type="text" id="homeSearchInput" placeholder="搜索文章标题、标签..." autocomplete="off">
+            <button type="button" onclick="homeDoSearch()">搜索</button>
+        </div>
 
         <main class="layout">
             <section class="colL">
@@ -209,6 +229,17 @@ body.home-v2 .site-footer{display:none;}
         <span>HUGO · GITHUB PAGES · WEEKLY</span>
     </footer>
 </div>
+<script>
+function homeDoSearch() {
+    var q = document.getElementById('homeSearchInput').value.trim();
+    if (q) {
+        window.location.href = '/search/?q=' + encodeURIComponent(q);
+    }
+}
+document.getElementById('homeSearchInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') homeDoSearch();
+});
+</script>
 {{ end }}
 
 {{/* 首页自绘两列，隐藏主题侧栏 */}}
