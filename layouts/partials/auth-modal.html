@@ -48,6 +48,11 @@
                 <label>确认密码</label>
                 <input type="password" id="registerPassword2" placeholder="再次输入密码">
             </div>
+            {{/* 蜜罐字段：机器人会填，人看不到 */}}
+            <div style="position:absolute;left:-9999px;top:-9999px;opacity:0;" aria-hidden="true">
+                <label>请不要填写此字段</label>
+                <input type="text" id="registerHoneypot" tabindex="-1" autocomplete="off">
+            </div>
             <div class="auth-error" id="registerError" style="display:none;"></div>
             <button class="auth-submit" onclick="handleRegister()">注册</button>
             <div class="auth-footer">
@@ -250,6 +255,40 @@ function generateRandomName() {
     return '用户' + Math.floor(10000 + Math.random() * 90000);
 }
 
+// 页面打开时间（反机器人用）
+var pageLoadTime = Date.now();
+
+// 允许的邮箱域名白名单
+var allowedEmailDomains = [
+    'qq.com', '163.com', '126.com', 'sina.com', 'sina.cn',
+    'gmail.com', 'outlook.com', 'hotmail.com', 'foxmail.com',
+    'yeah.net', 'aliyun.com', '139.com'
+];
+
+// 检查邮箱域名是否在白名单
+function checkEmailDomain(email) {
+    var domain = email.split('@')[1]?.toLowerCase();
+    if (!domain) return false;
+    return allowedEmailDomains.includes(domain);
+}
+
+// 反机器人检查
+function antiBotCheck() {
+    // 1. 蜜罐字段检查：如果填了，判定为机器人
+    var honeypot = document.getElementById('registerHoneypot').value;
+    if (honeypot && honeypot.trim() !== '') {
+        return '检测到异常操作，请刷新页面后重试';
+    }
+    
+    // 2. 时间差检查：页面打开不到 2 秒就提交，判定为机器人
+    var elapsed = Date.now() - pageLoadTime;
+    if (elapsed < 2000) {
+        return '注册操作过快，请稍后再试';
+    }
+    
+    return null; // 通过
+}
+
 // 登录
 async function handleLogin() {
     var email = document.getElementById('loginEmail').value.trim();
@@ -279,8 +318,22 @@ async function handleRegister() {
     
     if (!email) { showError('registerError', '请输入邮箱'); return; }
     if (!email.includes('@')) { showError('registerError', '邮箱格式不正确'); return; }
+    
+    // 邮箱域名白名单检查
+    if (!checkEmailDomain(email)) {
+        showError('registerError', '暂不支持该邮箱后缀，请使用 QQ、163、126、Gmail 等常用邮箱注册');
+        return;
+    }
+    
     if (password.length < 6) { showError('registerError', '密码至少6位'); return; }
     if (password !== password2) { showError('registerError', '两次输入的密码不一致'); return; }
+    
+    // 反机器人检查
+    var botError = antiBotCheck();
+    if (botError) {
+        showError('registerError', botError);
+        return;
+    }
     
     var name = generateRandomName();
     
