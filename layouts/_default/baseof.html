@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.LanguageCode }}" dir="{{ default `ltr` .Language.LanguageDirection }}">
+<html lang="{{ .Site.LanguageCode }}" dir="{{ default `ltr` .LanguageDirection }}">
     <head>
         {{- partial "head/head.html" . -}}
         {{- block "head" . -}}{{ end }}
@@ -204,6 +204,13 @@
                 if (!url) { alert('请输入图片链接'); return; }
                 if (!url.startsWith('http')) { alert('请输入完整的图片链接，以 http 开头'); return; }
                 
+                // 检查邮箱是否已验证
+                var user = (typeof getCurrentUser === 'function') ? getCurrentUser() : null;
+                if (!user || !user.email_confirmed_at) {
+                    alert('请先完成邮箱验证，才能使用自定义壁纸功能');
+                    return;
+                }
+                
                 // URL 域名白名单校验
                 if (!isAllowedWallUrl(url)) {
                     alert('暂不支持该域名的图片，支持：Unsplash、Pexels、Pixabay、GitHub 等常见图床');
@@ -287,11 +294,13 @@
                 }
             })();
             
-            // 登录后显示自定义壁纸区域
+            // 登录且邮箱已验证后显示自定义壁纸区域
             setInterval(function() {
                 var area = document.getElementById('customWallArea');
                 if (!area) return;
-                if (typeof getCurrentUser === 'function' && getCurrentUser()) {
+                var user = (typeof getCurrentUser === 'function') ? getCurrentUser() : null;
+                // 只有登录且邮箱已验证的用户才能使用自定义壁纸
+                if (user && user.email_confirmed_at) {
                     area.style.display = 'block';
                 } else {
                     area.style.display = 'none';

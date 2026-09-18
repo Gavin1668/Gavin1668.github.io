@@ -40,7 +40,7 @@ body.home-v2 .site-footer{display:none;}
 .home-v2-app .layout{display:grid;grid-template-columns:1fr 320px;gap:24px;padding-bottom:30px;}
 .home-v2-app .colL{min-width:0;display:flex;flex-direction:column;gap:24px;}
 .home-v2-app .colR{min-width:0;display:flex;flex-direction:column;gap:24px;}
-.home-v2-app .mod{background:rgba(255,255,255,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.55);border-radius:22px;box-shadow:0 12px 40px rgba(20,25,40,.10);overflow:hidden;}
+.home-v2-app .mod{background:rgba(255,255,255,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:22px;box-shadow:0 12px 40px rgba(20,25,40,.10);overflow:hidden;}
 .home-v2-app .mod-head{display:flex;align-items:baseline;justify-content:space-between;padding:22px 24px 0;}
 .home-v2-app .mod-head h3{font-family:'Noto Serif SC',serif;font-size:19px;font-weight:900;color:var(--ink);}
 .home-v2-app .mod-head .sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--sub);}
@@ -87,7 +87,6 @@ body.home-v2 .site-footer{display:none;}
 }
 .home-v2-app .msg-item .msg-name{font-size:13px;font-weight:600;color:var(--ink);}
 .home-v2-app .msg-item .msg-time{font-size:11px;color:var(--sub);margin-left:auto;}
-.home-v2-app .msg-item .msg-content{font-size:13px;color:var(--sub);line-height:1.6;padding-left:32px;}
 .home-v2-app .msg-item .msg-delete{
     font-size:11px;color:#cf1322;cursor:pointer;
     margin-left:8px;opacity:.6;transition:opacity .2s;
@@ -143,6 +142,11 @@ body.home-v2 .site-footer{display:none;}
 }
 .home-v2-app .user-info-row .user-name{font-size:15px;font-weight:600;color:var(--ink);}
 .home-v2-app .user-info-row .user-since{font-size:12px;color:var(--sub);margin-top:2px;}
+.home-v2-app .email-warn{
+    margin-bottom:10px;
+    font-size:12px;
+    line-height:1.5;
+}
 .home-v2-app .user-logout-btn{
     width:100%;padding:8px;border:1px solid var(--line);border-radius:10px;
     background:transparent;color:var(--sub);font-size:13px;
@@ -294,8 +298,11 @@ body.home-v2 .site-footer{display:none;}
                                 <span class="user-avatar" id="userPanelAvatar">U</span>
                                 <div>
                                     <div class="user-name" id="userPanelName">用户</div>
-                                    <div class="user-since">欢迎回来</div>
+                                    <div class="user-since" id="userPanelStatus">欢迎回来</div>
                                 </div>
+                            </div>
+                            <div class="email-warn" id="emailWarn" style="display:none;padding:8px 12px;background:#fff7e6;border:1px solid #ffd591;border-radius:8px;margin-bottom:10px;font-size:12px;color:#d46b08;text-align:center;">
+                                ⚠️ 邮箱未验证，请先完成邮箱验证
                             </div>
                             <button class="user-logout-btn" onclick="logout()">退出登录</button>
                         </div>
@@ -522,13 +529,24 @@ function updateMsgInputArea() {
     var msgForm = document.getElementById('msgForm');
     if (!loginTip || !msgForm) return;
     
-    if (user) {
-        loginTip.style.display = 'none';
-        msgForm.style.display = 'block';
-    } else {
+    if (!user) {
         loginTip.style.display = 'block';
+        loginTip.innerHTML = '<button onclick="openAuthModal(\'login\')">登录后留言</button>';
         msgForm.style.display = 'none';
+        return;
     }
+    
+    // 检查邮箱是否已验证
+    if (!user.email_confirmed_at) {
+        loginTip.style.display = 'block';
+        loginTip.innerHTML = '<p style="font-size:12px;color:#d46b08;margin-bottom:8px;">⚠️ 请先完成邮箱验证才能留言</p><button onclick="openAuthModal(\'login\')">重新验证</button>';
+        msgForm.style.display = 'none';
+        return;
+    }
+    
+    // 已登录且已验证
+    loginTip.style.display = 'none';
+    msgForm.style.display = 'block';
 }
 
 function updateUserPanel() {
@@ -543,6 +561,17 @@ function updateUserPanel() {
         var name = user.user_metadata?.name || '用户' + (user.id || '').slice(0, 5);
         document.getElementById('userPanelName').textContent = name;
         document.getElementById('userPanelAvatar').textContent = name.charAt(0);
+        
+        // 检查邮箱验证状态
+        var emailWarn = document.getElementById('emailWarn');
+        var statusText = document.getElementById('userPanelStatus');
+        if (user.email_confirmed_at) {
+            if (emailWarn) emailWarn.style.display = 'none';
+            if (statusText) statusText.textContent = '欢迎回来';
+        } else {
+            if (emailWarn) emailWarn.style.display = 'block';
+            if (statusText) statusText.textContent = '邮箱未验证';
+        }
     } else {
         notLogged.style.display = 'block';
         logged.style.display = 'none';
@@ -553,6 +582,15 @@ async function submitMessage() {
     var content = document.getElementById('msgContent').value.trim();
     if (!content) { alert('请输入留言内容'); return; }
     
+    var user = getCurrentUser();
+    if (!user) { alert('请先登录'); return; }
+    
+    // 检查邮箱是否已验证
+    if (!user.email_confirmed_at) {
+        alert('请先完成邮箱验证，才能发表留言！\n\n我们已向您的邮箱发送了验证链接，请点击邮件中的链接完成验证。');
+        return;
+    }
+    
     // 前端频率限制：10秒内不能重复发
     var now = Date.now();
     if (now - lastSubmitTime < 10000) {
@@ -560,9 +598,6 @@ async function submitMessage() {
         alert('操作太频繁，请 ' + wait + ' 秒后再试');
         return;
     }
-    
-    var user = getCurrentUser();
-    if (!user) { alert('请先登录'); return; }
     
     var name = user.user_metadata?.name || '用户' + (user.id || '').slice(0, 5);
     

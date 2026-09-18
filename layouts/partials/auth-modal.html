@@ -152,6 +152,12 @@ function getCurrentUser() {
     return currentUser;
 }
 
+// 检查邮箱是否已验证
+function isEmailVerified() {
+    if (!currentUser) return false;
+    return !!currentUser.email_confirmed_at;
+}
+
 // 把 Supabase 英文错误翻译成中文
 function translateError(errMsg) {
     if (!errMsg) return '操作失败，请稍后再试';
@@ -304,6 +310,14 @@ async function handleLogin() {
             password: password
         });
         if (error) throw error;
+        
+        // 检查邮箱是否已验证
+        if (data.user && !data.user.email_confirmed_at) {
+            closeAuthModal();
+            alert('您的邮箱还未验证！\n\n我们已向您的邮箱发送了验证链接，请点击邮件中的链接完成验证后，再使用完整功能。\n\n（如果没收到邮件，请检查垃圾邮件文件夹）');
+            return;
+        }
+        
         closeAuthModal();
         alert('登录成功！');
     } catch (err) {
@@ -367,7 +381,7 @@ async function handleRegister() {
         });
         if (error) throw error;
         closeAuthModal();
-        alert('注册成功！欢迎 ' + name + '\n\n我们已向您的邮箱发送了验证链接，请点击邮件中的链接完成验证后，再登录使用。');
+        alert('注册成功！账号已创建。\n\n我们已向您的邮箱 ' + email + ' 发送了验证链接，请点击邮件中的链接完成验证后，再登录使用。');
     } catch (err) {
         showError('registerError', translateError(err.message));
     }
