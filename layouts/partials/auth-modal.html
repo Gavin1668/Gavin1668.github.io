@@ -111,25 +111,24 @@
 </style>
 
 <script>
-// 临时模拟登录（待接入 Supabase 后替换）
+// Supabase 登录系统
+let currentUser = null;
+
 function getCurrentUser() {
-    try {
-        var data = localStorage.getItem('gb_user');
-        return data ? JSON.parse(data) : null;
-    } catch(e) { return null; }
+    return currentUser;
 }
 
 function updateNavUser() {
-    var user = getCurrentUser();
     var loginBtn = document.getElementById('navLoginBtn');
     var navUser = document.getElementById('navUser');
     if (!loginBtn || !navUser) return;
     
-    if (user) {
+    if (currentUser) {
         loginBtn.style.display = 'none';
         navUser.style.display = 'flex';
-        document.getElementById('navUserName').textContent = user.name;
-        document.getElementById('navUserAvatar').textContent = user.name.charAt(0);
+        var name = currentUser.user_metadata?.name || '用户' + (currentUser.id || '').slice(0, 5);
+        document.getElementById('navUserName').textContent = name;
+        document.getElementById('navUserAvatar').textContent = name.charAt(0);
     } else {
         loginBtn.style.display = 'block';
         navUser.style.display = 'none';
@@ -143,7 +142,6 @@ function openAuthModal(tab) {
 
 function closeAuthModal() {
     document.getElementById('authModal').style.display = 'none';
-    // 清空错误提示
     document.getElementById('loginError').style.display = 'none';
     document.getElementById('registerError').style.display = 'none';
 }
@@ -162,37 +160,34 @@ function showError(id, msg) {
     el.style.display = 'block';
 }
 
-function hideError(id) {
-    document.getElementById(id).style.display = 'none';
-}
-
 // 生成随机用户名（纯数字）
 function generateRandomName() {
     return '用户' + Math.floor(10000 + Math.random() * 90000);
 }
 
-// 临时登录
-function handleLogin() {
+// 登录
+async function handleLogin() {
     var email = document.getElementById('loginEmail').value.trim();
     var password = document.getElementById('loginPassword').value;
     
     if (!email) { showError('loginError', '请输入邮箱'); return; }
     if (!password) { showError('loginError', '请输入密码'); return; }
     
-    // 临时模拟：检查 localStorage 里有没有这个邮箱
-    var users = JSON.parse(localStorage.getItem('gb_users') || '{}');
-    if (users[email] && users[email].password === password) {
-        localStorage.setItem('gb_user', JSON.stringify(users[email]));
+    try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+        if (error) throw error;
         closeAuthModal();
-        updateNavUser();
         alert('登录成功！');
-    } else {
-        showError('loginError', '邮箱或密码错误');
+    } catch (err) {
+        showError('loginError', err.message || '登录失败，请检查邮箱和密码');
     }
 }
 
-// 临时注册
-function handleRegister() {
+// 注册
+async function handleRegister() {
     var email = document.getElementById('registerEmail').value.trim();
     var password = document.getElementById('registerPassword').value;
     var password2 = document.getElementById('registerPassword2').value;
@@ -202,35 +197,51 @@ function handleRegister() {
     if (password.length < 6) { showError('registerError', '密码至少6位'); return; }
     if (password !== password2) { showError('registerError', '两次密码不一致'); return; }
     
-    var users = JSON.parse(localStorage.getItem('gb_users') || '{}');
-    if (users[email]) {
-        showError('registerError', '该邮箱已注册，请直接登录');
-        return;
+    var name = generateRandomName();
+    
+    try {
+        const { data, error } = await supabaseClient.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: { name: name }
+            }
+        });
+        if (error) throw error;
+        closeAuthModal();
+        alert('注册成功！欢迎 ' + name + '\n\n请查收邮箱验证链接，完成验证后即可正常使用。');
+    } catch (err) {
+        showError('registerError', err.message || '注册失败，请稍后再试');
     }
-    
-    var user = {
-        email: email,
-        name: generateRandomName(),
-        password: password,
-        createdAt: new Date().toISOString()
-    };
-    users[email] = user;
-    localStorage.setItem('gb_users', JSON.stringify(users));
-    localStorage.setItem('gb_user', JSON.stringify(user));
-    
-    closeAuthModal();
-    updateNavUser();
-    alert('注册成功！欢迎 ' + user.name);
 }
 
-function logout() {
-    localStorage.removeItem('gb_user');
-    updateNavUser();
-    alert('已退出登录');
+// 退出
+async function logout() {
+    try {
+        await supabaseClient.auth.signOut();
+        alert('已退出登录');
+    } catch (err) {
+        alert('退出失败');
+    }
 }
+
+// 监听登录状态变化
+supabaseClient.auth.onAuthStateChange((event, session) => {
+    if (session?.user) {
+        currentUser = session.user;
+    } else {
+        currentUser = null;
+    }
+    updateNavUser();
+    if (window.updateMsgInputArea) updateMsgInputArea();
+});
 
 // 初始化
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session?.user) {
+        currentUser = session.user;
+    }
     updateNavUser();
 });
 </script>

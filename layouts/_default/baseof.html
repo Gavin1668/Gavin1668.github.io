@@ -60,10 +60,20 @@
             {{- end -}}
             {{- block "right-sidebar" . -}}{{ end }}
             <main class="main full-width">
-                {{- block "main" . }}{{- end -}}
+                {{- block "main" . }}{{- end }}
             </main>
         </div>
         {{ partial "footer/include.html" . }}
+
+        {{/* Supabase JS SDK */}}
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script>
+        // 初始化 Supabase
+        window.supabaseClient = supabase.createClient(
+            'https://ubayfumncfhsthhamweb.supabase.co',
+            'sb_publishable_1F1LOUY4IVLKijabTgYZmQ_XHMsMFNF'
+        );
+        </script>
 
         {{/* 登录/注册弹窗 */}}
         {{ partial "auth-modal.html" . }}

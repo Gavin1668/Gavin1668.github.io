@@ -320,29 +320,38 @@ homeSearchInput.addEventListener('input', function() {
     hsClearBtn.style.display = this.value ? 'flex' : 'none';
 });
 
-// ===== 留言板（临时模拟，待接入 Supabase）=====
-function getMessages() {
-    try {
-        return JSON.parse(localStorage.getItem('gb_messages') || '[]');
-    } catch(e) { return []; }
+// ===== 留言板（Supabase 版）=====
+async function fetchMessages() {
+    const { data, error } = await supabaseClient
+        .from('messages')
+        .select('*')
+        .eq('approved', true)
+        .order('created_at', { ascending: false })
+        .limit(50);
+    if (error) {
+        console.error('获取留言失败:', error);
+        return [];
+    }
+    return data || [];
 }
 
-function renderMessages() {
+function renderMessages(msgs) {
     var list = document.getElementById('msgList');
     if (!list) return;
-    var msgs = getMessages();
     
-    if (msgs.length === 0) {
+    if (!msgs || msgs.length === 0) {
         list.innerHTML = '<div class="msg-empty">还没有留言，来抢沙发吧~</div>';
         return;
     }
     
     list.innerHTML = msgs.map(function(m) {
+        var name = m.user_name || '匿名用户';
+        var time = m.created_at ? new Date(m.created_at).toLocaleString('zh-CN') : '';
         return '<div class="msg-item">' +
             '<div class="msg-head">' +
-                '<span class="msg-avatar">' + (m.name ? m.name.charAt(0) : 'U') + '</span>' +
-                '<span class="msg-name">' + (m.name || '匿名') + '</span>' +
-                '<span class="msg-time">' + (m.time || '') + '</span>' +
+                '<span class="msg-avatar">' + name.charAt(0) + '</span>' +
+                '<span class="msg-name">' + name + '</span>' +
+                '<span class="msg-time">' + time + '</span>' +
             '</div>' +
             '<div class="msg-content">' + (m.content || '') + '</div>' +
         '</div>';
@@ -364,35 +373,40 @@ function updateMsgInputArea() {
     }
 }
 
-function submitMessage() {
+async function submitMessage() {
     var content = document.getElementById('msgContent').value.trim();
     if (!content) { alert('请输入留言内容'); return; }
     
     var user = getCurrentUser();
     if (!user) { alert('请先登录'); return; }
     
-    var msgs = getMessages();
-    msgs.unshift({
-        name: user.name,
-        content: content,
-        time: new Date().toLocaleString('zh-CN'),
-        approved: false  // 待审核
-    });
-    localStorage.setItem('gb_messages', JSON.stringify(msgs));
+    var name = user.user_metadata?.name || '用户' + (user.id || '').slice(0, 5);
     
-    document.getElementById('msgContent').value = '';
-    renderMessages();
-    alert('留言成功！等待审核后显示。');
+    try {
+        const { data, error } = await supabaseClient
+            .from('messages')
+            .insert([
+                {
+                    user_id: user.id,
+                    user_name: name,
+                    content: content,
+                    approved: false
+                }
+            ]);
+        if (error) throw error;
+        
+        document.getElementById('msgContent').value = '';
+        alert('留言成功！等待站长审核后显示。');
+    } catch (err) {
+        alert('留言失败：' + (err.message || '请稍后再试'));
+    }
 }
 
 // 初始化留言板
-document.addEventListener('DOMContentLoaded', function() {
-    renderMessages();
+document.addEventListener('DOMContentLoaded', async function() {
+    var msgs = await fetchMessages();
+    renderMessages(msgs);
     updateMsgInputArea();
-    // 监听登录状态变化，更新留言区
-    setInterval(function() {
-        updateMsgInputArea();
-    }, 1000);
 });
 </script>
 {{ end }}
