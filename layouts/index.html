@@ -13,19 +13,19 @@
 
 <style>
 /* ===== 首页沉浸式两列（home-v2）===== */
-body.home-v2{background:#1A1A1A;height:100vh;overflow:hidden;}
+body.home-v2{background:#1A1A1A;}
 body.home-v2 .site-nav{display:none;}
 body.home-v2 .container.main-container{max-width:1280px;padding:0 0;position:relative;z-index:2;}
 body.home-v2 .container.main-container .main{padding:0;}
 body.home-v2 .site-footer{display:none;}
 
 .home-v2-app{--ink:#1A1A1A;--sub:#5C6470;--line:rgba(26,26,26,.12);--accent:#E8500E;--mono:'JetBrains Mono',monospace;
-  color:var(--ink);height:100vh;overflow:hidden;position:relative;display:flex;flex-direction:column;font-family:'Noto Sans SC',sans-serif;}
+  color:var(--ink);position:relative;display:flex;flex-direction:column;font-family:'Noto Sans SC',sans-serif;}
 .home-v2-app *{box-sizing:border-box;margin:0;padding:0;}
 .home-v2-app a{text-decoration:none;color:inherit;}
 .home-v2-app .wall{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;transition:opacity .4s ease;}
 .home-v2-app .tint{position:fixed;inset:0;z-index:1;background:rgba(255,255,255,.38);}
-.home-v2-app .stage{position:relative;z-index:2;flex:1;min-height:0;max-width:1200px;width:100%;margin:0 auto;padding:0 40px;display:flex;flex-direction:column;}
+.home-v2-app .stage{position:relative;z-index:2;max-width:1200px;width:100%;margin:0 auto;padding:0 40px;display:flex;flex-direction:column;}
 .home-v2-app header{display:flex;align-items:center;justify-content:space-between;padding:26px 0 20px;flex-shrink:0;}
 .home-v2-app .logo{font-size:21px;font-weight:900;letter-spacing:.02em;}
 .home-v2-app .logo em{font-style:normal;color:var(--accent);}
@@ -37,10 +37,8 @@ body.home-v2 .site-footer{display:none;}
 .home-v2-app .wallbtn:hover{background:var(--accent);transform:translateY(-1px);}
 .home-v2-app .wallbtn .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);transition:background .2s;}
 .home-v2-app .wallbtn:hover .dot{background:#fff;}
-.home-v2-app .layout{flex:1;min-height:0;display:grid;grid-template-columns:1fr 320px;gap:24px;padding-bottom:30px;}
-.home-v2-app .colL{min-width:0;height:calc(100vh - 178px);display:flex;flex-direction:column;gap:24px;overflow-y:auto;padding-right:6px;scrollbar-width:thin;scrollbar-color:rgba(26,26,26,.28) transparent;}
-.home-v2-app .colL .mod{flex-shrink:0;max-height:55%;display:flex;flex-direction:column;}
-.home-v2-app .colL .mod .mod-body{overflow-y:auto;min-height:0;scrollbar-width:thin;scrollbar-color:rgba(26,26,26,.28) transparent;}
+.home-v2-app .layout{display:grid;grid-template-columns:1fr 320px;gap:24px;padding-bottom:30px;}
+.home-v2-app .colL{min-width:0;display:flex;flex-direction:column;gap:24px;}
 .home-v2-app .colR{min-width:0;display:flex;flex-direction:column;gap:24px;}
 .home-v2-app .mod{background:rgba(255,255,255,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.55);border-radius:22px;box-shadow:0 12px 40px rgba(20,25,40,.10);overflow:hidden;}
 .home-v2-app .mod-head{display:flex;align-items:baseline;justify-content:space-between;padding:22px 24px 0;}
@@ -111,6 +109,29 @@ body.home-v2 .site-footer{display:none;}
     cursor:pointer;transition:background .2s;
 }
 .home-v2-app .msg-form button:hover{background:#d1460c;}
+.home-v2-app .user-panel .mod-body{padding:20px 24px;}
+.home-v2-app .user-not-logged .user-tip{font-size:13px;color:var(--sub);margin-bottom:12px;text-align:center;}
+.home-v2-app .user-login-btn{
+    width:100%;padding:11px;border:none;border-radius:12px;
+    background:var(--accent);color:#fff;font-size:14px;font-weight:600;
+    cursor:pointer;transition:background .2s;
+}
+.home-v2-app .user-login-btn:hover{background:#d1460c;}
+.home-v2-app .user-info-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.home-v2-app .user-info-row .user-avatar{
+    width:42px;height:42px;border-radius:50%;
+    background:var(--accent);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:16px;font-weight:700;
+}
+.home-v2-app .user-info-row .user-name{font-size:15px;font-weight:600;color:var(--ink);}
+.home-v2-app .user-info-row .user-since{font-size:12px;color:var(--sub);margin-top:2px;}
+.home-v2-app .user-logout-btn{
+    width:100%;padding:8px;border:1px solid var(--line);border-radius:10px;
+    background:transparent;color:var(--sub);font-size:13px;
+    cursor:pointer;transition:all .2s;
+}
+.home-v2-app .user-logout-btn:hover{border-color:#cf1322;color:#cf1322;}
 .home-v2-app footer.hv2-footer{position:relative;flex-shrink:0;max-width:1200px;margin:0 auto;padding:6px 40px 26px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--sub);letter-spacing:.05em;}
 .home-v2-app .home-search{
     display:flex;align-items:center;gap:10px;
@@ -155,7 +176,7 @@ body.home-v2 .site-footer{display:none;}
   body.home-v2{height:auto;overflow:auto;}
   .home-v2-app{height:auto;overflow:visible;}
   .home-v2-app .layout{grid-template-columns:1fr;flex:none;}
-  .home-v2-app .colR{display:none;}
+  .home-v2-app .colR{display:flex;}
   .home-v2-app .colL{height:auto;overflow:visible;}
   .home-v2-app .colL .mod{max-height:none;}
   .home-v2-app .colL .mod .mod-body{overflow:visible;}
@@ -244,6 +265,26 @@ body.home-v2 .site-footer{display:none;}
             </section>
 
             <aside class="colR">
+                {{/* ===== 用户登录 ===== */}}
+                <div class="mod user-panel">
+                    <div class="mod-body">
+                        <div class="user-not-logged" id="userNotLogged">
+                            <p class="user-tip">登录后可以留言、收藏文章</p>
+                            <button class="user-login-btn" onclick="openAuthModal('login')">登录 / 注册</button>
+                        </div>
+                        <div class="user-logged" id="userLogged" style="display:none;">
+                            <div class="user-info-row">
+                                <span class="user-avatar" id="userPanelAvatar">U</span>
+                                <div>
+                                    <div class="user-name" id="userPanelName">用户</div>
+                                    <div class="user-since">欢迎回来</div>
+                                </div>
+                            </div>
+                            <button class="user-logout-btn" onclick="logout()">退出登录</button>
+                        </div>
+                    </div>
+                </div>
+
                 {{/* ===== 自我介绍 ===== */}}
                 <div class="mod about">
                     {{ with .Site.Params.sidebar.avatar }}{{ if .enabled }}<img src="{{ .src | relURL }}" alt="Gavin">{{ end }}{{ end }}
@@ -373,6 +414,24 @@ function updateMsgInputArea() {
     }
 }
 
+function updateUserPanel() {
+    var user = getCurrentUser();
+    var notLogged = document.getElementById('userNotLogged');
+    var logged = document.getElementById('userLogged');
+    if (!notLogged || !logged) return;
+    
+    if (user) {
+        notLogged.style.display = 'none';
+        logged.style.display = 'block';
+        var name = user.user_metadata?.name || '用户' + (user.id || '').slice(0, 5);
+        document.getElementById('userPanelName').textContent = name;
+        document.getElementById('userPanelAvatar').textContent = name.charAt(0);
+    } else {
+        notLogged.style.display = 'block';
+        logged.style.display = 'none';
+    }
+}
+
 async function submitMessage() {
     var content = document.getElementById('msgContent').value.trim();
     if (!content) { alert('请输入留言内容'); return; }
@@ -407,7 +466,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     var msgs = await fetchMessages();
     renderMessages(msgs);
     updateMsgInputArea();
+    updateUserPanel();
 });
+
+// 监听登录状态变化，更新用户面板和留言区
+setInterval(function() {
+    updateMsgInputArea();
+    updateUserPanel();
+}, 1000);
 </script>
 {{ end }}
 
