@@ -76,6 +76,41 @@ body.home-v2 .site-footer{display:none;}
 .home-v2-app .hot li::before{content:'0' counter(h);font-family:var(--mono);font-style:normal;font-weight:700;color:var(--accent);font-size:12px;}
 .home-v2-app .hot li:hover{color:var(--ink);}
 .home-v2-app .hot li a:hover{color:var(--ink);}
+.home-v2-app .msg-list{margin-bottom:16px;max-height:300px;overflow-y:auto;}
+.home-v2-app .msg-empty{text-align:center;color:var(--sub);font-size:13px;padding:20px 0;}
+.home-v2-app .msg-item{padding:10px 0;border-bottom:1px dashed var(--line);}
+.home-v2-app .msg-item:last-child{border-bottom:none;}
+.home-v2-app .msg-item .msg-head{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.home-v2-app .msg-item .msg-avatar{
+    width:24px;height:24px;border-radius:50%;
+    background:var(--accent);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:600;
+}
+.home-v2-app .msg-item .msg-name{font-size:13px;font-weight:600;color:var(--ink);}
+.home-v2-app .msg-item .msg-time{font-size:11px;color:var(--sub);margin-left:auto;}
+.home-v2-app .msg-item .msg-content{font-size:13px;color:var(--sub);line-height:1.6;padding-left:32px;}
+.home-v2-app .msg-login-tip{text-align:center;padding:12px 0;}
+.home-v2-app .msg-login-tip button{
+    padding:8px 20px;border:none;border-radius:20px;
+    background:var(--accent);color:#fff;font-size:13px;
+    cursor:pointer;transition:background .2s;
+}
+.home-v2-app .msg-login-tip button:hover{background:#d1460c;}
+.home-v2-app .msg-form textarea{
+    width:100%;padding:10px 12px;border:1px solid var(--line);
+    border-radius:10px;font-size:13px;resize:vertical;
+    outline:none;box-sizing:border-box;
+    font-family:'Noto Sans SC',sans-serif;
+    margin-bottom:8px;
+}
+.home-v2-app .msg-form textarea:focus{border-color:var(--accent);}
+.home-v2-app .msg-form button{
+    width:100%;padding:10px;border:none;border-radius:10px;
+    background:var(--accent);color:#fff;font-size:13px;font-weight:600;
+    cursor:pointer;transition:background .2s;
+}
+.home-v2-app .msg-form button:hover{background:#d1460c;}
 .home-v2-app footer.hv2-footer{position:relative;flex-shrink:0;max-width:1200px;margin:0 auto;padding:6px 40px 26px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--sub);letter-spacing:.05em;}
 .home-v2-app .home-search{
     display:flex;align-items:center;gap:10px;
@@ -235,6 +270,25 @@ body.home-v2 .site-footer{display:none;}
                     </div>
                 </div>
                 {{ end }}
+
+                {{/* ===== 留言板 ===== */}}
+                <div class="mod">
+                    <div class="mod-head"><h3>留言板</h3><span class="sub">MESSAGE</span></div>
+                    <div class="mod-body">
+                        <div class="msg-list" id="msgList">
+                            <div class="msg-empty">还没有留言，来抢沙发吧~</div>
+                        </div>
+                        <div class="msg-input-area" id="msgInputArea">
+                            <div class="msg-login-tip" id="msgLoginTip">
+                                <button onclick="openAuthModal('login')">登录后留言</button>
+                            </div>
+                            <div class="msg-form" id="msgForm" style="display:none;">
+                                <textarea id="msgContent" placeholder="说点什么吧..." rows="3"></textarea>
+                                <button onclick="submitMessage()">发表留言</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </aside>
         </main>
     </div>
@@ -264,6 +318,81 @@ homeSearchInput.addEventListener('keydown', function(e) {
 });
 homeSearchInput.addEventListener('input', function() {
     hsClearBtn.style.display = this.value ? 'flex' : 'none';
+});
+
+// ===== 留言板（临时模拟，待接入 Supabase）=====
+function getMessages() {
+    try {
+        return JSON.parse(localStorage.getItem('gb_messages') || '[]');
+    } catch(e) { return []; }
+}
+
+function renderMessages() {
+    var list = document.getElementById('msgList');
+    if (!list) return;
+    var msgs = getMessages();
+    
+    if (msgs.length === 0) {
+        list.innerHTML = '<div class="msg-empty">还没有留言，来抢沙发吧~</div>';
+        return;
+    }
+    
+    list.innerHTML = msgs.map(function(m) {
+        return '<div class="msg-item">' +
+            '<div class="msg-head">' +
+                '<span class="msg-avatar">' + (m.name ? m.name.charAt(0) : 'U') + '</span>' +
+                '<span class="msg-name">' + (m.name || '匿名') + '</span>' +
+                '<span class="msg-time">' + (m.time || '') + '</span>' +
+            '</div>' +
+            '<div class="msg-content">' + (m.content || '') + '</div>' +
+        '</div>';
+    }).join('');
+}
+
+function updateMsgInputArea() {
+    var user = getCurrentUser();
+    var loginTip = document.getElementById('msgLoginTip');
+    var msgForm = document.getElementById('msgForm');
+    if (!loginTip || !msgForm) return;
+    
+    if (user) {
+        loginTip.style.display = 'none';
+        msgForm.style.display = 'block';
+    } else {
+        loginTip.style.display = 'block';
+        msgForm.style.display = 'none';
+    }
+}
+
+function submitMessage() {
+    var content = document.getElementById('msgContent').value.trim();
+    if (!content) { alert('请输入留言内容'); return; }
+    
+    var user = getCurrentUser();
+    if (!user) { alert('请先登录'); return; }
+    
+    var msgs = getMessages();
+    msgs.unshift({
+        name: user.name,
+        content: content,
+        time: new Date().toLocaleString('zh-CN'),
+        approved: false  // 待审核
+    });
+    localStorage.setItem('gb_messages', JSON.stringify(msgs));
+    
+    document.getElementById('msgContent').value = '';
+    renderMessages();
+    alert('留言成功！等待审核后显示。');
+}
+
+// 初始化留言板
+document.addEventListener('DOMContentLoaded', function() {
+    renderMessages();
+    updateMsgInputArea();
+    // 监听登录状态变化，更新留言区
+    setInterval(function() {
+        updateMsgInputArea();
+    }, 1000);
 });
 </script>
 {{ end }}

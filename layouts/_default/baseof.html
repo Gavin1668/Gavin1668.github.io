@@ -60,10 +60,13 @@
             {{- end -}}
             {{- block "right-sidebar" . -}}{{ end }}
             <main class="main full-width">
-                {{- block "main" . }}{{- end }}
+                {{- block "main" . }}{{- end -}}
             </main>
         </div>
         {{ partial "footer/include.html" . }}
+
+        {{/* 登录/注册弹窗 */}}
+        {{ partial "auth-modal.html" . }}
 
         {{/* 全站壁纸切换按钮与面板 */}}
         <button class="wallbtn-fab" id="wallbtn-fab" type="button"><span class="dot"></span>更换壁纸</button>
