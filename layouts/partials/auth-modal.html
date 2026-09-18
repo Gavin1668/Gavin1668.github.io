@@ -34,6 +34,13 @@
                 <input type="email" id="registerEmail" placeholder="your@email.com（支持网易、QQ、163等）">
             </div>
             <div class="auth-field">
+                <label>验证码</label>
+                <div style="display:flex;gap:8px;">
+                    <input type="text" id="registerCode" placeholder="6位验证码" maxlength="6" style="flex:1;">
+                    <button type="button" id="sendCodeBtn" onclick="sendVerificationCode()" style="white-space:nowrap;font-size:12px;padding:10px 14px;border:1px solid #E8500E;border-radius:10px;background:#fff;color:#E8500E;cursor:pointer;transition:all .2s;">发送验证码</button>
+                </div>
+            </div>
+            <div class="auth-field">
                 <label>密码</label>
                 <input type="password" id="registerPassword" placeholder="至少6位密码" oninput="checkPasswordStrength()">
                 <div class="pw-strength">
@@ -344,9 +351,96 @@ async function handleForgotPassword() {
     }
 }
 
+// 发送验证码倒计时
+var countdownTimer = null;
+function startCountdown(seconds) {
+    var btn = document.getElementById('sendCodeBtn');
+    var remaining = seconds;
+    btn.disabled = true;
+    btn.textContent = remaining + '秒后重发';
+    btn.style.opacity = '0.6';
+    
+    countdownTimer = setInterval(function() {
+        remaining--;
+        if (remaining <= 0) {
+            clearInterval(countdownTimer);
+            btn.disabled = false;
+            btn.textContent = '发送验证码';
+            btn.style.opacity = '1';
+        } else {
+            btn.textContent = remaining + '秒后重发';
+        }
+    }, 1000);
+}
+
+// 发送验证码
+async function sendVerificationCode() {
+    var email = document.getElementById('registerEmail').value.trim();
+    
+    if (!email) { showError('registerError', '请先输入邮箱'); return; }
+    if (!email.includes('@')) { showError('registerError', '邮箱格式不正确'); return; }
+    
+    // 邮箱域名白名单检查
+    if (!checkEmailDomain(email)) {
+        showError('registerError', '暂不支持该邮箱后缀，请使用 QQ、163、126、Gmail 等常用邮箱注册');
+        return;
+    }
+    
+    // 反机器人检查
+    var botError = antiBotCheck();
+    if (botError) {
+        showError('registerError', botError);
+        return;
+    }
+    
+    var btn = document.getElementById('sendCodeBtn');
+    btn.disabled = true;
+    btn.textContent = '发送中...';
+    
+    try {
+        // 调用 Edge Function 发送验证码
+        const { data, error } = await supabaseClient.functions.invoke('email-verification', {
+            body: { action: 'send', email: email }
+        });
+        
+        if (error) throw error;
+        
+        if (data && data.success) {
+            showError('registerError', '验证码已发送，请查收邮箱（5分钟内有效）');
+            document.getElementById('registerError').style.background = '#f6ffed';
+            document.getElementById('registerError').style.borderColor = '#b7eb8f';
+            document.getElementById('registerError').style.color = '#52c41a';
+            startCountdown(60);
+        } else {
+            throw new Error(data?.error || '发送失败');
+        }
+    } catch (err) {
+        showError('registerError', err.message || '发送失败，请稍后再试');
+        btn.disabled = false;
+        btn.textContent = '发送验证码';
+    }
+}
+
+// 验证验证码
+async function verifyCode(email, code) {
+    try {
+        const { data, error } = await supabaseClient.functions.invoke('email-verification', {
+            body: { action: 'verify', email: email, code: code }
+        });
+        
+        if (error) throw error;
+        
+        return data && data.success;
+    } catch (err) {
+        console.error('验证验证码失败:', err);
+        return false;
+    }
+}
+
 // 注册
 async function handleRegister() {
     var email = document.getElementById('registerEmail').value.trim();
+    var code = document.getElementById('registerCode').value.trim();
     var password = document.getElementById('registerPassword').value;
     var password2 = document.getElementById('registerPassword2').value;
     
@@ -359,6 +453,9 @@ async function handleRegister() {
         return;
     }
     
+    if (!code) { showError('registerError', '请输入验证码'); return; }
+    if (code.length !== 6) { showError('registerError', '验证码为6位数字'); return; }
+    
     if (password.length < 6) { showError('registerError', '密码至少6位'); return; }
     if (password !== password2) { showError('registerError', '两次输入的密码不一致'); return; }
     
@@ -369,6 +466,18 @@ async function handleRegister() {
         return;
     }
     
+    // 先验证验证码
+    showError('registerError', '正在验证验证码...');
+    document.getElementById('registerError').style.background = '#e6f7ff';
+    document.getElementById('registerError').style.borderColor = '#91d5ff';
+    document.getElementById('registerError').style.color = '#1890ff';
+    
+    var verified = await verifyCode(email, code);
+    if (!verified) {
+        showError('registerError', '验证码错误或已过期，请重新获取');
+        return;
+    }
+    
     var name = generateRandomName();
     
     try {
@@ -376,12 +485,13 @@ async function handleRegister() {
             email: email,
             password: password,
             options: {
-                data: { name: name }
+                data: { name: name },
+                emailRedirectTo: window.location.origin
             }
         });
         if (error) throw error;
         closeAuthModal();
-        alert('注册成功！账号已创建。\n\n我们已向您的邮箱 ' + email + ' 发送了验证链接，请点击邮件中的链接完成验证后，再登录使用。');
+        alert('注册成功！欢迎 ' + name + '\n\n您的账号已创建，可以直接登录使用了。');
     } catch (err) {
         showError('registerError', translateError(err.message));
     }
