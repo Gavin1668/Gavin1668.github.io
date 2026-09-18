@@ -1,0 +1,57 @@
+{{ define "main" }}
+<style>
+.arch-page{max-width:900px;margin:0 auto;padding:20px;}
+.arch-title{font-size:28px;font-weight:700;margin-bottom:20px;color:var(--primary);}
+.arch-cats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px;}
+.arch-cat{
+    display:inline-flex;align-items:center;gap:4px;
+    padding:6px 14px;border-radius:20px;
+    background:var(--card-background);border:1px solid var(--card-border);
+    font-size:13px;color:var(--text-color);text-decoration:none;
+    transition:all .2s;
+}
+.arch-cat:hover{border-color:var(--accent);color:var(--accent);}
+.arch-cat .count{font-size:11px;opacity:.6;}
+.arch-year{font-size:18px;font-weight:600;margin:24px 0 12px;color:var(--primary);}
+.arch-list{list-style:none;padding:0;margin:0;}
+.arch-item{
+    display:flex;align-items:baseline;gap:12px;
+    padding:10px 0;border-bottom:1px solid var(--card-border);
+}
+.arch-item .date{font-size:13px;color:var(--text-light);min-width:90px;font-family:monospace;}
+.arch-item .title{font-size:15px;color:var(--text-color);text-decoration:none;}
+.arch-item .title:hover{color:var(--accent);}
+.arch-item .cat{font-size:11px;color:var(--accent);}
+</style>
+
+<div class="arch-page">
+    <h1 class="arch-title">{{ .Title }}</h1>
+
+    <div class="arch-cats">
+        {{ range $name, $taxonomy := .Site.Taxonomies.categories }}
+        <a href="{{ "/categories/" | relLangURL }}{{ $name | urlize }}/" class="arch-cat">
+            {{ $name }}
+            <span class="count">{{ len $taxonomy }}</span>
+        </a>
+        {{ end }}
+    </div>
+
+    {{ range .Site.RegularPages.GroupByDate "2006" }}
+    <h2 class="arch-year">{{ .Key }}</h2>
+    <ul class="arch-list">
+        {{ range .Pages }}
+        <li class="arch-item">
+            <span class="date">{{ .Date.Format "2006-01-02" }}</span>
+            <a href="{{ .RelPermalink }}" class="title">{{ .Title }}</a>
+            {{ with .Params.categories }}
+            <span class="cat">{{ index . 0 }}</span>
+            {{ end }}
+        </li>
+        {{ end }}
+    </ul>
+    {{ end }}
+</div>
+{{ end }}
+
+{{ define "left-sidebar" }}{{ end }}
+{{ define "right-sidebar" }}{{ end }}
