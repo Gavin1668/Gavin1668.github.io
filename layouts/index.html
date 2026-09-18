@@ -362,6 +362,21 @@ homeSearchInput.addEventListener('input', function() {
 });
 
 // ===== 留言板（Supabase 版）=====
+
+// HTML 转义函数（防 XSS）
+function escapeHtml(str) {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+// 留言频率限制（前端：10秒内不能重复发）
+var lastSubmitTime = 0;
+
 async function fetchMessages() {
     const { data, error } = await supabaseClient
         .from('messages')
@@ -386,15 +401,16 @@ function renderMessages(msgs) {
     }
     
     list.innerHTML = msgs.map(function(m) {
-        var name = m.user_name || '匿名用户';
+        var name = escapeHtml(m.user_name || '匿名用户');
         var time = m.created_at ? new Date(m.created_at).toLocaleString('zh-CN') : '';
+        var content = escapeHtml(m.content || '');
         return '<div class="msg-item">' +
             '<div class="msg-head">' +
                 '<span class="msg-avatar">' + name.charAt(0) + '</span>' +
                 '<span class="msg-name">' + name + '</span>' +
                 '<span class="msg-time">' + time + '</span>' +
             '</div>' +
-            '<div class="msg-content">' + (m.content || '') + '</div>' +
+            '<div class="msg-content">' + content + '</div>' +
         '</div>';
     }).join('');
 }
@@ -436,6 +452,14 @@ async function submitMessage() {
     var content = document.getElementById('msgContent').value.trim();
     if (!content) { alert('请输入留言内容'); return; }
     
+    // 前端频率限制：10秒内不能重复发
+    var now = Date.now();
+    if (now - lastSubmitTime < 10000) {
+        var wait = Math.ceil((10000 - (now - lastSubmitTime)) / 1000);
+        alert('操作太频繁，请 ' + wait + ' 秒后再试');
+        return;
+    }
+    
     var user = getCurrentUser();
     if (!user) { alert('请先登录'); return; }
     
@@ -454,6 +478,7 @@ async function submitMessage() {
             ]);
         if (error) throw error;
         
+        lastSubmitTime = Date.now();
         document.getElementById('msgContent').value = '';
         alert('留言成功！等待站长审核后显示。');
     } catch (err) {
