@@ -140,6 +140,12 @@ params:
 menu:
   main:
     # 关于、归档、搜索 由对应页面的 front matter 管理，此处不重复定义
+    - identifier: dashboard
+      name: 工作台
+      url: /dashboard/
+      weight: 5
+      params:
+        icon: dashboard
     - identifier: recommended
       name: 推荐
       url: /recommended/
