@@ -1,5 +1,5 @@
 ---
-title: 归档
+title: 文章
 slug: archives
 date: 2026-08-05
 layout: archives
