@@ -25,7 +25,7 @@ body.home-v2 .site-footer{display:none;}
 .home-v2-app a{text-decoration:none;color:inherit;}
 .home-v2-app .wall{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;transition:opacity .4s ease;}
 .home-v2-app .tint{position:fixed;inset:0;z-index:1;background:rgba(255,255,255,.38);}
-.home-v2-app .stage{position:relative;z-index:2;max-width:1200px;width:100%;margin:0 auto;padding:0 40px;display:flex;flex-direction:column;}
+.home-v2-app .stage{position:relative;z-index:2;max-width:1200px;width:100%;margin:0 auto;padding:0 40px;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 .home-v2-app header{display:flex;align-items:center;justify-content:space-between;padding:26px 0 20px;flex-shrink:0;}
 .home-v2-app .logo{font-size:21px;font-weight:900;letter-spacing:.02em;}
 .home-v2-app .logo em{font-style:normal;color:var(--accent);}
@@ -37,10 +37,11 @@ body.home-v2 .site-footer{display:none;}
 .home-v2-app .wallbtn:hover{background:var(--accent);transform:translateY(-1px);}
 .home-v2-app .wallbtn .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);transition:background .2s;}
 .home-v2-app .wallbtn:hover .dot{background:#fff;}
-.home-v2-app .layout{display:grid;grid-template-columns:1fr 320px;gap:24px;padding-bottom:30px;}
-.home-v2-app .colL{min-width:0;display:flex;flex-direction:column;gap:24px;}
-.home-v2-app .colR{min-width:0;display:flex;flex-direction:column;gap:24px;}
-.home-v2-app .mod{background:rgba(255,255,255,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:22px;box-shadow:0 12px 40px rgba(20,25,40,.10);overflow:hidden;}
+.home-v2-app .layout{display:grid;grid-template-columns:1fr 320px;gap:24px;flex:1;min-height:0;overflow:hidden;}
+.home-v2-app .colL{min-width:0;display:flex;flex-direction:column;gap:24px;overflow-y:auto;overflow-x:hidden;padding-right:4px;scrollbar-width:none;-ms-overflow-style:none;}
+.home-v2-app .colR{min-width:0;display:flex;flex-direction:column;gap:24px;overflow-y:auto;overflow-x:hidden;padding-right:4px;scrollbar-width:none;-ms-overflow-style:none;}
+.home-v2-app .colL::-webkit-scrollbar,.home-v2-app .colR::-webkit-scrollbar{display:none;}
+.home-v2-app .mod{background:rgba(255,255,255,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.55);border-radius:22px;box-shadow:0 12px 40px rgba(20,25,40,.10);overflow:hidden;}
 .home-v2-app .mod-head{display:flex;align-items:baseline;justify-content:space-between;padding:22px 24px 0;}
 .home-v2-app .mod-head h3{font-family:'Noto Serif SC',serif;font-size:19px;font-weight:900;color:var(--ink);}
 .home-v2-app .mod-head .sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--sub);}
@@ -87,6 +88,7 @@ body.home-v2 .site-footer{display:none;}
 }
 .home-v2-app .msg-item .msg-name{font-size:13px;font-weight:600;color:var(--ink);}
 .home-v2-app .msg-item .msg-time{font-size:11px;color:var(--sub);margin-left:auto;}
+.home-v2-app .msg-item .msg-content{font-size:13px;color:var(--sub);line-height:1.6;padding-left:32px;}
 .home-v2-app .msg-item .msg-delete{
     font-size:11px;color:#cf1322;cursor:pointer;
     margin-left:8px;opacity:.6;transition:opacity .2s;
@@ -142,14 +144,6 @@ body.home-v2 .site-footer{display:none;}
 }
 .home-v2-app .user-info-row .user-name{font-size:15px;font-weight:600;color:var(--ink);}
 .home-v2-app .user-info-row .user-since{font-size:12px;color:var(--sub);margin-top:2px;}
-.home-v2-app .email-warn{
-    margin-bottom:10px;
-    font-size:12px;
-    line-height:1.5;
-}
-.home-v2-app .user-profile-btn{
-    margin-bottom:8px;
-}
 .home-v2-app .user-logout-btn{
     width:100%;padding:8px;border:1px solid var(--line);border-radius:10px;
     background:transparent;color:var(--sub);font-size:13px;
@@ -394,6 +388,86 @@ homeSearchInput.addEventListener('input', function() {
     hsClearBtn.style.display = this.value ? 'flex' : 'none';
 });
 
+// ===== 双列独立滚动 =====
+function initDualColumnScroll() {
+    var leftCol = document.querySelector('.colL');
+    var rightCol = document.querySelector('.colR');
+    
+    if (!leftCol || !rightCol) return;
+    
+    // 检查元素是否可以继续滚动
+    function canScroll(el, direction) {
+        if (direction > 0) {
+            // 向下滚
+            return el.scrollTop + el.clientHeight < el.scrollHeight - 1;
+        } else {
+            // 向上滚
+            return el.scrollTop > 0;
+        }
+    }
+    
+    // 处理列的滚动
+    function handleColScroll(col, otherCol, e) {
+        var delta = e.deltaY;
+        
+        // 如果当前列还能继续滚动
+        if (canScroll(col, delta)) {
+            return; // 让当前列自己滚
+        }
+        
+        // 当前列到底了，检查另一列能不能滚
+        if (canScroll(otherCol, delta)) {
+            // 另一列能滚，让另一列滚
+            otherCol.scrollTop += delta;
+            e.preventDefault();
+        }
+    }
+    
+    // 绑定鼠标滚轮事件
+    leftCol.addEventListener('wheel', function(e) {
+        handleColScroll(leftCol, rightCol, e);
+    }, { passive: false });
+    
+    rightCol.addEventListener('wheel', function(e) {
+        handleColScroll(rightCol, leftCol, e);
+    }, { passive: false });
+    
+    // 触摸事件支持（移动端）
+    var touchStartY = {};
+    
+    function handleTouchStart(col, e) {
+        touchStartY[col.id] = e.touches[0].clientY;
+    }
+    
+    function handleTouchMove(col, otherCol, e) {
+        var touchY = e.touches[0].clientY;
+        var delta = touchStartY[col.id] - touchY; // 正数=向下滑（内容向上滚）
+        touchStartY[col.id] = touchY;
+        
+        if (canScroll(col, delta)) {
+            return;
+        }
+        
+        if (canScroll(otherCol, delta)) {
+            otherCol.scrollTop += delta;
+            e.preventDefault();
+        }
+    }
+    
+    leftCol.addEventListener('touchstart', function(e) { handleTouchStart(leftCol, e); }, { passive: true });
+    rightCol.addEventListener('touchstart', function(e) { handleTouchStart(rightCol, e); }, { passive: true });
+    
+    leftCol.addEventListener('touchmove', function(e) { handleTouchMove(leftCol, rightCol, e); }, { passive: false });
+    rightCol.addEventListener('touchmove', function(e) { handleTouchMove(rightCol, leftCol, e); }, { passive: false });
+}
+
+// 页面加载完成后初始化
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDualColumnScroll);
+} else {
+    initDualColumnScroll();
+}
+
 // ===== 留言板（Supabase 版）=====
 
 // HTML 转义函数（防 XSS）
@@ -535,7 +609,6 @@ function updateMsgInputArea() {
     
     if (!user) {
         loginTip.style.display = 'block';
-        loginTip.innerHTML = '<button onclick="openAuthModal(\'login\')">登录后留言</button>';
         msgForm.style.display = 'none';
         return;
     }
