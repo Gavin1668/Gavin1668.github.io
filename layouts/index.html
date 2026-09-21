@@ -1,1 +1,721 @@
-test: 标题测试
+{{ define "body-class" }}home-v2{{ end }}
+
+{{ define "main" }}
+{{- $posts := where .Site.RegularPages "Type" "in" .Site.Params.mainSections -}}
+{{- $notHidden := where .Site.RegularPages "Params.hidden" "!=" true -}}
+{{- $filtered := ($posts | intersect $notHidden).ByDate.Reverse -}}
+
+{{- /* 推荐文章：按 config featuredPosts 顺序匹配 slug */ -}}
+{{- $bySlug := dict -}}
+{{- range $filtered -}}
+    {{- $bySlug = merge $bySlug (dict .Params.slug .) -}}
+{{- end -}}
+
+<style>
+/* ===== 首页沉浸式两列（home-v2）===== v3 */
+body.home-v2{background:#1A1A1A;}
+body.home-v2 .site-nav{display:none;}
+body.home-v2 .container.main-container{max-width:1280px;padding:0 0;position:relative;z-index:2;}
+body.home-v2 .container.main-container .main{padding:0;}
+body.home-v2 .site-footer{display:none;}
+
+.home-v2-app{--ink:#1A1A1A;--sub:#5C6470;--line:rgba(26,26,26,.12);--accent:#E8500E;--mono:'JetBrains Mono',monospace;
+  color:var(--ink);position:relative;display:flex;flex-direction:column;font-family:'Noto Sans SC',sans-serif;}
+.home-v2-app *{box-sizing:border-box;margin:0;padding:0;}
+.home-v2-app a{text-decoration:none;color:inherit;}
+.home-v2-app .wall{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;transition:opacity .4s ease;}
+.home-v2-app .tint{position:fixed;inset:0;z-index:1;background:rgba(255,255,255,.38);}
+.home-v2-app .stage{position:relative;z-index:2;max-width:1200px;width:100%;margin:0 auto;padding:0 40px;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+.home-v2-app header{display:flex;align-items:center;justify-content:space-between;padding:26px 0 20px;flex-shrink:0;}
+.home-v2-app .logo{font-size:21px;font-weight:900;letter-spacing:.02em;}
+.home-v2-app .logo em{font-style:normal;color:var(--accent);}
+.home-v2-app .hright{display:flex;align-items:center;gap:22px;}
+.home-v2-app .nav{display:flex;gap:24px;font-size:13.5px;color:var(--sub);}
+.home-v2-app .nav a{transition:color .18s;}
+.home-v2-app .nav a:hover,.home-v2-app .nav a.on{color:var(--ink);font-weight:600;}
+.home-v2-app .wallbtn{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#fff;background:rgba(26,26,26,.82);border:none;border-radius:99px;padding:9px 16px;cursor:pointer;transition:background .2s,transform .15s;font-family:'Noto Sans SC',sans-serif;}
+.home-v2-app .wallbtn:hover{background:var(--accent);transform:translateY(-1px);}
+.home-v2-app .wallbtn .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);transition:background .2s;}
+.home-v2-app .wallbtn:hover .dot{background:#fff;}
+.home-v2-app .layout{display:grid;grid-template-columns:1fr 320px;gap:24px;flex:1;min-height:0;overflow:hidden;}
+.home-v2-app .colL{min-width:0;display:flex;flex-direction:column;gap:24px;overflow-y:auto;overflow-x:hidden;padding-right:4px;scrollbar-width:none;-ms-overflow-style:none;}
+.home-v2-app .colR{min-width:0;display:flex;flex-direction:column;gap:24px;overflow-y:auto;overflow-x:hidden;padding-right:4px;scrollbar-width:none;-ms-overflow-style:none;}
+.home-v2-app .colL::-webkit-scrollbar,.home-v2-app .colR::-webkit-scrollbar{display:none;}
+.home-v2-app .mod{background:rgba(255,255,255,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.55);border-radius:22px;box-shadow:0 12px 40px rgba(20,25,40,.10);overflow:hidden;}
+.home-v2-app .mod-head{display:flex;align-items:baseline;justify-content:space-between;padding:22px 24px 0;}
+.home-v2-app .mod-head h3{font-family:'Noto Serif SC',serif;font-size:19px;font-weight:900;color:var(--ink);}
+.home-v2-app .mod-head .sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--sub);}
+.home-v2-app .mod-body{padding:14px 24px 20px;}
+.home-v2-app .post{display:grid;grid-template-columns:84px 1fr;gap:18px;padding:17px 0;border-bottom:1px solid var(--line);position:relative;transition:padding-left .2s ease;}
+.home-v2-app .post:last-child{border-bottom:none;}
+.home-v2-app .post::before{content:'';position:absolute;left:-22px;top:16px;bottom:16px;width:2px;background:transparent;transition:background .2s;}
+.home-v2-app .post:hover::before{background:var(--accent);}
+.home-v2-app .post .date{font-family:var(--mono);font-size:11.5px;color:var(--sub);padding-top:4px;letter-spacing:.05em;}
+.home-v2-app .post .p-title{font-size:16px;font-weight:600;line-height:1.55;transition:color .18s;}
+.home-v2-app .post:hover .p-title{color:var(--accent);}
+.home-v2-app .post .p-meta{display:flex;gap:9px;align-items:center;margin-bottom:7px;}
+.home-v2-app .post .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--accent);border:1px solid rgba(232,80,14,.4);padding:2px 8px;border-radius:2px;}
+.home-v2-app .post .p-ex{font-size:12.5px;color:var(--sub);line-height:1.75;margin-top:6px;font-weight:300;}
+.home-v2-app .post .pick{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:#fff;background:var(--accent);padding:2px 8px;border-radius:2px;}
+.home-v2-app .vers{list-style:none;}
+.home-v2-app .vers li{display:flex;gap:16px;align-items:baseline;padding:10px 0;border-bottom:1px dashed var(--line);font-size:12.5px;line-height:1.7;color:var(--sub);}
+.home-v2-app .vers li:last-child{border-bottom:none;}
+.home-v2-app .vers .v-date{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap;font-weight:600;}
+.home-v2-app .vers .v-note{color:var(--ink);}
+.home-v2-app .about{padding:28px 24px 22px;text-align:center;}
+.home-v2-app .about img{width:86px;height:86px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 6px 18px rgba(20,25,40,.16);}
+.home-v2-app .about .nm{font-family:'Noto Serif SC',serif;font-size:22px;font-weight:900;margin-top:14px;color:var(--ink);}
+.home-v2-app .about .rl{font-size:12.5px;color:var(--sub);line-height:1.85;margin-top:10px;}
+.home-v2-app .about .links{display:flex;gap:10px;justify-content:center;margin-top:16px;}
+.home-v2-app .about .links a{font-family:var(--mono);font-size:11px;color:var(--sub);border:1px solid var(--line);padding:6px 14px;border-radius:99px;transition:color .18s,border-color .18s;}
+.home-v2-app .about .links a:hover{color:var(--accent);border-color:var(--accent);}
+.home-v2-app .hot{list-style:none;counter-reset:h;}
+.home-v2-app .hot li{counter-increment:h;display:flex;gap:14px;align-items:baseline;padding:11px 0;border-bottom:1px dashed var(--line);font-size:12.5px;line-height:1.7;color:var(--sub);}
+.home-v2-app .hot li:last-child{border-bottom:none;}
+.home-v2-app .hot li::before{content:'0' counter(h);font-family:var(--mono);font-style:normal;font-weight:700;color:var(--accent);font-size:12px;}
+.home-v2-app .hot li:hover{color:var(--ink);}
+.home-v2-app .hot li a:hover{color:var(--ink);}
+.home-v2-app .msg-list{margin-bottom:16px;max-height:300px;overflow-y:auto;}
+.home-v2-app .msg-empty{text-align:center;color:var(--sub);font-size:13px;padding:20px 0;}
+.home-v2-app .msg-item{padding:10px 0;border-bottom:1px dashed var(--line);}
+.home-v2-app .msg-item:last-child{border-bottom:none;}
+.home-v2-app .msg-item .msg-head{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.home-v2-app .msg-item .msg-avatar{
+    width:24px;height:24px;border-radius:50%;
+    background:var(--accent);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:600;
+}
+.home-v2-app .msg-item .msg-name{font-size:13px;font-weight:600;color:var(--ink);}
+.home-v2-app .msg-item .msg-time{font-size:11px;color:var(--sub);margin-left:auto;}
+.home-v2-app .msg-item .msg-content{font-size:13px;color:var(--sub);line-height:1.6;padding-left:32px;}
+.home-v2-app .msg-item .msg-delete{
+    font-size:11px;color:#cf1322;cursor:pointer;
+    margin-left:8px;opacity:.6;transition:opacity .2s;
+}
+.home-v2-app .msg-item .msg-delete:hover{opacity:1;}
+.home-v2-app .msg-pagination{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:12px;padding-top:12px;border-top:1px solid var(--line);
+}
+.home-v2-app .msg-pagination button{
+    padding:6px 12px;border:1px solid var(--line);border-radius:8px;
+    background:transparent;color:var(--sub);font-size:12px;
+    cursor:pointer;transition:all .2s;
+}
+.home-v2-app .msg-pagination button:hover{border-color:var(--accent);color:var(--accent);}
+.home-v2-app .msg-pagination button:disabled{opacity:.4;cursor:not-allowed;}
+.home-v2-app .msg-pagination #msgPageInfo{font-size:12px;color:var(--sub);}
+.home-v2-app .msg-login-tip{text-align:center;padding:12px 0;}
+.home-v2-app .msg-login-tip button{
+    padding:8px 20px;border:none;border-radius:20px;
+    background:var(--accent);color:#fff;font-size:13px;
+    cursor:pointer;transition:background .2s;
+}
+.home-v2-app .msg-login-tip button:hover{background:#d1460c;}
+.home-v2-app .msg-form textarea{
+    width:100%;padding:10px 12px;border:1px solid var(--line);
+    border-radius:10px;font-size:13px;resize:vertical;
+    outline:none;box-sizing:border-box;
+    font-family:'Noto Sans SC',sans-serif;
+    margin-bottom:8px;
+}
+.home-v2-app .msg-form textarea:focus{border-color:var(--accent);}
+.home-v2-app .msg-form button{
+    width:100%;padding:10px;border:none;border-radius:10px;
+    background:var(--accent);color:#fff;font-size:13px;font-weight:600;
+    cursor:pointer;transition:background .2s;
+}
+.home-v2-app .msg-form button:hover{background:#d1460c;}
+.home-v2-app .user-panel .mod-body{padding:20px 24px;}
+.home-v2-app .user-not-logged .user-tip{font-size:13px;color:var(--sub);margin-bottom:12px;text-align:center;}
+.home-v2-app .user-login-btn{
+    width:100%;padding:11px;border:none;border-radius:12px;
+    background:var(--accent);color:#fff;font-size:14px;font-weight:600;
+    cursor:pointer;transition:background .2s;
+}
+.home-v2-app .user-login-btn:hover{background:#d1460c;}
+.home-v2-app .user-info-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.home-v2-app .user-info-row .user-avatar{
+    width:42px;height:42px;border-radius:50%;
+    background:var(--accent);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:16px;font-weight:700;
+}
+.home-v2-app .user-info-row .user-name{font-size:15px;font-weight:600;color:var(--ink);}
+.home-v2-app .user-info-row .user-since{font-size:12px;color:var(--sub);margin-top:2px;}
+.home-v2-app .user-logout-btn{
+    width:100%;padding:8px;border:1px solid var(--line);border-radius:10px;
+    background:transparent;color:var(--sub);font-size:13px;
+    cursor:pointer;transition:all .2s;
+}
+.home-v2-app .user-logout-btn:hover{border-color:#cf1322;color:#cf1322;}
+.home-v2-app footer.hv2-footer{position:relative;flex-shrink:0;max-width:1200px;margin:0 auto;padding:6px 40px 26px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--sub);letter-spacing:.05em;}
+.home-v2-app .home-search{
+    display:flex;align-items:center;gap:10px;
+    max-width:600px;margin:10px auto 24px;flex-shrink:0;
+    padding:0 18px;height:52px;
+    background:rgba(255,255,255,.65);backdrop-filter:blur(16px);
+    border-radius:26px;box-shadow:0 8px 28px rgba(20,25,40,.10);
+    transition:background .2s, box-shadow .2s;
+}
+.home-v2-app .home-search:focus-within{
+    background:rgba(255,255,255,.9);
+    box-shadow:0 10px 32px rgba(20,25,40,.14);
+}
+.home-v2-app .home-search .hs-icon{
+    font-size:16px;opacity:.5;flex-shrink:0;
+}
+.home-v2-app .home-search input{
+    flex:1;border:none;background:transparent;outline:none;
+    color:var(--ink);font-size:15px;
+}
+.home-v2-app .home-search input::placeholder{color:rgba(26,26,26,.4);}
+.home-v2-app .home-search .hs-clear{
+    width:24px;height:24px;border:none;border-radius:50%;
+    background:rgba(0,0,0,.15);color:#fff;font-size:14px;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;flex-shrink:0;line-height:1;
+    transition:background .2s;
+}
+.home-v2-app .home-search .hs-clear:hover{background:rgba(0,0,0,.3);}
+@media (max-width:900px){.home-v2-app .home-search{margin:10px 16px 20px;}}
+.home-v2-app .picker{position:fixed;right:28px;bottom:28px;z-index:6;width:300px;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:18px;box-shadow:0 18px 50px rgba(20,25,40,.22);padding:16px;transform:translateY(16px);opacity:0;pointer-events:none;transition:transform .25s ease,opacity .25s ease;}
+.home-v2-app .picker.open{transform:translateY(0);opacity:1;pointer-events:auto;}
+.home-v2-app .picker h5{font-size:13px;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;color:var(--ink);}
+.home-v2-app .picker h5 .g{font-family:var(--mono);font-size:10px;color:var(--sub);letter-spacing:.14em;font-weight:400;}
+.home-v2-app .pw-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.home-v2-app .pw{position:relative;border-radius:12px;overflow:hidden;height:84px;cursor:pointer;border:2px solid transparent;transition:border-color .18s,transform .15s;}
+.home-v2-app .pw:hover{transform:translateY(-2px);}
+.home-v2-app .pw.on{border-color:var(--accent);}
+.home-v2-app .pw img{width:100%;height:100%;object-fit:cover;display:block;}
+.home-v2-app .pw span{position:absolute;left:0;right:0;bottom:0;padding:3px 6px;font-size:10px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.7));}
+@media (max-width:900px){
+  body.home-v2{height:auto;overflow:auto;}
+  .home-v2-app{height:auto;overflow:visible;}
+  .home-v2-app .layout{grid-template-columns:1fr;flex:none;}
+  .home-v2-app .colR{display:flex;}
+  .home-v2-app .colL{height:auto;overflow:visible;}
+  .home-v2-app .colL .mod{max-height:none;}
+  .home-v2-app .colL .mod .mod-body{overflow:visible;}
+  .home-v2-app .stage{padding:0 16px;}
+  .home-v2-app .nav{display:none;}
+  .home-v2-app .post{grid-template-columns:1fr;gap:6px;}
+  .home-v2-app footer.hv2-footer{padding:6px 16px 22px;}
+}
+</style>
+
+<div class="home-v2-app">
+    <div class="stage">
+        <header>
+            <div class="logo">Gavin<em>'s</em> Blog</div>
+            <div class="hright">
+                <nav class="nav">
+                    {{ range .Site.Menus.main }}
+                        <a href="{{ .URL | relLangURL }}">{{ .Name }}</a>
+                    {{ end }}
+                </nav>
+                <button class="wallbtn" id="wallbtn" type="button" onclick="if(window.GBWall)GBWall.toggle()"><span class="dot"></span>更换壁纸</button>
+            </div>
+        </header>
+
+        <div class="home-search">
+            <span class="hs-icon">🔍</span>
+            <input type="text" id="homeSearchInput" placeholder="搜索文章标题、标签..." autocomplete="off">
+            <button type="button" class="hs-clear" id="hsClearBtn" onclick="homeClearSearch()" style="display:none;">×</button>
+        </div>
+
+        <main class="layout">
+            <section class="colL">
+                {{/* ===== 最近文章 ===== */}}
+                <div class="mod">
+                    <div class="mod-head"><h3>最近文章</h3><span class="sub">RECENT POSTS · 模块内可滚</span></div>
+                    <div class="mod-body">
+                        {{ range $filtered }}
+                        <article class="post">
+                            <div class="date">{{ .Date.Format "2006-01-02" }}</div>
+                            <div class="p-body">
+                                <div class="p-meta">
+                                    {{ with .Params.categories }}{{ if gt (len .) 0 }}<span class="tag">{{ index . 0 }}</span>{{ end }}{{ end }}
+                                </div>
+                                <a class="p-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                                <div class="p-ex">{{ with .Description }}{{ . | truncate 90 }}{{ else }}{{ .Summary | plainify | truncate 90 }}{{ end }}</div>
+                            </div>
+                        </article>
+                        {{ end }}
+                    </div>
+                </div>
+
+                {{/* ===== 推荐文章 ===== */}}
+                <div class="mod">
+                    <div class="mod-head"><h3>推荐文章</h3><span class="sub">EDITOR'S PICK · 模块内可滚</span></div>
+                    <div class="mod-body">
+                        {{ range .Site.Params.featuredPosts }}
+                            {{ $slug := . }}
+                            {{ with index $bySlug $slug }}
+                            <article class="post">
+                                <div class="date">{{ .Date.Format "2006-01-02" }}</div>
+                                <div class="p-body">
+                                    <div class="p-meta"><span class="pick">精选</span></div>
+                                    <a class="p-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                                    <div class="p-ex">{{ with .Description }}{{ . | truncate 90 }}{{ else }}{{ .Summary | plainify | truncate 90 }}{{ end }}</div>
+                                </div>
+                            </article>
+                            {{ end }}
+                        {{ end }}
+                    </div>
+                </div>
+
+                {{/* ===== 版本记录 ===== */}}
+                {{ $versions := .Site.Data.versions }}
+                {{ if $versions }}
+                <div class="mod">
+                    <div class="mod-head"><h3>版本记录</h3><span class="sub">CHANGELOG</span></div>
+                    <div class="mod-body">
+                        <ol class="vers">
+                            {{ range $versions }}
+                            <li><span class="v-date">{{ .date }}</span><span class="v-note">{{ .note }}</span></li>
+                            {{ end }}
+                        </ol>
+                    </div>
+                </div>
+                {{ end }}
+            </section>
+
+            <aside class="colR">
+                {{/* ===== 用户登录 ===== */}}
+                <div class="mod user-panel">
+                    <div class="mod-body">
+                        <div class="user-not-logged" id="userNotLogged">
+                            <p class="user-tip">登录后可以留言、收藏文章</p>
+                            <button class="user-login-btn" onclick="openAuthModal('login')">登录 / 注册</button>
+                        </div>
+                        <div class="user-logged" id="userLogged" style="display:none;">
+                            <div class="user-info-row">
+                                <span class="user-avatar" id="userPanelAvatar">U</span>
+                                <div>
+                                    <div class="user-name" id="userPanelName">用户</div>
+                                    <div class="user-since" id="userPanelStatus">欢迎回来</div>
+                                </div>
+                            </div>
+                            <div class="email-warn" id="emailWarn" style="display:none;padding:8px 12px;background:#fff7e6;border:1px solid #ffd591;border-radius:8px;margin-bottom:10px;font-size:12px;color:#d46b08;text-align:center;">
+                                ⚠️ 邮箱未验证，请先完成邮箱验证
+                            </div>
+                            <button class="user-profile-btn" onclick="openProfileModal()" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--sub);font-size:13px;cursor:pointer;transition:all .2s;margin-bottom:8px;">个人资料设置</button>
+                            <button class="user-logout-btn" onclick="logout()">退出登录</button>
+                        </div>
+                    </div>
+                </div>
+
+                {{/* ===== 自我介绍 ===== */}}
+                <div class="mod about">
+                    {{ with .Site.Params.sidebar.avatar }}{{ if .enabled }}<img src="{{ .src | relURL }}" alt="Gavin">{{ end }}{{ end }}
+                    <div class="nm">{{ with .Site.Params.hero.name }}{{ . }}{{ else }}{{ .Site.Title }}{{ end }}</div>
+                    <div class="rl">{{ with .Site.Params.hero.role }}{{ . }}<br>{{ end }}{{ with .Site.Params.sidebar.subtitle }}{{ . }}{{ end }}</div>
+                    <div class="links">
+                        {{ with .Site.Params.socialGithub }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">GitHub</a>{{ end }}
+                        {{ with .Site.Params.socialEmail }}<a href="mailto:{{ . }}">Email</a>{{ end }}
+                        <a href="{{ "index.xml" | relURL }}">RSS</a>
+                    </div>
+                </div>
+
+                {{/* ===== 今日热门 ===== */}}
+                {{ $news := .Site.Data.news }}
+                {{ if $news }}
+                <div class="mod">
+                    <div class="mod-head"><h3>今日热门</h3><span class="sub">HOT</span></div>
+                    <div class="mod-body">
+                        <ol class="hot">
+                            {{ range first (default 5 .Site.Params.newsLimit) $news }}
+                            <li><a href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .title }}</a></li>
+                            {{ end }}
+                        </ol>
+                    </div>
+                </div>
+                {{ end }}
+
+                {{/* ===== 留言板 ===== */}}
+                <div class="mod">
+                    <div class="mod-head"><h3>留言板</h3><span class="sub">MESSAGE</span></div>
+                    <div class="mod-body">
+                        <div class="msg-list" id="msgList">
+                            <div class="msg-empty">还没有留言，来抢沙发吧~</div>
+                        </div>
+                        <div class="msg-pagination" id="msgPagination" style="display:none;">
+                            <button id="msgPrevBtn" onclick="prevPage()">上一页</button>
+                            <span id="msgPageInfo">1 / 1</span>
+                            <button id="msgNextBtn" onclick="nextPage()">下一页</button>
+                        </div>
+                        <div class="msg-input-area" id="msgInputArea">
+                            <div class="msg-login-tip" id="msgLoginTip">
+                                <button onclick="openAuthModal('login')">登录后留言</button>
+                            </div>
+                            <div class="msg-form" id="msgForm" style="display:none;">
+                                <textarea id="msgContent" placeholder="说点什么吧..." rows="3"></textarea>
+                                <button onclick="submitMessage()">发表留言</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <footer class="hv2-footer">
+        <span>© {{ with .Site.Params.footer.since }}{{ . }}{{ else }}2022{{ end }}-2026 GAVIN'S BLOG</span>
+        <span>HUGO · GITHUB PAGES · WEEKLY</span>
+    </footer>
+</div>
+<script>
+var homeSearchInput = document.getElementById('homeSearchInput');
+var hsClearBtn = document.getElementById('hsClearBtn');
+
+function homeDoSearch() {
+    var q = homeSearchInput.value.trim();
+    if (q) {
+        window.location.href = '/search/?q=' + encodeURIComponent(q);
+    }
+}
+function homeClearSearch() {
+    homeSearchInput.value = '';
+    hsClearBtn.style.display = 'none';
+    homeSearchInput.focus();
+}
+homeSearchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') homeDoSearch();
+});
+homeSearchInput.addEventListener('input', function() {
+    hsClearBtn.style.display = this.value ? 'flex' : 'none';
+});
+
+// ===== 双列独立滚动 =====
+function initDualColumnScroll() {
+    var leftCol = document.querySelector('.colL');
+    var rightCol = document.querySelector('.colR');
+    
+    if (!leftCol || !rightCol) return;
+    
+    // 检查元素是否可以继续滚动
+    function canScroll(el, direction) {
+        if (direction > 0) {
+            // 向下滚
+            return el.scrollTop + el.clientHeight < el.scrollHeight - 1;
+        } else {
+            // 向上滚
+            return el.scrollTop > 0;
+        }
+    }
+    
+    // 处理列的滚动
+    function handleColScroll(col, otherCol, e) {
+        var delta = e.deltaY;
+        
+        // 如果当前列还能继续滚动
+        if (canScroll(col, delta)) {
+            return; // 让当前列自己滚
+        }
+        
+        // 当前列到底了，检查另一列能不能滚
+        if (canScroll(otherCol, delta)) {
+            // 另一列能滚，让另一列滚
+            otherCol.scrollTop += delta;
+            e.preventDefault();
+        }
+    }
+    
+    // 绑定鼠标滚轮事件
+    leftCol.addEventListener('wheel', function(e) {
+        handleColScroll(leftCol, rightCol, e);
+    }, { passive: false });
+    
+    rightCol.addEventListener('wheel', function(e) {
+        handleColScroll(rightCol, leftCol, e);
+    }, { passive: false });
+    
+    // 触摸事件支持（移动端）
+    var touchStartY = {};
+    
+    function handleTouchStart(col, e) {
+        touchStartY[col.id] = e.touches[0].clientY;
+    }
+    
+    function handleTouchMove(col, otherCol, e) {
+        var touchY = e.touches[0].clientY;
+        var delta = touchStartY[col.id] - touchY; // 正数=向下滑（内容向上滚）
+        touchStartY[col.id] = touchY;
+        
+        if (canScroll(col, delta)) {
+            return;
+        }
+        
+        if (canScroll(otherCol, delta)) {
+            otherCol.scrollTop += delta;
+            e.preventDefault();
+        }
+    }
+    
+    leftCol.addEventListener('touchstart', function(e) { handleTouchStart(leftCol, e); }, { passive: true });
+    rightCol.addEventListener('touchstart', function(e) { handleTouchStart(rightCol, e); }, { passive: true });
+    
+    leftCol.addEventListener('touchmove', function(e) { handleTouchMove(leftCol, rightCol, e); }, { passive: false });
+    rightCol.addEventListener('touchmove', function(e) { handleTouchMove(rightCol, leftCol, e); }, { passive: false });
+}
+
+// 页面加载完成后初始化
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDualColumnScroll);
+} else {
+    initDualColumnScroll();
+}
+
+// ===== 留言板（Supabase 版）=====
+
+// HTML 转义函数（防 XSS）
+function escapeHtml(str) {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+// 留言分页
+var currentPage = 1;
+var pageSize = 10;
+var totalCount = 0;
+
+// 留言频率限制（前端：10秒内不能重复发）
+var lastSubmitTime = 0;
+
+async function fetchMessages(page) {
+    var from = (page - 1) * pageSize;
+    var to = from + pageSize - 1;
+    
+    const { data, error, count } = await supabaseClient
+        .from('messages')
+        .select('*', { count: 'exact' })
+        .eq('approved', true)
+        .order('created_at', { ascending: false })
+        .range(from, to);
+    
+    if (error) {
+        console.error('获取留言失败:', error);
+        totalCount = 0;
+        return [];
+    }
+    totalCount = count || 0;
+    return data || [];
+}
+
+function renderMessages(msgs) {
+    var list = document.getElementById('msgList');
+    if (!list) return;
+    
+    var currentUser = getCurrentUser();
+    
+    if (!msgs || msgs.length === 0) {
+        list.innerHTML = '<div class="msg-empty">还没有留言，来抢沙发吧~</div>';
+        document.getElementById('msgPagination').style.display = 'none';
+        return;
+    }
+    
+    list.innerHTML = msgs.map(function(m) {
+        var name = escapeHtml(m.user_name || '匿名用户');
+        var time = m.created_at ? new Date(m.created_at).toLocaleString('zh-CN') : '';
+        var content = escapeHtml(m.content || '');
+        var deleteBtn = '';
+        // 如果是当前用户的留言，显示删除按钮
+        if (currentUser && m.user_id === currentUser.id) {
+            deleteBtn = '<span class="msg-delete" onclick="deleteMessage(' + m.id + ', this)">删除</span>';
+        }
+        return '<div class="msg-item">' +
+            '<div class="msg-head">' +
+                '<span class="msg-avatar">' + name.charAt(0) + '</span>' +
+                '<span class="msg-name">' + name + '</span>' +
+                '<span class="msg-time">' + time + '</span>' +
+                deleteBtn +
+            '</div>' +
+            '<div class="msg-content">' + content + '</div>' +
+        '</div>';
+    }).join('');
+    
+    // 更新分页按钮
+    updatePagination();
+}
+
+function updatePagination() {
+    var pagination = document.getElementById('msgPagination');
+    var totalPages = Math.ceil(totalCount / pageSize);
+    
+    if (totalPages <= 1) {
+        pagination.style.display = 'none';
+        return;
+    }
+    
+    pagination.style.display = 'flex';
+    document.getElementById('msgPageInfo').textContent = currentPage + ' / ' + totalPages;
+    document.getElementById('msgPrevBtn').disabled = currentPage <= 1;
+    document.getElementById('msgNextBtn').disabled = currentPage >= totalPages;
+}
+
+async function prevPage() {
+    if (currentPage <= 1) return;
+    currentPage--;
+    var msgs = await fetchMessages(currentPage);
+    renderMessages(msgs);
+}
+
+async function nextPage() {
+    var totalPages = Math.ceil(totalCount / pageSize);
+    if (currentPage >= totalPages) return;
+    currentPage++;
+    var msgs = await fetchMessages(currentPage);
+    renderMessages(msgs);
+}
+
+// 删除留言
+async function deleteMessage(id, el) {
+    if (!confirm('确定要删除这条留言吗？')) return;
+    
+    try {
+        const { error } = await supabaseClient
+            .from('messages')
+            .delete()
+            .eq('id', id);
+        
+        if (error) throw error;
+        
+        // 从页面移除
+        var item = el.closest('.msg-item');
+        if (item) item.remove();
+        
+        // 如果当前页删空了，回到上一页
+        var list = document.getElementById('msgList');
+        if (list.children.length === 0 && currentPage > 1) {
+            prevPage();
+        }
+    } catch (err) {
+        alert('删除失败：' + (err.message || '请稍后再试'));
+    }
+}
+
+function updateMsgInputArea() {
+    var user = getCurrentUser();
+    var loginTip = document.getElementById('msgLoginTip');
+    var msgForm = document.getElementById('msgForm');
+    if (!loginTip || !msgForm) return;
+    
+    if (!user) {
+        loginTip.style.display = 'block';
+        msgForm.style.display = 'none';
+        return;
+    }
+    
+    // 检查邮箱是否已验证
+    if (!user.email_confirmed_at) {
+        loginTip.style.display = 'block';
+        loginTip.innerHTML = '<p style="font-size:12px;color:#d46b08;margin-bottom:8px;">⚠️ 请先完成邮箱验证才能留言</p><button onclick="openAuthModal(\'login\')">重新验证</button>';
+        msgForm.style.display = 'none';
+        return;
+    }
+    
+    // 已登录且已验证
+    loginTip.style.display = 'none';
+    msgForm.style.display = 'block';
+}
+
+function updateUserPanel() {
+    var user = getCurrentUser();
+    var notLogged = document.getElementById('userNotLogged');
+    var logged = document.getElementById('userLogged');
+    if (!notLogged || !logged) return;
+    
+    if (user) {
+        notLogged.style.display = 'none';
+        logged.style.display = 'block';
+        var name = user.user_metadata?.name || '用户' + (user.id || '').slice(0, 5);
+        document.getElementById('userPanelName').textContent = name;
+        document.getElementById('userPanelAvatar').textContent = name.charAt(0);
+        
+        // 检查邮箱验证状态
+        var emailWarn = document.getElementById('emailWarn');
+        var statusText = document.getElementById('userPanelStatus');
+        if (user.email_confirmed_at) {
+            if (emailWarn) emailWarn.style.display = 'none';
+            if (statusText) statusText.textContent = '欢迎回来';
+        } else {
+            if (emailWarn) emailWarn.style.display = 'block';
+            if (statusText) statusText.textContent = '邮箱未验证';
+        }
+    } else {
+        notLogged.style.display = 'block';
+        logged.style.display = 'none';
+    }
+}
+
+async function submitMessage() {
+    var content = document.getElementById('msgContent').value.trim();
+    if (!content) { alert('请输入留言内容'); return; }
+    
+    var user = getCurrentUser();
+    if (!user) { alert('请先登录'); return; }
+    
+    // 检查邮箱是否已验证
+    if (!user.email_confirmed_at) {
+        alert('请先完成邮箱验证，才能发表留言！\n\n我们已向您的邮箱发送了验证链接，请点击邮件中的链接完成验证。');
+        return;
+    }
+    
+    // 前端频率限制：10秒内不能重复发
+    var now = Date.now();
+    if (now - lastSubmitTime < 10000) {
+        var wait = Math.ceil((10000 - (now - lastSubmitTime)) / 1000);
+        alert('操作太频繁，请 ' + wait + ' 秒后再试');
+        return;
+    }
+    
+    var name = user.user_metadata?.name || '用户' + (user.id || '').slice(0, 5);
+    
+    try {
+        const { data, error } = await supabaseClient
+            .from('messages')
+            .insert([
+                {
+                    user_id: user.id,
+                    user_name: name,
+                    content: content,
+                    approved: false
+                }
+            ]);
+        if (error) throw error;
+        
+        lastSubmitTime = Date.now();
+        document.getElementById('msgContent').value = '';
+        alert('留言成功！等待站长审核后显示。');
+    } catch (err) {
+        alert('留言失败：' + (err.message || '请稍后再试'));
+    }
+}
+
+// 初始化留言板
+document.addEventListener('DOMContentLoaded', async function() {
+    currentPage = 1;
+    var msgs = await fetchMessages(currentPage);
+    renderMessages(msgs);
+    updateMsgInputArea();
+    updateUserPanel();
+});
+
+// 监听登录状态变化，更新用户面板和留言区
+setInterval(function() {
+    updateMsgInputArea();
+    updateUserPanel();
+}, 1000);
+</script>
+{{ end }}
+
+{{/* 首页自绘两列，隐藏主题侧栏 */}}
+{{ define "left-sidebar" }}{{ end }}
+{{ define "right-sidebar" }}{{ end }}
