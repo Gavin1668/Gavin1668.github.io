@@ -12,7 +12,7 @@
 {{- end -}}
 
 <style>
-/* ===== 首页沉浸式两列（home-v2）===== v5 */
+/* ===== 首页沉浸式两列（home-v2）===== v5.2 */
 body.home-v2{background:#1A1A1A;}
 body.home-v2 .site-nav{display:none;}
 body.home-v2 .container.main-container{max-width:1280px;padding:0 0;position:relative;z-index:2;}
@@ -20,12 +20,12 @@ body.home-v2 .container.main-container .main{padding:0;}
 body.home-v2 .site-footer{display:none;}
 
 .home-v2-app{--ink:#1A1A1A;--sub:#5C6470;--line:rgba(26,26,26,.12);--accent:#E8500E;--mono:'JetBrains Mono',monospace;
-  color:var(--ink);position:relative;display:flex;flex-direction:column;font-family:'Noto Sans SC',sans-serif;}
+  color:var(--ink);position:relative;display:flex;flex-direction:column;height:100vh;overflow:hidden;font-family:'Noto Sans SC',sans-serif;}
 .home-v2-app *{box-sizing:border-box;margin:0;padding:0;}
 .home-v2-app a{text-decoration:none;color:inherit;}
 .home-v2-app .wall{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;transition:opacity .4s ease;}
 .home-v2-app .tint{position:fixed;inset:0;z-index:1;background:rgba(255,255,255,.38);}
-.home-v2-app .stage{position:relative;z-index:2;max-width:1200px;width:100%;margin:0 auto;padding:0 40px;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+.home-v2-app .stage{position:relative;z-index:2;max-width:1200px;width:100%;margin:0 auto;padding:0 40px;display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;}
 .home-v2-app header{display:flex;align-items:center;justify-content:space-between;padding:26px 0 20px;flex-shrink:0;}
 .home-v2-app .logo{font-size:21px;font-weight:900;letter-spacing:.02em;}
 .home-v2-app .logo em{font-style:normal;color:var(--accent);}
