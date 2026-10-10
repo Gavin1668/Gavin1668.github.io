@@ -20,4 +20,10 @@ tools:
     desc: 常用网站分类收纳与快速检索，我的网络入口。
     url: /tools/bookmarks.html
     tag: 效率工具
+  - name: 截图拼贴壁纸工坊
+    icon: 🖼️
+    desc: 多图拼贴壁纸，支持自定义布局、间距圆角、旋转翻转、背景模糊，一键导出高清壁纸。
+    url: https://4kvgyn6n4s4um.doubaoapps.com/app/app_17fsr1zh4yc
+    tag: 设计工具
+    external: true
 ---
