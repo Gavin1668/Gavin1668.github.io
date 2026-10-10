@@ -5,6 +5,22 @@
     background:transparent;cursor:pointer;font-size:18px;
     display:flex;align-items:center;justify-content:center;
 }
+.site-nav__tool{
+    display:inline-flex;align-items:center;gap:5px;
+    padding:6px 13px;border-radius:999px;
+    background:linear-gradient(135deg,#4c8dff,#7c5cff);
+    color:#fff !important;text-decoration:none;
+    font-size:13px;font-weight:600;line-height:1;
+    box-shadow:0 2px 8px rgba(76,141,255,.35);
+    transition:transform .15s, box-shadow .15s, filter .15s;
+    margin:0 4px;white-space:nowrap;
+}
+.site-nav__tool:hover{
+    transform:translateY(-1px);
+    box-shadow:0 4px 14px rgba(76,141,255,.5);
+    filter:brightness(1.08);
+}
+@media (max-width:640px){ .site-nav__tool{ padding:6px 10px; } }
 </style>
 <nav class="site-nav">
     <div class="site-nav__inner">
@@ -15,6 +31,7 @@
             {{ range .Site.Menus.main }}
                 <a class="site-nav__link{{ if or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }} site-nav__link--active{{ end }}" href="{{ .URL | relLangURL }}">{{ .Name }}</a>
             {{ end }}
+            <a class="site-nav__tool" href="https://4kvgyn6n4s4um.doubaoapps.com/app/app_17fsr1zh4yc" target="_blank" rel="noopener noreferrer" title="打开截图拼贴壁纸工坊">🖼️ 壁纸工坊</a>
             <button class="site-nav__toggle" id="site-nav-theme" type="button" aria-label="切换明暗模式" title="切换明暗模式">🌙</button>
         </div>
     </div>
@@ -39,4 +56,3 @@
     render();
 })();
 </script>
-
