@@ -1,5 +1,13 @@
 {{ define "main" }}
 <style>
+.back-home{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:99px;font-size:13px;font-weight:500;
+  background:var(--card-background,#fff);border:1px solid var(--card-border,#e5e7eb);
+  color:#6b7280;text-decoration:none;margin-bottom:18px;
+  transition:all .2s;
+}
+.back-home:hover{border-color:#E8500E;color:#E8500E;transform:translateX(-2px);}
 .arch-page{max-width:900px;margin:0 auto;padding:20px;}
 .arch-title{font-size:28px;font-weight:700;margin-bottom:20px;color:var(--primary);}
 .arch-cats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px;}
@@ -25,6 +33,7 @@
 </style>
 
 <div class="arch-page">
+    <a class="back-home" href="{{ "/" | relURL }}">← 返回首页</a>
     <h1 class="arch-title">{{ .Title }}</h1>
 
     <div class="arch-cats">
