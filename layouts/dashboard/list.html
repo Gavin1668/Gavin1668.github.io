@@ -269,7 +269,7 @@ function dashDoSearch(){const q=document.getElementById('dashSearch').value.trim
 function dashSaveEngine(){localStorage.setItem('dashSe',document.getElementById('dashEngine').value);}
 if(localStorage.getItem('dashSe'))document.getElementById('dashEngine').value=localStorage.getItem('dashSe');
 
-// Weather — 加 8 秒超时 + 失败可点击重试
+// Weather
 async function dashLoadWeather(){
   const descEl=document.getElementById('wDesc');
   const tempEl=document.getElementById('wTemp');
@@ -340,8 +340,9 @@ const dashDefaultBmGroups = [
   {
     id: 'g2', name: '工具',
     bookmarks: [
-      {name:'尺寸链',url:'/tools/',icon:'📐'},
-      {name:'书签夹',url:'/tools/',icon:'🔖'},
+      {name:'尺寸链',url:'/tools/dimensional-chain-calculator.html',icon:'📐'},
+      {name:'书签夹',url:'/tools/bookmarks.html',icon:'🔖'},
+      {name:'壁纸工坊',url:'https://4kvgyn6n4s4um.doubaoapps.com/app/app_17fsr1zh4yc',icon:'🖼️'},
     ]
   }
 ];
