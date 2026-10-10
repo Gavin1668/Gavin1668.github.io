@@ -139,6 +139,14 @@
     .dash-clock .time { font-size: 44px; }
     .dash-grid { grid-template-columns: 1fr; }
   }
+  @media (max-width: 480px) {
+    .bm-grid { grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap: 8px; }
+    .bm-item .favicon { width: 38px; height: 38px; font-size: 16px; border-radius: 8px; }
+    .bm-add { width: 38px; height: 38px; font-size: 16px; }
+    .dash-card { padding: 16px; }
+    .w-temp { font-size: 36px; }
+    .w-icon { font-size: 30px; }
+  }
   </style>
 
   <div class="dash-clock">
