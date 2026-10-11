@@ -1,0 +1,55 @@
+{{ define "main" }}
+<article class="hx-single" style="max-width:780px;margin:0 auto;padding:32px 24px;">
+  <header style="margin-bottom:24px;">
+    <div style="font-size:12px;color:#8b93a5;margin-bottom:8px;">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟阅读</div>
+    <h1 style="font-size:28px;font-weight:700;line-height:1.3;margin-bottom:12px;">{{ .Title }}</h1>
+    {{ with .Params.tags }}
+    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+      {{ range . }}<a href="{{ "tags/" | relURL }}{{ . | urlize }}/" style="font-size:12px;background:#e8efe9;color:#3a5a40;padding:3px 10px;border-radius:99px;text-decoration:none;">#{{ . }}</a>{{ end }}
+    </div>
+    {{ end }}
+  </header>
+
+  <div class="hx-content" style="font-size:15.5px;line-height:1.85;color:#1f2937;">
+    {{ .Content }}
+  </div>
+
+  <nav style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px;padding-top:24px;border-top:1px solid #e5e7eb;">
+    {{ with .NextInSection }}
+    <a href="{{ .RelPermalink }}" style="text-decoration:none;color:inherit;padding:16px;border:1px solid #e5e7eb;border-radius:12px;transition:.15s;" onmouseover="this.style.borderColor='#3a5a40'" onmouseout="this.style.borderColor='#e5e7eb'">
+      <div style="font-size:11px;color:#8b93a5;margin-bottom:4px;">← 上一篇</div>
+      <div style="font-size:14px;font-weight:600;">{{ .Title }}</div>
+    </a>
+    {{ else }}
+    <div></div>
+    {{ end }}
+    {{ with .PrevInSection }}
+    <a href="{{ .RelPermalink }}" style="text-decoration:none;color:inherit;padding:16px;border:1px solid #e5e7eb;border-radius:12px;text-align:right;transition:.15s;" onmouseover="this.style.borderColor='#3a5a40'" onmouseout="this.style.borderColor='#e5e7eb'">
+      <div style="font-size:11px;color:#8b93a5;margin-bottom:4px;">下一篇 →</div>
+      <div style="font-size:14px;font-weight:600;">{{ .Title }}</div>
+    </a>
+    {{ end }}
+  </nav>
+</article>
+<style>
+.hx-content h2{font-size:20px;font-weight:700;margin:28px 0 12px;}
+.hx-content h3{font-size:17px;font-weight:600;margin:22px 0 10px;}
+.hx-content p{margin:10px 0;}
+.hx-content code{background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:13.5px;}
+.hx-content pre{background:#1f2937;color:#e5e7eb;padding:14px 16px;border-radius:10px;overflow-x:auto;margin:14px 0;font-size:13px;line-height:1.6;}
+.hx-content pre code{background:transparent;padding:0;}
+.hx-content blockquote{border-left:3px solid #3a5a40;background:#f0f5f1;padding:10px 16px;margin:14px 0;border-radius:0 8px 8px 0;color:#374151;}
+.hx-content img{max-width:100%;border-radius:10px;}
+.hx-content table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;}
+.hx-content th,.hx-content td{border:1px solid #e5e7eb;padding:8px 12px;text-align:left;}
+.hx-content th{background:#f9fafb;}
+@media (prefers-color-scheme: dark){
+  .hx-single{color:#e4e6ef;}
+  .hx-content{color:#d1d5db;}
+  .hx-content code{background:#2a2e3d;}
+  .hx-content blockquote{background:#1a2420;color:#a7d0b0;}
+  .hx-content th{background:#1a1d28;}
+  .hx-content th,.hx-content td{border-color:#2a2e3d;}
+}
+</style>
+{{ end }}
