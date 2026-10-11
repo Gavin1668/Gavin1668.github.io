@@ -17,15 +17,15 @@ body.home-v3{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-seri
 body.home-v3 *{box-sizing:border-box;margin:0;padding:0;}
 body.home-v3 a{color:inherit;text-decoration:none;}
 .hv3-topbar{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--line);transition:background .25s;}
-.hv3-topbar-inner{width:100%;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hv3-topbar-inner{max-width:1280px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
 .hv3-logo{display:flex;align-items:center;}
 .hv3-logo img{height:38px;display:block;}
-body.home-v3.dark .hv3-logo img{content:url('/logo-dark.png');}
+body.home-v3.dark .hv3-logo img{content:url('{{ "logo-dark.png" | relURL }}');}
 .hv3-icons{display:flex;gap:4px;}
 .hv3-ibtn{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;color:var(--sub);transition:all .15s;}
 .hv3-ibtn:hover{background:var(--accent-soft);color:var(--accent);}
-.hv3-layout{display:grid;grid-template-columns:240px minmax(0,1fr) 300px;gap:30px;width:100%;margin:0 auto;padding:24px;align-items:start;max-width:1280px;}
-.hv3-l{position:sticky;top:72px;}
+.hv3-layout{display:grid;grid-template-columns:240px minmax(0,1fr) 300px;gap:30px;width:100%;max-width:1280px;margin:0 auto;padding:24px;align-items:start;}
+.hv3-l{position:sticky;top:72px;padding-right:8px;}
 .hv3-c{min-width:0;}
 .hv3-r{min-width:0;}
 .hv3-nav{display:flex;flex-direction:column;gap:3px;margin-bottom:16px;}
@@ -43,9 +43,9 @@ body.home-v3.dark .hv3-logo img{content:url('/logo-dark.png');}
 .hv3-socials a:hover{transform:translateY(-2px);background:var(--accent);color:#fff;}
 .hv3-search{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:50px;padding:12px 20px;box-shadow:var(--shadow);margin-bottom:20px;transition:background .25s;}
 .hv3-search input{flex:1;border:none;outline:none;font-size:14px;background:transparent;color:var(--ink);}
-.hv3-banner{height:220px;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#5a8a6a,#3a5a40);position:relative;margin-bottom:20px;display:flex;align-items:flex-end;justify-content:flex-end;padding:20px;}
-.hv3-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55) 0%,rgba(0,0,0,.15) 45%,rgba(0,0,0,0) 70%),url('https://picsum.photos/id/1018/1600/400') center/cover no-repeat;z-index:0;}
-.hv3-banner .bq{color:#fff;text-align:right;position:relative;z-index:1;text-shadow:0 1px 6px rgba(0,0,0,.4);}
+.hv3-banner{height:220px;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#5a8a6a,#3a5a40);position:relative;margin-bottom:24px;display:flex;align-items:flex-end;justify-content:flex-end;padding:20px;}
+.hv3-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,.3) 40%,rgba(0,0,0,0) 65%),url('https://picsum.photos/id/1018/1600/400') center/cover no-repeat;z-index:0;}
+.hv3-banner .bq{color:#fff;text-align:right;position:relative;z-index:1;text-shadow:0 2px 10px rgba(0,0,0,.85);}
 .hv3-banner .bq .t{font-size:14px;font-weight:600;}
 .hv3-banner .bq .s{font-size:11px;opacity:.85;margin-top:3px;}
 .hv3-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
@@ -106,7 +106,7 @@ body.home-v3.dark .hv3-logo img{content:url('/logo-dark.png');}
 
 <div class="hv3-topbar">
   <div class="hv3-topbar-inner">
-    <a class="hv3-logo" href="/" title="不愁有闲"><img src="/logo.png" alt="不愁有闲"></a>
+    <a class="hv3-logo" href="/" title="不愁有闲"><img src="{{ "logo.png" | relURL }}" alt="不愁有闲"></a>
     <div class="hv3-icons">
       <a class="hv3-ibtn" href="{{ with .Site.Params.socialGithub }}{{ . }}{{ else }}https://github.com/Gavin1668{{ end }}" target="_blank" title="GitHub">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.17c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.26 3.35.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .3.21.66.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
@@ -411,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function(){ hv3LoadMsgs(); hv3Load
 async function hv3LoadMoms(){
   try{
     var { data, error } = await supabaseClient.from('moments').select('*').order('created_at',{ascending:false}).limit(5);
-    if(error){ console.error('moments:',error); return; }
+    if(error){ console.error('moments:',error); document.getElementById('hv3MomList').innerHTML='<div style="text-align:center;color:var(--sub);font-size:12.5px;padding:16px 0;">还没有片刻记录</div>'; return; }
     var list = document.getElementById('hv3MomList');
     if(!data || data.length === 0){
       list.innerHTML = '<div style="text-align:center;color:var(--sub);font-size:12.5px;padding:16px 0;">还没有片刻记录</div>';
