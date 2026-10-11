@@ -101,7 +101,7 @@ body.home-v3.dark .hv3-logo img{content:url('{{ "logo-dark.png" | relURL }}');}
 .hv3-footer{border-top:1px solid var(--line);padding:20px;text-align:center;font-size:12px;color:var(--sub);margin-top:20px;}
 .hv3-footer .fb{font-weight:700;color:var(--ink);font-size:13px;margin-bottom:4px;}
 @media (max-width:1100px){.hv3-layout{grid-template-columns:220px 1fr;gap:24px;padding:20px;max-width:100%;}.hv3-r{display:none;}}
-@media (max-width:760px){.hv3-layout{grid-template-columns:1fr;padding:16px;gap:16px;}.hv3-l{position:static;}.hv3-nav{flex-direction:row;overflow-x:auto;padding-bottom:4px;gap:6px;}.hv3-nav a{white-space:nowrap;}.hv3-stats-card,.hv3-socials-card{display:none;}.hv3-post{flex-direction:column;gap:12px;}.hv3-thumb{width:100%;height:150px;}.hv3-banner{height:150px;padding:16px;}}
+@media (max-width:760px){.hv3-layout{grid-template-columns:1fr;padding:16px;gap:16px;}.hv3-l{position:static;}.hv3-nav{flex-direction:row;overflow-x:auto;padding-bottom:4px;gap:6px;}.hv3-nav a{white-space:nowrap;}.hv3-stats-card,.hv3-socials-card,.hv3-now{display:none;}.hv3-post{flex-direction:column;gap:12px;}.hv3-thumb{width:100%;height:150px;}.hv3-banner{height:150px;padding:16px;}}
 </style>
 
 <div class="hv3-topbar">
@@ -153,6 +153,10 @@ body.home-v3.dark .hv3-logo img{content:url('{{ "logo-dark.png" | relURL }}');}
       <a href="/tools/#wallpaper">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
         壁纸工坊
+      </a>
+      <a href="/bookmarks/">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        书签
       </a>
       <a href="/about/">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -216,6 +220,15 @@ body.home-v3.dark .hv3-logo img{content:url('{{ "logo-dark.png" | relURL }}');}
   </main>
 
   <aside class="hv3-r">
+    <div class="hv3-card hv3-now">
+      <h4>现在在做</h4>
+      <div style="font-size:13px;line-height:2;color:var(--ink);">
+        📍 <span>苏州</span><br>
+        💼 <span>机械工艺工程师</span><br>
+        📖 <span>齿轮工程 / Creo</span><br>
+        🛠 <span>折腾这个小站</span>
+      </div>
+    </div>
     <div class="hv3-card hv3-countdown">
       <div class="lbl">距离新年</div>
       <div class="num" id="hv3CountNum">--</div>
