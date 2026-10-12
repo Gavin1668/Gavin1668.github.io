@@ -6,11 +6,11 @@
 {{- $filtered := ($posts | intersect $notHidden).ByDate.Reverse -}}
 
 <style>
-body.home-v3{background:#f5f5fa;}
-body.home-v3 .site-nav{display:none;}
-body.home-v3 .container.main-container{max-width:100%;padding:0;}
-body.home-v3 .container.main-container .main{padding:0;}
-body.home-v3 .site-footer{display:none;}
+body.home-v3{background:#f5f5fa;margin:0;padding:0;}
+body.home-v3 .site-nav{display:none !important;}
+body.home-v3 .container.main-container{max-width:100% !important;padding:0 !important;width:100% !important;}
+body.home-v3 .container.main-container .main{padding:0 !important;width:100% !important;}
+body.home-v3 .site-footer{display:none !important;}
 body.home-v3{--bg:#f5f5fa;--card:#ffffff;--ink:#1a1a2e;--sub:#6b7280;--line:#e5e7eb;--accent:#3a5a40;--accent-soft:#e8efe9;--shadow:0 2px 12px rgba(0,0,0,.05);--shadow-hover:0 6px 20px rgba(0,0,0,.09);}
 body.home-v3.dark{--bg:#0f1117;--card:#1a1d28;--ink:#e4e6ef;--sub:#8b93a5;--line:#2a2e3d;--accent:#7da88a;--accent-soft:rgba(125,168,138,.15);--shadow:0 2px 12px rgba(0,0,0,.2);--shadow-hover:0 6px 20px rgba(0,0,0,.4);}
 body.home-v3{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);transition:background .25s,color .25s;}
