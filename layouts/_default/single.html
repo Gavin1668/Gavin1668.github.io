@@ -17,19 +17,19 @@ body.home-v3{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-seri
 body.home-v3 *{box-sizing:border-box;margin:0;padding:0;}
 body.home-v3 a{color:inherit;text-decoration:none;}
 .hv3-topbar{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--line);transition:background .25s;}
-.hv3-topbar-inner{max-width:1280px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hv3-topbar-inner{max-width:1320px;margin:0 auto;padding:12px 32px;display:flex;align-items:center;justify-content:space-between;}
 .hv3-logo{display:flex;align-items:center;}
 .hv3-logo img{height:38px;display:block;}
 body.home-v3.dark .hv3-logo img{content:url('{{ "logo-dark.png" | relURL }}');}
 .hv3-icons{display:flex;gap:4px;}
 .hv3-ibtn{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;color:var(--sub);transition:all .15s;}
 .hv3-ibtn:hover{background:var(--accent-soft);color:var(--accent);}
-.hv3-layout{display:grid;grid-template-columns:240px minmax(0,1fr) 300px;gap:30px;width:100%;max-width:1280px;margin:0 auto;padding:24px;align-items:start;}
+.hv3-layout{display:grid;grid-template-columns:250px minmax(0,1fr) 310px;gap:36px;width:100%;max-width:1320px;margin:0 auto;padding:28px 32px;align-items:start;}
 .hv3-l{position:sticky;top:72px;padding-right:8px;}
 .hv3-c{min-width:0;}
 .hv3-r{min-width:0;}
-.hv3-nav{display:flex;flex-direction:column;gap:3px;margin-bottom:16px;}
-.hv3-nav a{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:12px;color:var(--sub);font-size:14px;font-weight:500;transition:all .15s;}
+.hv3-nav{display:flex;flex-direction:column;gap:4px;margin-bottom:20px;}
+.hv3-nav a{display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:12px;color:var(--sub);font-size:14.5px;font-weight:500;transition:all .15s;}
 .hv3-nav a:hover{background:var(--accent-soft);color:var(--ink);}
 .hv3-nav a.on{background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(58,90,64,.3);}
 .hv3-nav a svg{flex-shrink:0;}
@@ -45,6 +45,11 @@ body.home-v3.dark .hv3-logo img{content:url('{{ "logo-dark.png" | relURL }}');}
 .hv3-socials .ic-mail{background:#3b82f6;}
 .hv3-socials .ic-rss{background:#f59e0b;}
 .hv3-socials .ic-wechat{background:#07c160;}
+.hv3-search{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:50px;padding:12px 20px;box-shadow:var(--shadow);margin-bottom:20px;transition:background .25s;}
+.hv3-search input{flex:1;border:none;outline:none;font-size:14px;background:transparent;color:var(--ink);}
+.hv3-search .tag{font-size:12px;color:var(--sub);border-right:1px solid var(--line);padding-right:10px;}
+.hv3-search .icon{color:var(--sub);}
+.hv3-lead{font-size:16.5px;line-height:1.7;color:var(--accent);font-weight:500;margin:0 0 22px;}
 .hv3-banner{height:220px;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#5a8a6a,#3a5a40);position:relative;margin-bottom:24px;display:flex;align-items:flex-end;justify-content:flex-end;padding:20px;}
 .hv3-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,.3) 40%,rgba(0,0,0,0) 65%),url('https://picsum.photos/id/1018/1600/400') center/cover no-repeat;z-index:0;}
 .hv3-banner .bq{color:#fff;text-align:right;position:relative;z-index:1;text-shadow:0 2px 10px rgba(0,0,0,.85);}
@@ -184,6 +189,11 @@ body.home-v3.dark .hv3-article code{background:#2a2e3d;color:#fda4af;}
   </aside>
 
   <main class="hv3-c">
+    <div class="hv3-search">
+      <span class="tag">文章</span>
+      <input type="text" id="hv3Search" placeholder="Search" autocomplete="off">
+      <span class="icon">🔍</span>
+    </div>
     <div class="hv3-banner">
       <div class="bq">
         <div class="t">美好的事情即将发生</div>
@@ -312,6 +322,13 @@ document.getElementById('hv3LoginBtn').onclick = function(){
   if(typeof openAuthModal === 'function') openAuthModal('login');
   else alert('登录系统加载中，请刷新页面');
 };
+(function(){
+  var input = document.getElementById('hv3Search');
+  if(!input) return;
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ var q = input.value.trim(); if(q) window.location.href = '/search/?q='+encodeURIComponent(q); }
+  });
+})();
 </script>
 {{ end }}
 
