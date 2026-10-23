@@ -160,6 +160,12 @@ menu:
       weight: 8
       params:
         icon: messages
+    - identifier: portfolio
+      name: 作品集
+      url: /works.html
+      weight: 9
+      params:
+        icon: archive
 
   social:
     - identifier: github
