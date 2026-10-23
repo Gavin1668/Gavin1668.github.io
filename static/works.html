@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Gavin · 个人生活工作作品集</title>
+<meta name="description" content="Gavin 的个人生活工作作品集：步进 / BLDC 电机结构开发工程师，收录工作作品、自研工具、成长时间线与生活记录。">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23e0a526'/%3E%3Ccircle cx='32' cy='32' r='14' fill='none' stroke='%231a1a2e' stroke-width='5'/%3E%3Cpath d='M32 6v8M32 50v8M6 32h8M50 32h8M14.6 14.6l5.7 5.7M43.7 43.7l5.7 5.7M49.4 14.6l-5.7 5.7M20.3 43.7l-5.7 5.7' stroke='%231a1a2e' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1a2e; --paper:#f5f5fa; --card:#ffffff;
+  --sub:#6b7280; --line:#e5e7eb;
+  --accent:#e0a526; --accent-ink:#1a1a2e;
+  --green:#3a5a40; --green-soft:#e8efe9;
+  --amber-soft:#faf3e0;
+  --shadow:0 2px 12px rgba(0,0,0,.05);
+  --shadow-hover:0 8px 24px rgba(0,0,0,.10);
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:Inter,-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;
+}
+body.dark{
+  --ink:#e4e6ef; --paper:#0f1117; --card:#1a1d28;
+  --sub:#8b93a5; --line:#2a2e3d;
+  --accent:#f0b233; --accent-ink:#1a1a2e;
+  --green:#7da88a; --green-soft:rgba(125,168,138,.15);
+  --amber-soft:rgba(240,178,51,.12);
+  --shadow:0 2px 12px rgba(0,0,0,.25);
+  --shadow-hover:0 8px 24px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+body{
+  font-family:var(--sans); background:var(--paper); color:var(--ink);
+  line-height:1.7; transition:background .25s,color .25s;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+::selection{background:var(--accent);color:var(--accent-ink);}
+
+/* ===== 顶部导航 ===== */
+.site-header{
+  position:sticky;top:0;z-index:100;background:var(--paper);
+  border-bottom:1px solid var(--line);transition:background .25s;
+}
+.nav-inner{
+  max-width:1320px;margin:0 auto;padding:0 32px;height:60px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.nav-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;letter-spacing:.02em;}
+.nav-brand svg{width:26px;height:26px;flex-shrink:0;}
+.nav-links{display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;}
+.nav-links::-webkit-scrollbar{display:none;}
+.nav-links a{
+  padding:10px 13px;border-radius:10px;color:var(--sub);font-size:14px;font-weight:500;
+  white-space:nowrap;transition:all .15s;min-height:44px;display:flex;align-items:center;
+}
+.nav-links a:hover{background:var(--amber-soft);color:var(--ink);}
+.nav-actions{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.theme-btn{
+  width:44px;height:44px;border-radius:10px;border:none;background:transparent;cursor:pointer;
+  color:var(--sub);display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.theme-btn:hover{background:var(--amber-soft);color:var(--ink);}
+
+/* ===== 布局容器 ===== */
+.container{max-width:1320px;margin:0 auto;padding:0 32px;}
+section{scroll-margin-top:76px;}
+
+/* ===== 章节头（编号 + 细线） ===== */
+.sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 28px;}
+.sec-no{font-family:var(--mono);font-weight:600;font-size:15px;color:var(--accent);letter-spacing:.06em;}
+.sec-title{font-size:clamp(22px,2.6vw,30px);font-weight:800;letter-spacing:-.01em;}
+.sec-line{flex:1;height:1px;background:var(--line);position:relative;top:6px;}
+
+/* ===== 01 Hero ===== */
+.hero{
+  padding:clamp(56px,9vw,96px) 0 clamp(40px,6vw,72px);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;opacity:.5;pointer-events:none;
+  background:
+    radial-gradient(circle at 85% 20%,var(--amber-soft) 0,transparent 42%),
+    linear-gradient(180deg,var(--paper),var(--paper) 72%,transparent);
+}
+.hero-grid{
+  position:relative;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
+  gap:clamp(28px,5vw,64px);align-items:center;
+}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:13px;letter-spacing:.12em;color:var(--green);font-weight:600;
+  margin-bottom:14px;display:flex;align-items:center;gap:10px;
+}
+.hero-eyebrow::before{content:"";width:28px;height:2px;background:var(--green);}
+.hero h1{
+  font-size:clamp(38px,6.4vw,72px);font-weight:800;line-height:1.06;letter-spacing:-.02em;
+  margin-bottom:18px;
+}
+.hero h1 .thin{font-weight:300;color:var(--sub);}
+.hero-role{
+  font-size:clamp(17px,2.2vw,21px);font-weight:600;color:var(--green);margin-bottom:16px;
+}
+.hero-quote{
+  font-size:clamp(15px,1.8vw,17px);color:var(--sub);max-width:34em;line-height:1.85;margin-bottom:28px;
+}
+.hero-meta{display:flex;gap:28px;flex-wrap:wrap;margin-bottom:32px;}
+.hero-stat .n{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--ink);}
+.hero-stat .l{font-size:12.5px;color:var(--sub);margin-top:2px;letter-spacing:.03em;}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:46px;padding:0 22px;border-radius:11px;font-weight:600;font-size:14.5px;
+  transition:all .18s;cursor:pointer;border:1px solid transparent;
+}
+.btn-primary{background:var(--accent);color:var(--accent-ink);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover);}
+.btn-outline{background:transparent;color:var(--ink);border-color:var(--line);}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+.btn-green{background:var(--green);color:#fff;}
+.btn-green:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover);}
+.hero-visual{position:relative;min-height:340px;display:flex;align-items:center;justify-content:center;}
+.hero-visual .ring{
+  position:absolute;border:2px solid var(--line);border-radius:50%;
+}
+.hero-visual .r1{width:300px;height:300px;}
+.hero-visual .r2{width:216px;height:216px;border-color:var(--amber-soft);}
+.hero-visual .core{
+  width:132px;height:132px;border-radius:50%;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;z-index:2;
+  box-shadow:0 14px 40px rgba(224,165,38,.28);
+}
+.hero-visual .core svg{width:64px;height:64px;color:var(--accent-ink);}
+.hero-visual .tag-gear{
+  position:absolute;right:6%;bottom:16%;background:var(--card);border:1px solid var(--line);
+  border-radius:10px;padding:9px 13px;font-family:var(--mono);font-size:12px;color:var(--green);
+  box-shadow:var(--shadow);z-index:3;
+}
+.hero-visual .tag-gd{
+  position:absolute;left:4%;top:18%;background:var(--card);border:1px solid var(--line);
+  border-radius:10px;padding:9px 13px;font-family:var(--mono);font-size:12px;color:var(--accent);
+  box-shadow:var(--shadow);z-index:3;
+}
+
+/* ===== 02 关于 ===== */
+.about-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,4vw,48px);}
+.about-copy p{color:var(--sub);font-size:15.5px;line-height:1.9;margin-bottom:16px;}
+.about-copy p b{color:var(--ink);font-weight:600;}
+.about-facts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px;}
+.fact{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--card);}
+.fact .k{font-size:12px;color:var(--sub);letter-spacing:.04em;margin-bottom:3px;}
+.fact .v{font-weight:700;font-size:15px;}
+.about-side{display:flex;flex-direction:column;gap:16px;}
+.about-photo{border-radius:16px;overflow:hidden;box-shadow:var(--shadow);}
+.about-photo img{width:100%;height:340px;object-fit:cover;}
+.about-life{
+  border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--card);
+}
+.about-life h5{font-size:13px;color:var(--sub);letter-spacing:.06em;margin-bottom:10px;font-weight:600;}
+.about-life ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.about-life li{display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--ink);}
+.about-life li svg{width:16px;height:16px;color:var(--green);flex-shrink:0;}
+
+/* ===== 03 技能 ===== */
+.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.skill{
+  border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;background:var(--card);
+  transition:all .18s;
+}
+.skill:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow-hover);}
+.skill .ic{width:38px;height:38px;border-radius:10px;background:var(--amber-soft);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+.skill .ic svg{width:20px;height:20px;}
+.skill h4{font-size:15px;font-weight:700;margin-bottom:4px;}
+.skill p{font-size:12.5px;color:var(--sub);line-height:1.6;}
+
+/* ===== 04 工作作品 ===== */
+.works-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.work-card{
+  border:1px solid var(--line);border-radius:16px;background:var(--card);overflow:hidden;
+  display:flex;flex-direction:column;transition:all .18s;
+}
+.work-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--shadow-hover);}
+.work-cover{height:150px;overflow:hidden;position:relative;}
+.work-cover img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+.work-card:hover .work-cover img{transform:scale(1.04);}
+.work-cover .role-tag{
+  position:absolute;left:12px;top:12px;background:var(--accent);color:var(--accent-ink);
+  font-family:var(--mono);font-size:11px;font-weight:600;padding:4px 10px;border-radius:99px;
+}
+.work-body{padding:16px 18px 18px;display:flex;flex-direction:column;flex:1;}
+.work-body h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+.work-body .desc{font-size:13.5px;color:var(--sub);line-height:1.7;margin-bottom:12px;flex:1;}
+.work-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.wt{font-size:11.5px;padding:3px 9px;border-radius:99px;background:var(--green-soft);color:var(--green);}
+.wt-accent{background:var(--amber-soft);color:var(--accent);}
+.work-metrics{border-top:1px dashed var(--line);padding-top:12px;display:flex;flex-direction:column;gap:6px;}
+.wm{display:flex;align-items:baseline;gap:8px;font-size:12.5px;}
+.wm .mk{font-family:var(--mono);font-weight:600;color:var(--ink);}
+.wm .mv{color:var(--sub);}
+
+/* ===== 05 自研工具 ===== */
+.tools-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.tool-card{
+  border:1px solid var(--line);border-radius:14px;padding:20px 18px;background:var(--card);
+  display:flex;flex-direction:column;transition:all .18s;
+}
+.tool-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--shadow-hover);}
+.tool-card .t-ic{
+  width:44px;height:44px;border-radius:12px;background:var(--ink);color:var(--paper);
+  display:flex;align-items:center;justify-content:center;margin-bottom:14px;
+}
+body.dark .tool-card .t-ic{background:var(--accent);color:var(--accent-ink);}
+.tool-card .t-ic svg{width:22px;height:22px;}
+.tool-card h4{font-size:15px;font-weight:700;margin-bottom:6px;}
+.tool-card p{font-size:12.5px;color:var(--sub);line-height:1.65;flex:1;margin-bottom:14px;}
+.tool-card .go{
+  display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--accent);
+  min-height:44px;
+}
+.tool-card .go svg{width:15px;height:15px;transition:transform .18s;}
+.tool-card:hover .go svg{transform:translateX(3px);}
+
+/* ===== 06 时间线 ===== */
+.timeline{display:flex;flex-direction:column;gap:0;position:relative;}
+.timeline::before{
+  content:"";position:absolute;top:30px;bottom:8px;left:144px;width:2px;
+  background:var(--line);
+}
+.tl-row{
+  display:grid;grid-template-columns:110px 40px minmax(0,1fr);gap:14px;padding:18px 0;
+  border-bottom:1px solid var(--line);align-items:start;position:relative;
+}
+.tl-row:last-child{border-bottom:none;}
+.tl-year{
+  font-family:var(--mono);font-weight:600;font-size:15px;color:var(--accent);
+  padding-top:2px;text-align:right;
+}
+.tl-axis{display:flex;flex-direction:column;align-items:center;}
+.tl-dot{
+  width:14px;height:14px;border-radius:50%;background:var(--accent);
+  border:3px solid var(--paper);box-shadow:0 0 0 2px var(--accent);
+  margin-top:5px;position:relative;z-index:2;flex-shrink:0;
+}
+.tl-content h4{font-size:16px;font-weight:700;margin-bottom:5px;}
+.tl-content p{font-size:13.5px;color:var(--sub);line-height:1.7;}
+.tl-content .tl-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.tl-content .wt{background:var(--amber-soft);color:var(--accent);}
+
+/* ===== 07 生活与投资 ===== */
+.life-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,48px);align-items:start;}
+.life-card{
+  border:1px solid var(--line);border-radius:16px;padding:22px;background:var(--card);
+  transition:all .18s;
+}
+.life-card:hover{border-color:var(--green);box-shadow:var(--shadow-hover);}
+.life-card h4{font-size:16px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.life-card h4 svg{width:18px;height:18px;color:var(--green);}
+.life-card p{font-size:14px;color:var(--sub);line-height:1.8;margin-bottom:14px;}
+.life-card ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.life-card li{font-size:14px;display:flex;gap:10px;align-items:baseline;}
+.life-card li .li-key{font-family:var(--mono);font-size:12.5px;color:var(--accent);font-weight:600;min-width:64px;}
+.life-card li .li-val{color:var(--ink);}
+.invest-list .focus{
+  display:inline-flex;align-items:center;gap:8px;background:var(--amber-soft);
+  border:1px solid var(--line);border-radius:99px;padding:8px 16px;margin:0 8px 10px 0;
+  font-size:13.5px;font-weight:600;color:var(--ink);
+}
+.invest-list .focus svg{width:14px;height:14px;color:var(--accent);}
+
+/* ===== 08 联系 ===== */
+.contact-card{
+  border:1px solid var(--line);border-radius:18px;padding:clamp(28px,4vw,44px);
+  background:var(--card);text-align:center;
+}
+.contact-card h3{font-size:clamp(20px,2.6vw,28px);font-weight:800;margin-bottom:12px;}
+.contact-card p{color:var(--sub);font-size:15px;margin-bottom:26px;}
+.contact-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:26px;}
+.contact-chips{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:99px;
+  padding:10px 16px;font-size:13.5px;color:var(--sub);transition:all .15s;
+}
+.chip:hover{border-color:var(--accent);color:var(--ink);}
+.chip svg{width:15px;height:15px;color:var(--accent);}
+
+/* ===== 页脚 ===== */
+.site-footer{border-top:1px solid var(--line);margin-top:64px;padding:28px 0;}
+.footer-inner{max-width:1320px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+.footer-inner .fb{font-weight:800;font-size:14px;}
+.footer-inner span{font-size:12.5px;color:var(--sub);}
+.backtop{
+  position:fixed;right:22px;bottom:22px;width:46px;height:46px;border-radius:50%;
+  background:var(--ink);color:var(--paper);border:none;cursor:pointer;font-size:16px;
+  box-shadow:var(--shadow-hover);opacity:0;pointer-events:none;transform:translateY(8px);
+  transition:all .22s;z-index:99;display:flex;align-items:center;justify-content:center;
+}
+body.dark .backtop{background:var(--accent);color:var(--accent-ink);}
+.backtop.show{opacity:1;pointer-events:auto;transform:translateY(0);}
+
+/* ===== 滚动揭示（单一编排时刻，200-300ms） ===== */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .28s ease,transform .28s ease;}
+.reveal.in{opacity:1;transform:none;}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none;}
+  .work-card:hover .work-cover img{transform:none;}
+  .btn-primary:hover,.btn-green:hover,.tool-card:hover,.work-card:hover,.skill:hover,.life-card:hover{transform:none;}
+}
+
+/* ===== 响应式 ===== */
+@media (max-width:1199px){
+  .skills-grid{grid-template-columns:repeat(3,1fr);}
+  .works-grid{grid-template-columns:repeat(2,1fr);}
+  .tools-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:899px){
+  .container,.nav-inner,.footer-inner{padding-left:16px;padding-right:16px;}
+  .hero-grid{grid-template-columns:1fr;}
+  .hero-visual{min-height:300px;order:-1;}
+  .about-grid{grid-template-columns:1fr;}
+  .life-grid{grid-template-columns:1fr;}
+  .hero-meta{gap:18px;}
+}
+@media (max-width:639px){
+  .skills-grid{grid-template-columns:repeat(2,1fr);}
+  .works-grid{grid-template-columns:1fr;}
+  .tools-grid{grid-template-columns:1fr;}
+  .about-facts{grid-template-columns:1fr;}
+  .tl-row{grid-template-columns:72px 30px minmax(0,1fr);gap:10px;}
+  .timeline::before{left:97px;}
+  .nav-brand{font-size:14px;}
+  .nav-links a{padding:10px 9px;font-size:13px;}
+  .hero-stat .n{font-size:22px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Gavin
+    </a>
+    <nav class="nav-links" aria-label="章节导航">
+      <a href="#about">关于</a>
+      <a href="#skills">技能</a>
+      <a href="#works">作品</a>
+      <a href="#tools">工具</a>
+      <a href="#journey">时间线</a>
+      <a href="#life">生活</a>
+      <a href="#contact">联系</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="theme-btn" id="themeBtn" title="切换深色模式" aria-label="切换深色模式">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===== 01 Hero ===== -->
+  <section class="hero" aria-label="介绍">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="hero-eyebrow">PORTFOLIO · 2026</div>
+          <h1>Gavin<br><span class="thin">把公差做进每一件事</span></h1>
+          <div class="hero-role">步进 / BLDC 电机结构开发工程师</div>
+          <p class="hero-quote">3 年电机结构设计经验，专注样机管理、BOM 维护与 GD&amp;T 尺寸链分析。工作里讲究精度与公差，生活里讲究认真与闲适——这个页面是我工作与生活的作品切片。</p>
+          <div class="hero-meta">
+            <div class="hero-stat"><div class="n">3+</div><div class="l">年电机结构设计</div></div>
+            <div class="hero-stat"><div class="n">8</div><div class="l">项核心技能</div></div>
+            <div class="hero-stat"><div class="n">4</div><div class="l">个自研工具</div></div>
+            <div class="hero-stat"><div class="n">3</div><div class="l">个行业项目</div></div>
+          </div>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="#works">查看工作作品</a>
+            <a class="btn btn-outline" href="#tools">浏览自研工具</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="ring r1"></div>
+          <div class="ring r2"></div>
+          <div class="core">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </div>
+          <div class="tag-gear">ISO 21771 · invα</div>
+          <div class="tag-gd">GD&amp;T · 0.009</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 02 关于我 ===== -->
+  <section id="about" class="container" style="padding-top:24px;padding-bottom:8px;" aria-label="关于我">
+    <div class="sec-head reveal">
+      <span class="sec-no">02</span>
+      <h2 class="sec-title">关于我</h2>
+      <span class="sec-line"></span>
+    </div>
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <p><b>工程师身份：</b>我是步进 / BLDC 电机结构开发工程师，负责结构设计、图纸审核与工艺标准化。日常打交道的是动态力矩、堵转、反电动势这些电机性能问题，以及清科项目、IVD 设备、KonicaMinolta 打印机电机等具体产品的结构校核与尺寸链分析。</p>
+        <p><b>工作方式：</b>习惯用第一性原理拆解问题，用剃刀原则砍掉冗余。图纸审核讲究可制造性落地，BOM 管理追求可追溯，供应商对接坚持参数说话——每个结论都要有数据支撑、可复算、可验证。</p>
+        <p><b>生活身份：</b>工作之外，我保持学习与思考。完成非全日制专升本，运营个人博客「不愁有闲」，喜欢把工作中的工具需求做成网页工具，也关注投资与认知成长。</p>
+        <div class="about-facts">
+          <div class="fact"><div class="k">所在地</div><div class="v">苏州</div></div>
+          <div class="fact"><div class="k">当前方向</div><div class="v">电机结构 · 样机管理</div></div>
+          <div class="fact"><div class="k">主用工具</div><div class="v">Creo · GD&amp;T</div></div>
+          <div class="fact"><div class="k">博客</div><div class="v">不愁有闲</div></div>
+        </div>
+      </div>
+      <div class="about-side reveal">
+        <div class="about-photo">
+          <img src="https://picsum.photos/seed/gavin-works/800/680" alt="工作台与图纸">
+        </div>
+        <div class="about-life">
+          <h5>一句话自我介绍</h5>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>把图纸画对，比画得快更重要</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>精度是设计师的尊严</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>在机械的世界里，公差就是金钱</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>日拱一卒，功不唐捐</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 03 技能矩阵 ===== -->
+  <section id="skills" class="container" style="padding-top:56px;padding-bottom:8px;" aria-label="技能">
+    <div class="sec-head reveal">
+      <span class="sec-no">03</span>
+      <h2 class="sec-title">技能矩阵</h2>
+      <span class="sec-line"></span>
+    </div>
+    <div class="skills-grid">
+      <div class="skill reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></div>
+        <h4>结构设计</h4>
+        <p>电机产品结构设计、图纸审核与工艺标准化，面向可制造性落地。</p>
+      </div>
+      <div class="skill reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16"/></svg></div>
+        <h4>BLDC / 步进电机</h4>
+        <p>动态力矩、堵转、反电动势优化，电机性能问题的深度解决。</p>
+      </div>
+      <div class="skill reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg></div>
+        <h4>GD&amp;T</h4>
+        <p>形位公差与表面粗糙度管控：圆度 0.009、粗糙度 0.8 / 1.6。</p>
+      </div>
+      <div class="skill reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg></div>
+        <h4>尺寸链分析</h4>
+        <p>尺寸链校核与公差分配，保证装配可行性与累计公差可控。</p>
+      </div>
+      <div class="skill reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-6 4 3 5-7"/></svg></div>
+        <h4>BOM 管理</h4>
+        <p>物料清单维护与版本追溯，供应商对接与变更管控。</p>
+      </div>
+      <div class="skill reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M19.1 4.9l-2.8 2.8M7.7 16.3l-2.8 2.8"/></svg></div>
+        <h4>样机管理</h4>
+        <p>样机开发流程、试制验证与问题闭环，从图纸到实物的全链路。</p>
+      </div>
+      <div class="skill reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 22v-4M2 12h4M22 12h-4"/><path d="M6 6L8.5 8.5M18 6L15.5 8.5M6 18l2.5-2.5M18 18l-2.5-2.5"/><circle cx="12" cy="12" r="2.5"/></svg></div>
+        <h4>工程计算</h4>
+        <p>渐开线齿轮、镜像角、变位系数等计算，把公式做成可用工具。</p>
+      </div>
+      <div class="skill reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 6h6M9 10h6M9 14h3"/></svg></div>
+        <h4>CAD（Creo）</h4>
+        <p>三维建模、工程图出图与模型管理，高效完成结构设计落地。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 04 工作作品 ===== -->
+  <section id="works" class="container" style="padding-top:56px;padding-bottom:8px;" aria-label="工作作品">
+    <div class="sec-head reveal">
+      <span class="sec-no">04</span>
+      <h2 class="sec-title">工作作品</h2>
+      <span class="sec-line"></span>
+    </div>
+    <div class="works-grid">
+      <article class="work-card reveal">
+        <div class="work-cover">
+          <img src="https://picsum.photos/seed/qingke-project/800/420" alt="清科项目结构校核">
+          <span class="role-tag">结构校核</span>
+        </div>
+        <div class="work-body">
+          <h4>清科项目</h4>
+          <p class="desc">步进电机结构的尺寸链校核与公差优化，面向装配可行性与性能一致性做系统性验证。</p>
+          <div class="work-tags">
+            <span class="wt">尺寸链</span><span class="wt">GD&amp;T</span><span class="wt-accent">Creo</span>
+          </div>
+          <div class="work-metrics">
+            <div class="wm"><span class="mk">圆度</span><span class="mv">0.009 mm 管控</span></div>
+            <div class="wm"><span class="mk">粗糙度</span><span class="mv">0.8 / 1.6 表面要求</span></div>
+          </div>
+        </div>
+      </article>
+      <article class="work-card reveal">
+        <div class="work-cover">
+          <img src="https://picsum.photos/seed/ivd-device/800/420" alt="IVD 设备电机选型">
+          <span class="role-tag">电机选型</span>
+        </div>
+        <div class="work-body">
+          <h4>IVD 设备</h4>
+          <p class="desc">体外诊断设备配套电机的选型评估与结构适配，兼顾动态力矩需求与空间、噪声约束。</p>
+          <div class="work-tags">
+            <span class="wt">BLDC</span><span class="wt">步进电机</span><span class="wt-accent">医疗设备</span>
+          </div>
+          <div class="work-metrics">
+            <div class="wm"><span class="mk">选型</span><span class="mv">多方案对比与验证</span></div>
+            <div class="wm"><span class="mk">交付</span><span class="mv">结构与选型评估报告</span></div>
+          </div>
+        </div>
+      </article>
+      <article class="work-card reveal">
+        <div class="work-cover">
+          <img src="https://picsum.photos/seed/konica-motor/800/420" alt="KonicaMinolta 打印机电机">
+          <span class="role-tag">结构优化</span>
+        </div>
+        <div class="work-body">
+          <h4>KonicaMinolta 打印机电机</h4>
+          <p class="desc">打印机电机结构的优化与校核，涉及齿轮工程：变位系数、粉末冶金工艺的可行性与寿命评估。</p>
+          <div class="work-tags">
+            <span class="wt">齿轮工程</span><span class="wt">粉末冶金</span><span class="wt-accent">变位系数</span>
+          </div>
+          <div class="work-metrics">
+            <div class="wm"><span class="mk">工艺</span><span class="mv">粉末冶金齿轮评估</span></div>
+            <div class="wm"><span class="mk">校核</span><span class="mv">结构强度与尺寸链验证</span></div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== 05 自研工具 ===== -->
+  <section id="tools" class="container" style="padding-top:56px;padding-bottom:8px;" aria-label="自研工具">
+    <div class="sec-head reveal">
+      <span class="sec-no">05</span>
+      <h2 class="sec-title">自研工具</h2>
+      <span class="sec-line"></span>
+    </div>
+    <div class="tools-grid">
+      <a class="tool-card reveal" href="/tools/gear-mirror-angle.html">
+        <div class="t-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+        <h4>齿轮镜像角计算器</h4>
+        <p>输入齿数、模数、压力角与变位系数，自动计算渐开线镜像平面角度，含公式与图析。</p>
+        <span class="go">打开工具 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="tool-card reveal" href="/tools/birthday-milestone.html">
+        <div class="t-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg></div>
+        <h4>生日 · 天数 · 里程碑</h4>
+        <p>公历 / 农历出生日期输入，计算累计天数、生日倒计时与纪念日清单，附带庆祝动效。</p>
+        <span class="go">打开工具 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="tool-card reveal" href="/tools/dimensional-chain-calculator.html">
+        <div class="t-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/><rect x="7" y="7" width="10" height="10" rx="1"/></svg></div>
+        <h4>国标 5847 尺寸链计算器</h4>
+        <p>面向尺寸链校核的专用计算器，按国标 5847 口径自动完成极值法与统计法计算。</p>
+        <span class="go">打开工具 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="tool-card reveal" href="/tools/#wallpaper">
+        <div class="t-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+        <h4>壁纸工坊</h4>
+        <p>在线壁纸制作与生成工具，随手产出适合手机与桌面的高质量壁纸。</p>
+        <span class="go">打开工具 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== 06 成长时间线 ===== -->
+  <section id="journey" class="container" style="padding-top:56px;padding-bottom:8px;" aria-label="成长时间线">
+    <div class="sec-head reveal">
+      <span class="sec-no">06</span>
+      <h2 class="sec-title">成长时间线</h2>
+      <span class="sec-line"></span>
+    </div>
+    <div class="timeline">
+      <div class="tl-row reveal">
+        <div class="tl-year">2023</div>
+        <div class="tl-axis"><span class="tl-dot"></span></div>
+        <div class="tl-content">
+          <h4>进入电机结构设计领域</h4>
+          <p>开始步进 / BLDC 电机结构开发工作，负责结构设计、图纸审核与工艺标准化，逐步承担样机管理与 BOM 维护职责。</p>
+          <div class="tl-tags"><span class="wt">结构设计</span><span class="wt">工艺标准化</span></div>
+        </div>
+      </div>
+      <div class="tl-row reveal">
+        <div class="tl-year">2024</div>
+        <div class="tl-axis"><span class="tl-dot"></span></div>
+        <div class="tl-content">
+          <h4>深入尺寸链与 GD&amp;T 体系</h4>
+          <p>系统应用形位公差与尺寸链分析方法，参与清科项目、IVD 设备等产品的结构校核，建立"数据可复算"的工作习惯。</p>
+          <div class="tl-tags"><span class="wt">GD&amp;T</span><span class="wt">尺寸链</span></div>
+        </div>
+      </div>
+      <div class="tl-row reveal">
+        <div class="tl-year">2025</div>
+        <div class="tl-axis"><span class="tl-dot"></span></div>
+        <div class="tl-content">
+          <h4>专升本毕业</h4>
+          <p>完成非全日制专升本学习并毕业，工作之余持续充电，保持对机械工程基础理论的体系化理解。</p>
+          <div class="tl-tags"><span class="wt">继续教育</span><span class="wt">理论体系</span></div>
+        </div>
+      </div>
+      <div class="tl-row reveal">
+        <div class="tl-year">2026</div>
+        <div class="tl-axis"><span class="tl-dot"></span></div>
+        <div class="tl-content">
+          <h4>独立项目与自研工具</h4>
+          <p>承担 KonicaMinolta 打印机电机等项目的结构优化，同时把日常工程计算做成网页工具（齿轮镜像角、尺寸链计算器等），开源到个人博客。</p>
+          <div class="tl-tags"><span class="wt">齿轮工程</span><span class="wt">自研工具</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 07 生活与投资 ===== -->
+  <section id="life" class="container" style="padding-top:56px;padding-bottom:8px;" aria-label="生活与投资">
+    <div class="sec-head reveal">
+      <span class="sec-no">07</span>
+      <h2 class="sec-title">生活与投资</h2>
+      <span class="sec-line"></span>
+    </div>
+    <div class="life-grid">
+      <div class="life-card reveal">
+        <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>生活日常</h4>
+        <p>坐标苏州，工科生的生活里既有图纸与公差，也有对慢生活与长期主义的坚持。博客「不愁有闲」记录工作方法、学习笔记与生活随笔。</p>
+        <ul>
+          <li><span class="li-key">写作</span><span class="li-val">技术博客 · 随笔 · 工具分享</span></li>
+          <li><span class="li-key">习惯</span><span class="li-val">日拱一卒，把工具化自动化做进日常</span></li>
+        </ul>
+      </div>
+      <div class="life-card reveal">
+        <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M19.1 4.9l-2.8 2.8M7.7 16.3l-2.8 2.8"/></svg>投资与认知</h4>
+        <p>关注长期主义与认知成长，持续学习投资与商业判断，把"慢慢来，比较快"用在投资与人生规划上。</p>
+        <div class="invest-list">
+          <span class="focus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2-6.3-4.5-6.3 4.5L8 13.8 2 9.4h7.6z"/></svg>纳瓦尔</span>
+          <span class="focus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2-6.3-4.5-6.3 4.5L8 13.8 2 9.4h7.6z"/></svg>姜胡说（抖音）</span>
+          <span class="focus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2-6.3-4.5-6.3 4.5L8 13.8 2 9.4h7.6z"/></svg>孙宇晨</span>
+        </div>
+        <p style="margin-top:12px;">纳瓦尔的杠杆与判断力、姜胡说的商业拆解、孙宇晨的执行力与视野——不同侧面的参照系，帮我校准长期选择。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 08 联系 ===== -->
+  <section id="contact" class="container" style="padding-top:56px;" aria-label="联系">
+    <div class="sec-head reveal">
+      <span class="sec-no">08</span>
+      <h2 class="sec-title">联系我</h2>
+      <span class="sec-line"></span>
+    </div>
+    <div class="contact-card reveal">
+      <h3>有项目想合作，或想交流技术？</h3>
+      <p>无论是电机结构设计、尺寸链校核，还是网页工具需求，欢迎随时联系。</p>
+      <div class="contact-actions">
+        <a class="btn btn-green" href="mailto:changjian2026@126.com">发邮件给我</a>
+        <a class="btn btn-outline" href="https://github.com/Gavin1668" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn btn-outline" href="https://gavin1668.github.io/" target="_blank" rel="noopener">访问博客</a>
+      </div>
+      <div class="contact-chips">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>changjian2026@126.com</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Gavin1668</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>苏州 · 中国</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="fb">Gavin · 不愁有闲</div>
+    <span>Copyright 2022-2026 · 个人生活工作作品集</span>
+  </div>
+</footer>
+
+<button class="backtop" id="backTop" title="回到顶部" aria-label="回到顶部">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script>
+(function(){
+  'use strict';
+  /* ===== 主题：跟随系统 + 手动记忆 ===== */
+  var saved = localStorage.getItem('wtheme');
+  var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var body = document.body;
+  body.classList.toggle('dark', dark);
+  var themeBtn = document.getElementById('themeBtn');
+  themeBtn.addEventListener('click', function(){
+    dark = !dark;
+    body.classList.toggle('dark', dark);
+    localStorage.setItem('wtheme', dark ? 'dark' : 'light');
+  });
+
+  /* ===== 回到顶部 ===== */
+  var backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', function(){
+    backTop.classList.toggle('show', window.scrollY > 400);
+  }, {passive:true});
+  backTop.addEventListener('click', function(){
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  /* ===== 滚动揭示（单一编排时刻） ===== */
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce) return;
+  var els = document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){ els.forEach(function(e){e.classList.add('in');}); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, {threshold:.12});
+  els.forEach(function(e){ io.observe(e); });
+})();
+</script>
+</body>
+</html>
