@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生日 · 天数 · 里程碑 · 庆祝</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --text:#1f2937; --muted:#6b7280;
+    --accent:#e8590c; --accent-soft:#fff3ec; --border:#e5e7eb; --radius:14px;
+    --good:#16a34a; --warn:#b45309;
+  }
+  body.dark{
+    --bg:#0b1220; --card:#111827; --text:#e5e7eb; --muted:#9ca3af; --border:#374151;
+    --accent:#fb923c; --accent-soft:#2b1c10;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.6;
+    transition:background .2s, color .2s;
+  }
+  .wrap{max-width:820px; margin:0 auto; padding:24px}
+  header{display:flex; justify-content:space-between; gap:12px; align-items:center; margin-bottom:16px}
+  h1{font-size:24px; margin:0}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+    padding:16px; margin-bottom:16px; box-shadow:0 8px 24px rgba(0,0,0,.04);
+  }
+  label{font-weight:600}
+  .seg{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap}
+  .seg button{
+    flex:1; min-width:120px; padding:10px; border:1px solid var(--border); border-radius:10px;
+    background:transparent; color:var(--text); font:inherit; font-weight:600; cursor:pointer;
+  }
+  .seg button.active{background:var(--accent); color:#fff; border-color:var(--accent)}
+  input[type=date], input[type=text], select{
+    width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:10px;
+    font:inherit; background:var(--card); color:var(--text);
+  }
+  .grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:10px}
+  .chk{display:flex; align-items:center; gap:8px; font-weight:500; margin-top:12px; cursor:pointer}
+  .chk input{width:18px; height:18px; accent-color:var(--accent)}
+  .row{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; align-items:center}
+  button{
+    border:0; border-radius:10px; padding:10px 16px; font:inherit; font-weight:600; cursor:pointer;
+  }
+  .primary{background:var(--accent); color:#fff}
+  .secondary{background:var(--accent-soft); color:var(--accent); border:1px solid var(--border)}
+  .ghost{background:transparent; color:var(--muted); border:1px solid var(--border)}
+  button:focus-visible{outline:3px solid rgba(232,89,12,.3); outline-offset:1px}
+  .hint{color:var(--muted); font-size:13px; margin-top:8px}
+  .big{
+    text-align:center; padding:8px 0 4px;
+  }
+  .big .num{font-size:52px; font-weight:800; color:var(--accent); line-height:1.15}
+  .big .cap{color:var(--muted); font-size:14px}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px}
+  .stat{
+    border:1px solid var(--border); border-radius:12px; padding:12px; text-align:center;
+    background:var(--accent-soft);
+  }
+  .stat .v{font-size:26px; font-weight:700; color:var(--accent)}
+  .stat .l{font-size:12px; color:var(--muted); margin-top:2px}
+  table{width:100%; border-collapse:collapse; margin-top:10px; font-size:14px}
+  th, td{border-bottom:1px solid var(--border); padding:9px 6px; text-align:left; vertical-align:top}
+  th{color:var(--muted); font-weight:600; white-space:nowrap}
+  td .sub{color:var(--muted); font-size:12px}
+  .today td{background:var(--accent-soft); font-weight:600}
+  .past td{opacity:.55}
+  .tag{
+    display:inline-block; padding:1px 8px; border-radius:999px; font-size:12px; white-space:nowrap;
+  }
+  .tag-0{background:var(--accent); color:#fff}
+  .tag-1{background:#dcfce7; color:var(--good)}
+  body.dark .tag-1{background:#12321f; color:#4ade80}
+  .tag-2{background:var(--accent-soft); color:var(--accent)}
+  .quote{
+    background:#0f172a; color:#e2e8f0; padding:14px; border-radius:10px; min-height:90px;
+    white-space:pre-wrap; word-break:break-word; margin:12px 0 0; font-size:14px;
+  }
+  .toast{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+    background:#111827; color:#fff; padding:10px 16px; border-radius:999px;
+    opacity:0; transition:.25s; pointer-events:none; font-size:14px; z-index:20;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+  #fx{position:fixed; inset:0; pointer-events:none; z-index:10; overflow:hidden}
+  .p{position:absolute; bottom:-40px; font-size:22px; animation:up linear forwards}
+  @keyframes up{
+    to{transform:translateY(-110vh) rotate(360deg); opacity:0}
+  }
+  @media (max-width:640px){
+    .wrap{padding:14px}
+    h1{font-size:20px}
+    .big .num{font-size:42px}
+    .grid2{grid-template-columns:1fr}
+    .grid3{grid-template-columns:1fr}
+    th{white-space:normal}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🎂 生日 · 天数 · 里程碑</h1>
+    <button class="ghost" id="themeBtn" type="button">🌙 深色</button>
+  </header>
+
+  <!-- ① 输入卡 -->
+  <section class="card">
+    <div class="seg" role="radiogroup" aria-label="历法选择">
+      <button type="button" data-mode="solar" class="active">公历输入</button>
+      <button type="button" data-mode="lunar">农历输入</button>
+    </div>
+
+    <div id="solarBox">
+      <label for="solarDate">出生日期（公历）</label>
+      <input type="date" id="solarDate" min="1900-01-31" max="2100-02-09">
+      <p class="hint" id="solarHint"></p>
+    </div>
+
+    <div id="lunarBox" hidden>
+      <label>出生日期（农历）</label>
+      <div class="grid3">
+        <div><select id="lyear" aria-label="农历年份"></select><p class="hint" style="margin:2px 0 0">年份</p></div>
+        <div><select id="lmonth" aria-label="农历月份"></select><p class="hint" style="margin:2px 0 0">月份</p></div>
+        <div><select id="lday" aria-label="农历日"></select><p class="hint" style="margin:2px 0 0">日</p></div>
+      </div>
+      <label class="chk"><input type="checkbox" id="lleap"> 闰月（仅当所选年份存在该闰月时生效）</label>
+      <p class="hint" id="lunarHint"></p>
+    </div>
+
+    <label class="chk"><input type="checkbox" id="byLunar"> 每年按农历过生日（勾选后倒计时与生日日期以农历为准；公历输入时自动换算）</label>
+
+    <div class="row" style="margin-top:14px">
+      <input type="text" id="nickname" placeholder="称呼（可选，用于祝福文案：如 宝宝 / 妈妈 / 闺蜜）" style="flex:1; min-width:200px">
+      <button class="primary" id="calcBtn" type="button">计算</button>
+    </div>
+  </section>
+
+  <!-- ② 主结果 -->
+  <section class="card big" id="resultMain" hidden>
+    <div class="cap" id="rSub"></div>
+    <div class="num" id="rDays">—</div>
+    <div class="cap" id="rAge"></div>
+    <div class="grid2">
+      <div class="stat"><div class="v" id="rCountdown">—</div><div class="l" id="rCountdownLabel">距下个生日</div></div>
+      <div class="stat"><div class="v" id="rNext">—</div><div class="l" id="rNextLabel">下次生日</div></div>
+    </div>
+    <p class="hint" id="rNote"></p>
+  </section>
+
+  <!-- ③ 里程碑 -->
+  <section class="card" id="resultMilestone" hidden>
+    <h2 style="margin:0; font-size:17px">📅 纪念日里程碑</h2>
+    <div style="overflow-x:auto">
+      <table id="mileTable">
+        <thead><tr><th>纪念日</th><th>公历日期</th><th>农历日期</th><th>距今</th></tr></thead>
+        <tbody id="mileBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ④ 庆祝 -->
+  <section class="card" id="celebrateCard" hidden>
+    <div class="row" style="margin-top:0">
+      <h2 style="margin:0; font-size:17px; flex:1">🎉 庆祝与祝福</h2>
+      <button class="primary" id="partyBtn" type="button">撒花庆祝</button>
+      <button class="secondary" id="copyBtn" type="button">复制祝福</button>
+    </div>
+    <div class="quote" id="quote" aria-live="polite"></div>
+  </section>
+</div>
+
+<div id="fx"></div>
+<div class="toast" id="toast">已复制</div>
+
+<script>
+'use strict';
+/* ============ 农历数据表（1900-2100，由天文历生成并锚点验证） ============ */
+const LUNAR_DATA = [[8, 29, 1, 31, 29, 30, 29, 29, 30, 29, 30, 30, 30, 30, 29, 30], [0, 0, 2, 19, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30, 30, 29], [0, 0, 2, 8, 30, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30, 30], [5, 29, 1, 29, 29, 30, 29, 30, 29, 30, 29, 29, 30, 30, 29, 30], [0, 0, 2, 16, 30, 30, 29, 30, 29, 29, 30, 29, 29, 30, 30, 29], [0, 0, 2, 4, 30, 30, 29, 30, 30, 29, 29, 30, 29, 30, 29, 30], [4, 30, 1, 25, 29, 30, 30, 29, 29, 30, 29, 30, 29, 30, 29, 30], [0, 0, 2, 13, 29, 30, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29], [0, 0, 2, 2, 30, 29, 29, 30, 30, 29, 30, 29, 30, 30, 29, 30], [2, 29, 1, 22, 29, 30, 29, 30, 29, 30, 29, 30, 30, 30, 29, 30], [0, 0, 2, 10, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30, 30, 29], [6, 29, 1, 30, 30, 29, 30, 29, 29, 30, 29, 30, 30, 29, 30, 30], [0, 0, 2, 18, 30, 29, 30, 29, 29, 30, 29, 29, 30, 30, 29, 30], [0, 0, 2, 6, 30, 30, 29, 30, 29, 29, 30, 29, 29, 30, 29, 30], [5, 30, 1, 26, 30, 30, 29, 30, 29, 29, 30, 29, 29, 30, 29, 30], [0, 0, 2, 14, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29, 29], [0, 0, 2, 3, 30, 30, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29], [2, 29, 1, 23, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, 30, 29], [0, 0, 2, 11, 30, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30], [7, 30, 2, 1, 29, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30, 30], [0, 0, 2, 20, 29, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30, 30], [0, 0, 2, 8, 30, 29, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30], [5, 29, 1, 28, 30, 29, 30, 30, 29, 30, 29, 29, 30, 29, 30, 30], [0, 0, 2, 16, 29, 30, 30, 29, 30, 29, 30, 29, 29, 30, 29, 30], [0, 0, 2, 5, 29, 30, 30, 29, 30, 30, 29, 30, 29, 30, 29, 29], [4, 30, 1, 24, 30, 29, 30, 29, 30, 29, 30, 30, 29, 30, 29, 30], [0, 0, 2, 13, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29], [0, 0, 2, 2, 30, 29, 29, 30, 29, 30, 29, 30, 29, 30, 30, 30], [2, 29, 1, 23, 29, 30, 29, 30, 29, 29, 30, 29, 30, 30, 30, 30], [0, 0, 2, 10, 29, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30, 30], [6, 29, 1, 30, 29, 30, 30, 29, 29, 30, 29, 30, 29, 30, 30, 29], [0, 0, 2, 17, 30, 30, 29, 30, 29, 30, 29, 29, 30, 29, 30, 29], [0, 0, 2, 6, 30, 30, 30, 29, 30, 29, 30, 29, 29, 30, 29, 30], [5, 30, 1, 26, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29, 29, 30], [0, 0, 2, 14, 29, 30, 29, 30, 30, 29, 30, 29, 30, 30, 29, 30], [0, 0, 2, 4, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29], [3, 30, 1, 24, 30, 29, 29, 29, 29, 30, 30, 29, 30, 30, 30, 29], [0, 0, 2, 11, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30, 30, 29], [7, 30, 1, 31, 30, 30, 29, 29, 30, 29, 29, 29, 30, 30, 29, 30], [0, 0, 2, 19, 30, 30, 29, 29, 30, 29, 29, 30, 29, 30, 29, 30], [0, 0, 2, 8, 30, 30, 29, 30, 29, 30, 29, 29, 30, 29, 30, 29], [6, 30, 1, 27, 30, 30, 29, 30, 30, 29, 29, 29, 30, 29, 30, 29], [0, 0, 2, 15, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30], [0, 0, 2, 5, 29, 30, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29], [4, 30, 1, 25, 30, 29, 30, 29, 29, 30, 29, 30, 30, 29, 30, 30], [0, 0, 2, 13, 29, 29, 30, 29, 29, 30, 29, 30, 30, 30, 29, 30], [0, 0, 2, 2, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30, 29, 30], [2, 29, 1, 22, 30, 30, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30], [0, 0, 2, 10, 30, 29, 30, 29, 30, 29, 29, 30, 29, 30, 29, 30], [7, 29, 1, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30], [0, 0, 2, 17, 29, 30, 30, 29, 30, 30, 29, 29, 30, 29, 30, 29], [0, 0, 2, 6, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30], [5, 30, 1, 27, 29, 30, 29, 30, 29, 29, 30, 30, 29, 30, 29, 30], [0, 0, 2, 14, 29, 30, 29, 29, 30, 30, 29, 30, 30, 29, 30, 29], [0, 0, 2, 3, 30, 29, 30, 29, 29, 30, 29, 30, 30, 29, 30, 30], [3, 30, 1, 24, 29, 30, 29, 29, 29, 30, 29, 30, 29, 30, 30, 30], [0, 0, 2, 12, 29, 30, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30], [8, 29, 1, 31, 30, 29, 30, 29, 30, 29, 29, 30, 30, 29, 30, 29], [0, 0, 2, 18, 30, 30, 30, 29, 30, 29, 29, 30, 29, 30, 29, 30], [0, 0, 2, 8, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29], [6, 29, 1, 28, 30, 29, 30, 29, 30, 30, 30, 29, 30, 29, 30, 29], [0, 0, 2, 15, 30, 29, 30, 29, 30, 29, 30, 30, 29, 30, 29, 30], [0, 0, 2, 5, 29, 30, 29, 29, 30, 29, 30, 30, 29, 30, 30, 29], [4, 29, 1, 25, 30, 29, 30, 29, 30, 29, 30, 29, 30, 30, 30, 29], [0, 0, 2, 13, 30, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30, 30], [0, 0, 2, 2, 29, 30, 29, 30, 29, 29, 30, 29, 29, 30, 30, 29], [3, 29, 1, 21, 30, 30, 30, 30, 29, 29, 30, 29, 29, 30, 30, 29], [0, 0, 2, 9, 30, 30, 29, 30, 30, 29, 29, 30, 29, 30, 29, 30], [7, 29, 1, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, 30, 29, 30], [0, 0, 2, 17, 29, 30, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29], [0, 0, 2, 6, 30, 29, 29, 30, 29, 30, 30, 29, 30, 30, 29, 30], [5, 29, 1, 27, 29, 30, 29, 29, 30, 30, 29, 30, 30, 30, 29, 30], [0, 0, 2, 15, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30], [0, 0, 2, 3, 30, 29, 30, 29, 29, 30, 29, 29, 30, 30, 29, 30], [4, 29, 1, 23, 30, 30, 29, 30, 29, 30, 29, 29, 30, 30, 29, 30], [0, 0, 2, 11, 30, 30, 29, 30, 29, 29, 30, 29, 29, 30, 29, 30], [8, 29, 1, 31, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30], [0, 0, 2, 18, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29, 29], [0, 0, 2, 7, 30, 29, 30, 30, 29, 30, 30, 29, 30, 29, 30, 29], [6, 30, 1, 28, 30, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 29], [0, 0, 2, 16, 30, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30], [0, 0, 2, 5, 29, 30, 29, 29, 30, 29, 29, 30, 30, 29, 30, 30], [4, 29, 1, 25, 30, 29, 30, 29, 30, 29, 29, 30, 29, 30, 30, 30], [0, 0, 2, 13, 30, 29, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30], [10, 29, 2, 2, 30, 29, 30, 30, 29, 29, 30, 29, 29, 30, 30, 30], [0, 0, 2, 20, 29, 30, 30, 29, 30, 29, 30, 29, 29, 30, 29, 30], [0, 0, 2, 9, 29, 30, 30, 29, 30, 30, 29, 30, 29, 30, 29, 29], [6, 29, 1, 29, 30, 29, 30, 29, 30, 30, 30, 30, 29, 30, 29, 29], [0, 0, 2, 17, 30, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29], [0, 0, 2, 6, 30, 29, 29, 30, 29, 30, 29, 30, 29, 30, 30, 30], [5, 29, 1, 27, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30, 30, 30], [0, 0, 2, 15, 29, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30, 30], [0, 0, 2, 4, 29, 30, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30], [3, 29, 1, 23, 29, 30, 30, 30, 29, 30, 29, 29, 30, 29, 30, 29], [0, 0, 2, 10, 30, 30, 30, 29, 30, 29, 30, 29, 29, 30, 29, 30], [8, 29, 1, 31, 29, 30, 30, 29, 30, 29, 30, 30, 29, 30, 29, 30], [0, 0, 2, 19, 29, 30, 29, 30, 30, 29, 30, 29, 30, 30, 29, 29], [0, 0, 2, 7, 30, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29], [5, 29, 1, 28, 30, 29, 29, 30, 29, 30, 30, 29, 30, 30, 29, 30], [0, 0, 2, 16, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30, 30, 29], [0, 0, 2, 5, 30, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30, 29], [4, 29, 1, 24, 30, 30, 29, 30, 30, 29, 29, 30, 29, 30, 29, 30], [0, 0, 2, 12, 30, 30, 29, 30, 29, 30, 29, 29, 30, 29, 30, 29], [0, 0, 2, 1, 30, 30, 29, 30, 30, 29, 30, 29, 29, 30, 29, 30], [2, 29, 1, 22, 29, 30, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30], [0, 0, 2, 9, 29, 30, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29], [7, 29, 1, 29, 30, 29, 30, 29, 30, 29, 30, 30, 30, 29, 30, 30], [0, 0, 2, 18, 29, 29, 30, 29, 29, 30, 29, 30, 30, 30, 29, 30], [0, 0, 2, 7, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30, 29, 30], [5, 29, 1, 26, 30, 30, 29, 29, 30, 29, 30, 29, 30, 29, 30, 30], [0, 0, 2, 14, 30, 29, 30, 29, 30, 29, 29, 30, 29, 30, 29, 30], [0, 0, 2, 3, 30, 29, 30, 30, 29, 30, 29, 29, 30, 29, 30, 29], [4, 29, 1, 23, 30, 29, 30, 30, 30, 29, 30, 29, 30, 29, 30, 29], [0, 0, 2, 10, 30, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30], [9, 29, 1, 31, 29, 30, 29, 30, 29, 30, 29, 30, 30, 30, 29, 30], [0, 0, 2, 19, 29, 30, 29, 29, 30, 29, 30, 30, 30, 29, 30, 29], [0, 0, 2, 8, 30, 29, 30, 29, 29, 30, 29, 30, 30, 29, 30, 30], [6, 30, 1, 28, 29, 30, 29, 30, 29, 29, 29, 30, 29, 30, 30, 30], [0, 0, 2, 16, 29, 30, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30], [0, 0, 2, 5, 30, 29, 30, 29, 30, 29, 29, 30, 29, 29, 30, 30], [4, 29, 1, 25, 29, 30, 30, 30, 30, 29, 29, 30, 29, 30, 29, 30], [0, 0, 2, 12, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29], [0, 0, 2, 1, 30, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30], [2, 29, 1, 22, 29, 30, 29, 30, 30, 29, 30, 30, 29, 30, 29, 30], [0, 0, 2, 10, 29, 30, 29, 29, 30, 29, 30, 30, 29, 30, 30, 29], [6, 29, 1, 29, 30, 29, 30, 29, 29, 30, 30, 29, 30, 30, 30, 29], [0, 0, 2, 17, 30, 29, 30, 29, 29, 30, 29, 29, 30, 30, 30, 29], [0, 0, 2, 6, 30, 30, 29, 30, 29, 29, 30, 29, 29, 30, 30, 29], [5, 29, 1, 26, 30, 30, 30, 29, 30, 29, 30, 29, 29, 30, 30, 29], [0, 0, 2, 13, 30, 30, 29, 30, 29, 30, 29, 30, 29, 29, 30, 30], [0, 0, 2, 3, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29], [3, 29, 1, 23, 29, 30, 30, 30, 29, 30, 30, 29, 30, 29, 30, 29], [0, 0, 2, 11, 30, 29, 29, 30, 29, 30, 30, 29, 30, 30, 29, 30], [11, 29, 1, 31, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30, 30, 30], [0, 0, 2, 19, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30, 29, 30], [0, 0, 2, 8, 30, 29, 30, 29, 29, 30, 29, 29, 30, 30, 29, 30], [6, 30, 1, 28, 30, 30, 29, 30, 29, 29, 29, 29, 30, 29, 30, 30], [0, 0, 2, 15, 30, 30, 29, 30, 29, 29, 30, 29, 29, 30, 29, 30], [0, 0, 2, 4, 30, 30, 29, 30, 29, 30, 29, 30, 29, 29, 30, 29], [5, 29, 1, 24, 30, 30, 29, 30, 30, 30, 29, 30, 29, 30, 29, 29], [0, 0, 2, 12, 30, 29, 30, 30, 29, 30, 29, 30, 30, 29, 30, 29], [0, 0, 2, 1, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, 30], [2, 29, 1, 22, 29, 30, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30], [0, 0, 2, 10, 29, 30, 29, 29, 30, 29, 29, 30, 30, 29, 30, 30], [7, 29, 1, 30, 30, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30, 30], [0, 0, 2, 17, 30, 29, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30], [0, 0, 2, 6, 30, 29, 30, 29, 30, 29, 30, 29, 29, 30, 29, 30], [5, 30, 1, 26, 30, 29, 30, 30, 29, 29, 30, 29, 29, 30, 29, 30], [0, 0, 2, 14, 29, 30, 30, 29, 30, 30, 29, 30, 29, 29, 30, 29], [0, 0, 2, 2, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, 30, 29], [3, 30, 1, 23, 29, 30, 29, 29, 30, 29, 30, 30, 29, 30, 30, 29], [0, 0, 2, 11, 30, 29, 29, 30, 29, 29, 30, 30, 29, 30, 30, 30], [8, 29, 2, 1, 29, 30, 29, 29, 30, 29, 29, 30, 30, 30, 30, 30], [0, 0, 2, 19, 29, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30, 30], [0, 0, 2, 8, 29, 30, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30], [6, 30, 1, 28, 29, 30, 30, 29, 30, 29, 29, 29, 30, 29, 30, 29], [0, 0, 2, 15, 30, 30, 30, 29, 30, 29, 30, 29, 29, 30, 29, 30], [0, 0, 2, 4, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29], [4, 30, 1, 24, 30, 29, 30, 29, 29, 30, 30, 29, 30, 30, 29, 29], [0, 0, 2, 12, 30, 29, 30, 29, 30, 29, 30, 29, 30, 30, 30, 29], [0, 0, 2, 2, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30, 30, 29], [3, 29, 1, 21, 30, 30, 29, 30, 29, 29, 30, 29, 30, 30, 30, 29], [0, 0, 2, 9, 30, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30, 29], [7, 29, 1, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30], [0, 0, 2, 17, 30, 30, 29, 30, 29, 30, 29, 29, 30, 29, 30, 29], [0, 0, 2, 5, 30, 30, 29, 30, 30, 29, 30, 29, 29, 30, 29, 30], [5, 29, 1, 26, 29, 30, 29, 30, 30, 30, 29, 30, 29, 30, 29, 30], [0, 0, 2, 14, 29, 30, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29], [0, 0, 2, 3, 30, 29, 30, 29, 29, 30, 30, 29, 30, 30, 29, 30], [4, 29, 1, 23, 29, 30, 29, 30, 29, 30, 29, 30, 30, 30, 29, 30], [0, 0, 2, 11, 29, 30, 29, 30, 29, 29, 30, 29, 30, 30, 29, 30], [8, 29, 1, 31, 30, 29, 30, 29, 30, 29, 29, 30, 30, 29, 30, 30], [0, 0, 2, 19, 30, 29, 30, 29, 30, 29, 29, 30, 29, 30, 29, 30], [0, 0, 2, 7, 30, 29, 30, 30, 29, 30, 29, 29, 30, 29, 30, 29], [6, 29, 1, 27, 30, 29, 30, 30, 29, 30, 30, 29, 30, 29, 30, 29], [0, 0, 2, 15, 30, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30], [0, 0, 2, 5, 29, 30, 29, 30, 29, 30, 29, 30, 30, 29, 30, 29], [4, 29, 1, 24, 30, 29, 30, 29, 30, 29, 30, 30, 30, 29, 30, 29], [0, 0, 2, 12, 30, 29, 30, 29, 29, 30, 29, 30, 30, 29, 30, 30], [0, 0, 2, 2, 29, 30, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30], [3, 29, 1, 22, 30, 29, 30, 30, 29, 29, 30, 29, 29, 30, 30, 30], [0, 0, 2, 9, 29, 30, 30, 29, 30, 29, 29, 30, 29, 29, 30, 30], [7, 29, 1, 29, 29, 30, 30, 30, 29, 29, 30, 30, 29, 29, 30, 30], [0, 0, 2, 17, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29], [0, 0, 2, 6, 30, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30], [5, 30, 1, 26, 29, 30, 29, 29, 30, 29, 30, 30, 29, 30, 29, 30], [0, 0, 2, 14, 29, 30, 29, 29, 30, 29, 30, 30, 29, 30, 30, 29], [0, 0, 2, 3, 30, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30, 30], [4, 29, 1, 24, 29, 30, 29, 30, 29, 30, 29, 29, 30, 30, 30, 29], [0, 0, 2, 10, 30, 30, 29, 30, 29, 29, 29, 30, 29, 30, 30, 29], [8, 29, 1, 30, 30, 30, 30, 29, 30, 29, 29, 30, 29, 30, 30, 29], [0, 0, 2, 18, 30, 30, 29, 30, 29, 30, 29, 30, 29, 29, 30, 29], [0, 0, 2, 7, 30, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29], [6, 30, 1, 27, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29], [0, 0, 2, 15, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29, 30], [0, 0, 2, 5, 29, 30, 29, 29, 30, 29, 30, 29, 30, 30, 30, 29], [4, 29, 1, 25, 30, 29, 30, 29, 30, 29, 29, 30, 30, 30, 29, 30], [0, 0, 2, 12, 30, 29, 30, 29, 29, 29, 30, 29, 30, 30, 29, 30], [0, 0, 2, 1, 30, 30, 29, 30, 29, 29, 29, 30, 29, 30, 29, 30], [2, 29, 1, 21, 30, 30, 30, 30, 29, 29, 30, 29, 29, 30, 29, 30], [0, 0, 2, 9, 30, 30, 29, 30, 29, 30, 29, 30, 29, 29, 30, 29]];
+/* 每项: [闰月月份(0=无闰), 闰月天数, 春节公历月, 春节公历日, 正月天数, 二月天数, ..., 腊月天数] */
+
+const $ = s => document.querySelector(s);
+const toastEl = $('#toast');
+
+/* ============ 日期工具 ============ */
+function d0(dt){ return new Date(dt.getFullYear(), dt.getMonth(), dt.getDate()); }
+function addDays(dt, n){ return new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + n); }
+function diffDays(a, b){ return Math.round((d0(a) - d0(b)) / 86400000); } // a - b 的天数
+function fmtDate(dt){ return dt.getFullYear() + '年' + (dt.getMonth()+1) + '月' + dt.getDate() + '日'; }
+function pad2(n){ return n < 10 ? '0' + n : '' + n; }
+function iso(dt){ return dt.getFullYear() + '-' + pad2(dt.getMonth()+1) + '-' + pad2(dt.getDate()); }
+
+/* ============ 农历转换（1900-2100） ============ */
+function lunarNewYear(y){ const r = LUNAR_DATA[y - 1900]; return new Date(y, r[2]-1, r[3]); }
+/* 农历 -> 公历 */
+function lunarToSolar(y, m, d, leap){
+  const r = LUNAR_DATA[y - 1900];
+  if(!r || m < 1 || m > 12) return null;
+  let days = 0;
+  for(let i = 4; i < 4 + m - 1; i++) days += r[i];   // 前 m-1 个正常月
+  if(leap) days += r[4 + m - 1];                     // 闰 m 月排在第 m 个正常月之后
+  days += Math.min(d, r[4 + m - 1]) - 1;             // 若日超当月天数则取月末
+  return new Date(y, r[2]-1, r[3] + days);
+}
+/* 某农历年的月序表（含闰月） */
+function lunarMonthsOf(y){
+  const r = LUNAR_DATA[y - 1900];
+  if(!r) return [];
+  const list = [];
+  for(let m = 1; m <= 12; m++){
+    list.push({m:m, leap:false, d:r[3 + m]});
+    if(r[0] === m) list.push({m:m, leap:true, d:r[1]});  // 闰月紧跟正常月
+  }
+  return list;
+}
+/* 公历 -> 农历 */
+function solarToLunar(dt){
+  const t = d0(dt);
+  for(let y = 1900; y <= 2100; y++){
+    const ny = lunarNewYear(y);
+    const next = y < 2100 ? lunarNewYear(y + 1) : new Date(2101, 0, 1);
+    if(t >= ny && t < next){
+      let passed = diffDays(t, ny);
+      for(const mo of lunarMonthsOf(y)){
+        if(passed < mo.d) return {y:y, m:mo.m, d:passed + 1, leap:mo.leap};
+        passed -= mo.d;
+      }
+      return {y:y, m:12, d:29, leap:false};
+    }
+  }
+  return null;
+}
+/* 农历日期在指定公历年的对应公历日期（用于每年按农历过生日） */
+function solarForLunarBirthday(year, lm, ld, leap){
+  const r = LUNAR_DATA[year - 1900];
+  if(!r) return null;
+  const isLeap = leap && r[0] === lm;        // 该年无此闰月则按正常月
+  const months = lunarMonthsOf(year);
+  let md = 29;
+  for(const mo of months){ if(mo.m === lm && mo.leap === isLeap){ md = mo.d; break; } }
+  return lunarToSolar(year, lm, Math.min(ld, md), isLeap);
+}
+/* 农历中文显示 */
+const ZH = '零一二三四五六七八九十';
+function zhLunarDay(d){
+  if(d === 10) return '初十';
+  if(d === 20) return '二十';
+  if(d === 30) return '三十';
+  if(d < 10) return '初' + ZH[d];
+  if(d < 20) return '十' + ZH[d - 10];
+  return '二十' + ZH[d - 20];
+}
+function lunarName(l){
+  let s = l.y + '年';
+  s += l.leap ? '闰' : '';
+  s += (l.m === 1 ? '正' : l.m === 12 ? '腊' : l.m <= 10 ? ZH[l.m] : '十' + ZH[l.m - 10]) + '月';
+  s += zhLunarDay(l.d);
+  return '农历' + s;
+}
+
+/* ============ 输入状态 ============ */
+let mode = 'solar';          // solar | lunar
+let lunarBirth = null;       // 若按农历过生日：{y,m,d,leap}
+let birthSolar = null;       // 出生公历日期（基准）
+
+/* 农历输入下拉初始化 */
+(function initLunarSelects(){
+  const ly = $('#lyear');
+  for(let y = 1900; y <= 2100; y++){
+    const o = document.createElement('option');
+    o.value = y; o.textContent = y + '年';
+    ly.appendChild(o);
+  }
+  ly.value = 1990;
+  refreshLunarInput();
+  ly.addEventListener('change', refreshLunarInput);
+  $('#lmonth').addEventListener('change', refreshLunarInput);
+  $('#lleap').addEventListener('change', refreshLunarInput);
+})();
+function refreshLunarInput(){
+  const y = +$('#lyear').value;
+  const months = lunarMonthsOf(y);
+  const mSel = $('#lmonth'), dSel = $('#lday'), leapChk = $('#lleap');
+  const prev = mSel.value;                     // 记住用户已选的月份
+  mSel.innerHTML = '';
+  for(const mo of months){
+    const o = document.createElement('option');
+    o.value = mo.m + (mo.leap ? 'L' : '');
+    o.textContent = (mo.leap ? '闰' : '') + (mo.m === 1 ? '正月' : mo.m === 12 ? '腊月' : mo.m + '月');
+    mSel.appendChild(o);
+  }
+  if([...mSel.options].some(o => o.value === prev)) mSel.value = prev;  // 保持原选择
+  const sel = mSel.value;
+  let lm = 1, isLeap = false;
+  if(sel){ lm = +sel.replace('L',''); isLeap = sel.indexOf('L') >= 0; }
+  leapChk.checked = isLeap;
+  const months2 = lunarMonthsOf(y);
+  let maxD = 29;
+  for(const mo of months2){ if(mo.m === lm && mo.leap === isLeap){ maxD = mo.d; break; } }
+  dSel.innerHTML = '';
+  for(let d = 1; d <= maxD; d++){
+    const o = document.createElement('option');
+    o.value = d; o.textContent = d + '日';
+    dSel.appendChild(o);
+  }
+}
+function readLunarInput(){
+  const y = +$('#lyear').value;
+  const sel = $('#lmonth').value;
+  const lm = +sel.replace('L',''), isLeap = sel.indexOf('L') >= 0;
+  const ld = +$('#lday').value;
+  return {y:y, m:lm, d:ld, leap:isLeap};
+}
+
+/* 历法切换 */
+$('.seg').addEventListener('click', e => {
+  const b = e.target.closest('button[data-mode]');
+  if(!b) return;
+  mode = b.dataset.mode;
+  document.querySelectorAll('.seg button').forEach(x => x.classList.toggle('active', x === b));
+  $('#solarBox').hidden = mode !== 'solar';
+  $('#lunarBox').hidden = mode !== 'lunar';
+  localStorage.setItem('bday_mode', mode);
+  saveState();
+});
+
+/* ============ 主计算 ============ */
+function compute(){
+  const today = new Date();
+  const today0 = d0(today);
+  const byLunar = $('#byLunar').checked;
+
+  /* 1. 解析出生日期（公历基准） */
+  let birth = null;
+  if(mode === 'solar'){
+    const v = $('#solarDate').value;
+    if(!v){ toast('请选择出生日期'); return false; }
+    const p = v.split('-');
+    birth = new Date(+p[0], +p[1]-1, +p[2]);
+  } else {
+    const l = readLunarInput();
+    birth = lunarToSolar(l.y, l.m, l.d, l.leap);
+    if(!birth){ toast('农历日期超出支持范围'); return false; }
+  }
+  if(diffDays(today0, birth) < 0){ toast('出生日期不能晚于今天'); return false; }
+
+  /* 2. 农历生日基准（决定倒计时口径） */
+  lunarBirth = byLunar ? solarToLunar(birth) : null;
+
+  /* 3. 累计天数：含出生当天为第 1 天 */
+  const totalDays = diffDays(today0, birth) + 1;
+  const approxYears = Math.floor(totalDays / 365.25);
+  const remDays = Math.round(totalDays - approxYears * 365.25);
+
+  /* 4. 下次生日 */
+  let next = null;
+  if(lunarBirth){
+    next = solarForLunarBirthday(today0.getFullYear(), lunarBirth.m, lunarBirth.d, lunarBirth.leap);
+    if(!next || diffDays(next, today0) < 0){
+      next = solarForLunarBirthday(today0.getFullYear() + 1, lunarBirth.m, lunarBirth.d, lunarBirth.leap);
+    }
+  } else {
+    next = new Date(today0.getFullYear(), birth.getMonth(), birth.getDate());
+    if(diffDays(next, today0) < 0) next = new Date(today0.getFullYear() + 1, birth.getMonth(), birth.getDate());
+  }
+  const daysToNext = diffDays(next, today0);
+  const nextLunar = solarToLunar(next);
+  const isBirthdayToday = daysToNext === 0;
+
+  /* 5. 里程碑清单 */
+  const items = [];
+  const pushItem = (label, date) => {
+    if(!date) return;
+    const dl = diffDays(date, today0);
+    items.push({label:label, date:date, lunar:solarToLunar(date), days:dl});
+  };
+  pushItem('下次生日', next);
+  [100, 365, 1000, 10000].forEach(n => pushItem('出生第 ' + n + ' 天', addDays(birth, n - 1)));
+  [1, 10, 18, 30, 60].forEach(a => pushItem(a + ' 周岁', new Date(birth.getFullYear()+a, birth.getMonth(), birth.getDate())));
+  items.sort((a, b) => Math.abs(a.days) - Math.abs(b.days));
+
+  /* 6. 渲染主结果 */
+  $('#resultMain').hidden = false;
+  $('#rSub').textContent = (mode === 'lunar' ? '农历生日 ' + lunarName(readLunarInput()) + ' → 公历 ' + fmtDate(birth) : '公历生日 ' + fmtDate(birth)) + ' · 今天 ' + fmtDate(today0);
+  $('#rDays').textContent = totalDays.toLocaleString();
+  $('#rAge').textContent = '出生第 ' + totalDays.toLocaleString() + ' 天 ≈ ' + approxYears + ' 岁 ' + (remDays < 0 ? remDays + 365 : remDays) + ' 天';
+  $('#rCountdown').textContent = isBirthdayToday ? '今天 🎂' : daysToNext + ' 天';
+  $('#rCountdownLabel').textContent = isBirthdayToday ? '生日快乐！' : '距下个生日';
+  $('#rNext').textContent = fmtDate(next);
+  $('#rNextLabel').textContent = nextLunar ? lunarName(nextLunar) : '';
+  const note = [];
+  if(lunarBirth && mode === 'solar') note.push('已按农历 ' + lunarName(lunarBirth) + ' 计算每年生日');
+  if(isBirthdayToday) note.push('🎉 今天就是生日，已自动为你撒花！');
+  $('#rNote').textContent = note.join('；');
+
+  /* 7. 渲染里程碑 */
+  $('#resultMilestone').hidden = false;
+  const tb = $('#mileBody');
+  tb.innerHTML = '';
+  items.forEach(it => {
+    const tr = document.createElement('tr');
+    if(it.days === 0) tr.className = 'today';
+    else if(it.days < 0) tr.className = 'past';
+    const cls = it.days === 0 ? 'tag-0' : it.days > 0 ? 'tag-1' : 'tag-2';
+    const tag = document.createElement('span');
+    tag.className = 'tag ' + cls;
+    tag.textContent = it.days === 0 ? '今天' : it.days > 0 ? '还有 ' + it.days + ' 天' : '已过 ' + (-it.days) + ' 天';
+    tr.innerHTML = '<td>' + it.label + '</td><td>' + fmtDate(it.date) + '</td>';
+    const td3 = document.createElement('td');
+    td3.textContent = it.lunar ? lunarName(it.lunar) : '（超出农历支持范围）';
+    const td4 = document.createElement('td');
+    td4.appendChild(tag);
+    tr.appendChild(td3); tr.appendChild(td4);
+    tb.appendChild(tr);
+  });
+
+  /* 8. 庆祝文案 */
+  const nickname = ($('#nickname').value || '').trim() || '你';
+  const lines = [];
+  let todayItem = null;                        // 今日是否为里程碑纪念日
+  if(isBirthdayToday){
+    lines.push('🎂 ' + nickname + '，生日快乐！');
+    lines.push('今天是你来到这个世界第 ' + totalDays.toLocaleString() + ' 天，第 ' + approxYears + ' 个生日。');
+    lines.push('愿你：平安喜乐，所求皆如愿；岁月漫长，值得被温柔以待。');
+    lines.push('—— 来自「生日 · 天数 · 里程碑」小工具 🎈');
+  } else {
+    todayItem = items.filter(x => x.days === 0 && x.label !== '下次生日')[0];
+    if(todayItem){
+      lines.push('🎊 恭喜' + nickname + '！今天是你出生第 ' + totalDays.toLocaleString() + ' 天（' + todayItem.label + '）。');
+      lines.push('平凡的日子因纪念而闪光，愿你每一天都被生活偏爱。');
+    } else {
+      lines.push('💌 ' + nickname + '，距离你的生日还有 ' + daysToNext + ' 天（' + fmtDate(next) + '）。');
+      const up = items.filter(x => x.days > 0);
+      if(up.length) lines.push('下一个纪念日：' + up[0].label + '（还有 ' + up[0].days + ' 天）。');
+      lines.push('提前把这份小祝福送给你，愿惊喜和好运都在路上。');
+    }
+  }
+  $('#celebrateCard').hidden = false;
+  $('#quote').textContent = lines.join('\n');
+
+  /* 9. 生日/纪念日当天自动撒花 */
+  if(isBirthdayToday || (todayItem && todayItem.days === 0)){
+    if(!sessionStorage.getItem('bday_auto_party')){
+      sessionStorage.setItem('bday_auto_party', '1');
+      party();
+    }
+  }
+
+  /* 10. 保存状态 */
+  saveState();
+  return true;
+}
+
+function saveState(){
+  try{
+    localStorage.setItem('bday_mode', mode);
+    if(mode === 'solar') localStorage.setItem('bday_solar', $('#solarDate').value);
+    else localStorage.setItem('bday_lunar', JSON.stringify(readLunarInput()));
+    localStorage.setItem('bday_byLunar', $('#byLunar').checked ? '1' : '0');
+    localStorage.setItem('bday_nickname', $('#nickname').value);
+  }catch(e){}
+}
+function restoreState(){
+  try{
+    const m = localStorage.getItem('bday_mode');
+    if(m === 'lunar' || m === 'solar') mode = m;
+    document.querySelectorAll('.seg button').forEach(x => x.classList.toggle('active', x.dataset.mode === mode));
+    $('#solarBox').hidden = mode !== 'solar';
+    $('#lunarBox').hidden = mode !== 'lunar';
+    const s = localStorage.getItem('bday_solar'); if(s) $('#solarDate').value = s;
+    const l = localStorage.getItem('bday_lunar');
+    if(l){ try{ const o = JSON.parse(l); $('#lyear').value = o.y; refreshLunarInput(); $('#lmonth').value = o.m + (o.leap ? 'L' : ''); $('#lday').value = o.d; }catch(e){} }
+    $('#byLunar').checked = localStorage.getItem('bday_byLunar') === '1';
+    $('#nickname').value = localStorage.getItem('bday_nickname') || '';
+  }catch(e){}
+}
+
+/* ============ 撒花动效（DOM 粒子，无需 Canvas） ============ */
+const EMOJIS = ['🎉','🎊','✨','🎂','🌸','🎈','💫'];
+function party(){
+  const fx = $('#fx');
+  for(let i = 0; i < 60; i++){
+    const s = document.createElement('span');
+    s.className = 'p';
+    s.textContent = EMOJIS[i % EMOJIS.length];
+    s.style.left = (Math.random() * 100) + 'vw';
+    s.style.animationDuration = (1.6 + Math.random() * 1.8) + 's';
+    s.style.animationDelay = (Math.random() * 0.5) + 's';
+    s.style.fontSize = (16 + Math.random() * 18) + 'px';
+    fx.appendChild(s);
+    setTimeout(() => s.remove(), 4200);
+  }
+}
+
+/* ============ 事件与初始化 ============ */
+$('#calcBtn').addEventListener('click', () => compute());
+$('#partyBtn').addEventListener('click', party);
+$('#copyBtn').addEventListener('click', () => {
+  const q = $('#quote').textContent.trim();
+  if(!q){ toast('先点击计算'); return; }
+  navigator.clipboard.writeText(q).then(() => toast('祝福已复制 ✓')).catch(() => toast('复制失败'));
+});
+
+let timer;
+function toast(msg){
+  toastEl.textContent = msg;   // 防 XSS
+  toastEl.classList.add('show');
+  clearTimeout(timer);
+  timer = setTimeout(() => toastEl.classList.remove('show'), 1800);
+}
+
+/* 主题：跟随系统 + 手动记忆 */
+const themeBtn = $('#themeBtn');
+function applyTheme(dark){
+  document.body.classList.toggle('dark', dark);
+  themeBtn.textContent = dark ? '☀️ 浅色' : '🌙 深色';
+  localStorage.setItem('tool_theme', dark ? 'dark' : 'light');
+}
+themeBtn.addEventListener('click', () => applyTheme(!document.body.classList.contains('dark')));
+applyTheme(localStorage.getItem('tool_theme')
+  ? localStorage.getItem('tool_theme') === 'dark'
+  : window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+/* 初始化：恢复状态 + 预填示例并计算 */
+restoreState();
+if(!localStorage.getItem('bday_solar') && !localStorage.getItem('bday_lunar')){
+  $('#solarDate').value = '2000-01-01';   // 示例，可随意改
+}
+if(mode === 'lunar') refreshLunarInput();
+compute();
+</script>
+</body>
+</html>
