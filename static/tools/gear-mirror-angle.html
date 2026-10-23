@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>渐开线齿轮 · 镜像平面角度计算器</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --text:#1f2937; --muted:#6b7280;
+    --primary:#2563eb; --border:#e5e7eb; --radius:14px; --danger:#dc2626;
+    --green:#10b981; --orange:#f59e0b; --blue:#2563eb; --red:#dc2626;
+    --greenT:#d1fae5; --orangeT:#fef3c7; --blueT:#dbeafe; --redT:#fee2e2;
+  }
+  body.dark{
+    --bg:#0b1220; --card:#111827; --text:#e5e7eb; --muted:#9ca3af; --border:#374151;
+    --blueT:#1e3a5f; --greenT:#064e3b; --orangeT:#78350f; --redT:#7f1d1d;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.6;
+    transition:background .2s, color .2s;
+  }
+  .wrap{max-width:960px; margin:0 auto; padding:20px}
+  header{display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom:14px; flex-wrap:wrap}
+  h1{font-size:22px; margin:0}
+  h1 small{font-size:13px; color:var(--muted); font-weight:400}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+    padding:16px; box-shadow:0 8px 24px rgba(0,0,0,.04); margin-bottom:14px;
+  }
+  .card h2{font-size:15px; margin:0 0 10px; display:flex; align-items:center; gap:8px}
+  .card h2 .tag{font-size:11px; background:var(--blueT); color:var(--blue); border-radius:6px; padding:1px 7px}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  label{display:block; font-weight:600; margin-bottom:6px; font-size:14px}
+  label span{font-weight:400; color:var(--muted); font-size:12px}
+  input{
+    width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:10px;
+    font:inherit; background:var(--card); color:var(--text); font-size:15px;
+  }
+  input:focus{outline:3px solid rgba(37,99,235,.2); border-color:var(--primary)}
+  input.invalid{border-color:var(--danger); outline-color:rgba(220,38,38,.2)}
+  .hint{color:var(--muted); font-size:12.5px; margin-top:8px}
+  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  button{
+    border:0; border-radius:10px; padding:9px 14px;
+    font:inherit; font-weight:600; cursor:pointer;
+    background:var(--primary); color:#fff;
+  }
+  button.ghost{background:transparent; color:var(--muted); border:1px solid var(--border)}
+  button:focus-visible{outline:3px solid rgba(37,99,235,.25); outline-offset:1px}
+  .result{
+    display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;
+    background:linear-gradient(135deg, var(--redT), var(--card));
+    border:1px solid var(--border); border-radius:var(--radius);
+    padding:18px 20px; margin-bottom:14px;
+  }
+  .result .big{font-size:44px; font-weight:800; color:var(--red); font-family:Consolas,Menlo,monospace; line-height:1.1}
+  .result .unit{font-size:20px; color:var(--red); font-weight:700}
+  .result .exp{font-size:13.5px; color:var(--muted); max-width:340px}
+  table{width:100%; border-collapse:collapse; font-size:14px}
+  th,td{text-align:left; padding:7px 10px; border-bottom:1px solid var(--border)}
+  th{color:var(--muted); font-weight:600; font-size:12.5px}
+  td.num{font-family:Consolas,Menlo,monospace; text-align:right; white-space:nowrap}
+  tr.hl td{background:var(--redT); font-weight:700}
+  tr.hl td.num{color:var(--red)}
+  .steps{list-style:none; margin:0; padding:0; counter-reset:step}
+  .steps li{
+    counter-increment:step; display:flex; gap:12px; align-items:flex-start;
+    padding:9px 4px; border-bottom:1px dashed var(--border); font-size:14px;
+  }
+  .steps li:last-child{border-bottom:0}
+  .steps li::before{
+    content:counter(step); flex:0 0 26px; height:26px; border-radius:50%;
+    background:var(--blueT); color:var(--blue); font-weight:700; font-size:13px;
+    display:flex; align-items:center; justify-content:center; margin-top:1px;
+  }
+  .steps li:nth-child(5)::before,.steps li:nth-child(6)::before{background:var(--greenT); color:var(--green)}
+  .steps li:nth-child(7)::before{background:var(--orangeT); color:#d97706}
+  .steps li:nth-child(8)::before{background:var(--redT); color:var(--red)}
+  .steps .formula{font-family:Consolas,Menlo,monospace; font-weight:600; white-space:nowrap}
+  .steps .note{color:var(--muted); font-size:12.5px; margin-left:10px}
+  .steps .val{font-family:Consolas,Menlo,monospace; font-weight:700; color:var(--primary)}
+  .steps .val.o{color:#d97706}
+  .steps .val.g{color:var(--green)}
+  .steps .val.r{color:var(--red)}
+  .figs{display:flex; flex-wrap:wrap; gap:14px}
+  .fig{flex:1 1 280px; min-width:250px; background:var(--card); border:1px solid var(--border);
+       border-radius:var(--radius); padding:12px; box-sizing:border-box}
+  .fig h3{font-size:13.5px; margin:0 0 8px; color:var(--muted); font-weight:600}
+  .fig svg{width:100%; height:auto; display:block}
+  .fignote{font-size:11px; color:var(--muted); margin-top:6px; display:flex; gap:12px; flex-wrap:wrap; line-height:1.5}
+  .legend{font-size:12px; color:var(--muted); display:flex; gap:12px; flex-wrap:wrap; margin-top:8px}
+  .legend i{display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:4px; vertical-align:-1px}
+  .warn{border-left:4px solid var(--orange); background:var(--orangeT); border-radius:8px;
+        padding:10px 14px; font-size:13.5px; margin-top:12px; display:none}
+  .toast{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+    background:#111827; color:#fff; padding:10px 16px; border-radius:999px;
+    opacity:0; transition:.25s; pointer-events:none; font-size:14px; z-index:99;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+  footer{color:var(--muted); font-size:12px; text-align:center; padding:6px 0 16px}
+  @media (max-width:640px){ .wrap{padding:12px} h1{font-size:18px} .grid2{grid-template-columns:1fr} .result .big{font-size:36px} }
+  @media print{
+    header button, .row, .figs, .grid2{display:none !important}
+    .card{box-shadow:none; border-color:#ccc}
+    body{background:#fff}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>⚙️ 渐开线齿轮 · 镜像平面角度计算器 <small>（Creo 镜像渐开线用）</small></h1>
+    <div class="row">
+      <button class="ghost" id="printBtn" type="button">🖨 打印</button>
+      <button class="ghost" id="themeBtn" type="button">🌙 深色</button>
+    </div>
+  </header>
+  <div class="card">
+    <h2><span class="tag">第 1 步</span>输入齿轮参数</h2>
+    <div class="grid2">
+      <div><label for="z">齿数 z <span>（整数）</span></label><input id="z" type="number" inputmode="numeric"></div>
+      <div><label for="m">模数 m <span>（mm）</span></label><input id="m" type="number" step="0.01" inputmode="decimal"></div>
+      <div><label for="a">压力角 α <span>（度，常用 20°）</span></label><input id="a" type="number" step="0.5" inputmode="decimal"></div>
+      <div><label for="x">变位系数 x <span>（正负可，默认 0）</span></label><input id="x" type="number" step="0.01" inputmode="decimal"></div>
+    </div>
+    <p class="hint">输入即算，无需点按钮。示例：z=10、m=0.5、α=20°、x=+0.44 → θ = 11.69°。</p>
+  </div>
+  <div class="result" id="resultBox">
+    <div>
+      <div class="exp">镜像平面角度（Creo：把基准面绕轴线转这个角度，再镜像渐开线）</div>
+      <span class="big" id="thetaBig">--</span> <span class="unit">°</span>
+    </div>
+    <div class="row" style="margin-left:auto;align-items:center;">
+      <div class="exp" id="thetaExp"></div>
+      <button id="copyBtn" type="button">复制结果</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2><span class="tag">示意</span>三张图看懂怎么来的</h2>
+    <div class="figs">
+      <div class="fig">
+        <h3>角度相加（真实比例）：天生的弯 + 半个齿宽</h3>
+        <svg id="barSvg" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="legend">
+          <span><i style="background:var(--orange)"></i>invα 天生的弯</span>
+          <span><i style="background:var(--green)"></i>δ/2 半个齿宽</span>
+          <span><i style="background:var(--red)"></i>θ 总角度</span>
+        </div>
+      </div>
+      <div class="fig">
+        <h3>扇形：两个角拼起来</h3>
+        <svg id="sectorSvg" viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="fignote"><span>红色虚线 = 齿中心线（镜子）</span><span id="sectorNote2" style="color:#94a3b8"></span></div>
+      </div>
+      <div class="fig">
+        <h3>四个圆（真实比例）</h3>
+        <svg id="cirSvg" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="legend">
+          <span><i style="background:var(--red)"></i>齿顶圆</span>
+          <span><i style="background:var(--blue)"></i>分度圆</span>
+          <span><i style="background:var(--orange)"></i>基圆</span>
+          <span><i style="background:var(--muted)"></i>齿根圆</span>
+        </div>
+      </div>
+      <div class="fig">
+        <h3>齿形轮廓（带尺寸）</h3>
+        <svg id="toothSvg" viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h2><span class="tag">核对</span>中间值一览（可和软件输出对照）</h2>
+    <table>
+      <thead><tr><th>名称</th><th>公式</th><th>数值</th></tr></thead>
+      <tbody id="midBody"></tbody>
+    </table>
+    <div class="warn" id="warnBox"></div>
+  </div>
+  <div class="card">
+    <h2><span class="tag">教学</span>八步公式 · 实时代入你的参数</h2>
+    <ol class="steps" id="stepList"></ol>
+  </div>
+  <footer>公式依据：ISO 21771 齿轮几何体系 · 压力角 20° 标准渐开线 · 直齿</footer>
+</div>
+<div class="toast" id="toast">已复制</div>
+<script>
+(function(){
+'use strict';
+const $ = s => document.querySelector(s);
+const els = { z:$('#z'), m:$('#m'), a:$('#a'), x:$('#x') };
+const big = $('#thetaBig'), exp = $('#thetaExp'), midBody = $('#midBody'),
+      stepList = $('#stepList'), warnBox = $('#warnBox'), toast = $('#toast');
+const RAD = Math.PI/180;
+function readInput(){
+  const z = parseInt(els.z.value, 10);
+  const m = parseFloat(els.m.value);
+  const a = parseFloat(els.a.value);
+  const x = parseFloat(els.x.value);
+  const errs = [];
+  if(!Number.isInteger(z) || z < 1) errs.push(['z','齿数 z：请输入 ≥ 1 的整数']);
+  if(!isFinite(m) || m <= 0)       errs.push(['m','模数 m：请输入大于 0 的数字']);
+  if(!isFinite(a) || a <= 0 || a >= 90) errs.push(['a','压力角 α：请输入 0 ~ 90 之间的数字']);
+  if(!isFinite(x))                 errs.push(['x','变位系数 x：请输入数字']);
+  return { ok: errs.length === 0, errs, z, m, a, x };
+}
+function calc(p){
+  const rad = p.a * RAD;
+  const d  = p.m * p.z;
+  const r  = d / 2;
+  const db = d * Math.cos(rad);
+  const da = d + 2*p.m*(1 + p.x);
+  const df = d - 2*p.m*(1.25 - p.x);
+  const Sn = p.m * (Math.PI/2 + 2*p.x*Math.tan(rad));
+  const delta = Sn / r;
+  const deltaDeg = delta / RAD;
+  const halfDeg  = deltaDeg / 2;
+  const invRad   = Math.tan(rad) - rad;
+  const invDeg   = invRad / RAD;
+  const theta    = invDeg + halfDeg;
+  return { z: p.z, d, r, db, da, df, Sn, deltaDeg, halfDeg, invDeg, theta };
+}
+function f(v){
+  if(!isFinite(v)) return '--';
+  let s = v.toFixed(4);
+  s = s.replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, '');
+  return s;
+}
+function renderResult(r){
+  big.textContent = f(r.theta);
+  exp.textContent = '拆解：invα(' + f(r.invDeg) + '°) + δ/2(' + f(r.halfDeg) + '°) '
+                  + '= 齿厚角(' + f(r.deltaDeg) + '°) ÷ 2，再加天生弯';
+}
+function renderTable(r){
+  const rows = [
+    ['分度圆直径 d', 'd = m × z', f(r.d) + ' mm'],
+    ['分度圆半径 r', 'r = d ÷ 2', f(r.r) + ' mm'],
+    ['基圆直径 db', 'db = d × cosα', f(r.db) + ' mm'],
+    ['齿顶圆直径 da', 'da = d + 2m(1+x)', f(r.da) + ' mm'],
+    ['齿根圆直径 df', 'df = d − 2m(1.25−x)', f(r.df) + ' mm'],
+    ['分度圆弧齿厚 Sn', 'Sn = m(π/2 + 2x·tanα)', f(r.Sn) + ' mm'],
+    ['齿厚角 δ', 'δ = Sn ÷ r', f(r.deltaDeg) + '°'],
+    ['半个齿宽 δ/2', 'δ ÷ 2', f(r.halfDeg) + '°'],
+    ['渐开线函数 invα', 'invα = tanα − α(弧度)', f(r.invDeg) + '°']
+  ];
+  const html = [];
+  rows.forEach((row, i) => {
+    const hl = i === rows.length - 1;
+    html.push('<tr' + (hl ? ' class="hl"' : '') + '><td>' + row[0] + '</td><td>' + row[1] + '</td><td class="num">' + row[2] + '</td></tr>');
+  });
+  html.push('<tr class="hl"><td>★ 镜像平面角度 θ</td><td>θ = invα + δ/2</td><td class="num">' + f(r.theta) + '°</td></tr>');
+  midBody.innerHTML = html.join('');
+  const warns = [];
+  if(r.df < r.db) warns.push('注意：齿根圆（' + f(r.df) + '）< 基圆（' + f(r.db) + '）→ 齿根部是过渡曲线，不是渐开线。Creo 镜像时只镜像基圆以上的渐开线段，齿根单独用过渡曲线/圆角收尾。');
+  if(r.x < -0.5 || r.x > 1) warns.push('提示：变位系数 ' + f(r.x) + ' 超出常用范围（-0.5 ~ 1），请确认齿厚、齿顶是否合理。');
+  if(r.Sn <= 0) warns.push('错误：计算出的齿厚 ≤ 0，变位系数过小（齿已消失），请检查 x。');
+  warnBox.innerHTML = warns.join('<br>');
+  warnBox.style.display = warns.length ? 'block' : 'none';
+}
+function renderBar(r){
+  const svg = $('#barSvg');
+  let w = '';
+  const x0 = 24, y = 38, h = 40;
+  const pxPerDeg = Math.min(30, 380 / Math.max(r.theta, 0.001));
+  const lenInv = r.invDeg * pxPerDeg, lenHalf = r.halfDeg * pxPerDeg, lenTotal = lenInv + lenHalf;
+  w += '<line x1="' + x0 + '" y1="' + (y + h + 14) + '" x2="' + (x0 + lenTotal) + '" y2="' + (y + h + 14) + '" stroke="#64748b" stroke-width="1.6"/>';
+  if(lenInv > 4)
+    w += '<rect x="' + x0 + '" y="' + y + '" width="' + lenInv + '" height="' + h + '" fill="#f59e0b"/>';
+  w += '<rect x="' + (x0 + lenInv) + '" y="' + y + '" width="' + lenHalf + '" height="' + h + '" fill="#10b981" opacity="0.9"/>';
+  w += '<text x="' + (x0 + lenInv/2) + '" y="' + (y - 6) + '" font-size="12" fill="#d97706" text-anchor="middle" font-weight="bold">invα ' + f(r.invDeg) + '°</text>';
+  w += '<text x="' + (x0 + lenInv + lenHalf/2) + '" y="' + (y - 6) + '" font-size="12" fill="#047857" text-anchor="middle" font-weight="bold">δ/2 ' + f(r.halfDeg) + '°</text>';
+  w += '<line x1="' + x0 + '" y1="' + (y + h + 14) + '" x2="' + (x0 + lenTotal) + '" y2="' + (y + h + 14) + '" stroke="#dc2626" stroke-width="4"/>';
+  w += '<polygon points="' + (x0 + lenTotal) + ',' + (y + h + 7) + ' ' + (x0 + lenTotal + 9) + ',' + (y + h + 14) + ' ' + (x0 + lenTotal) + ',' + (y + h + 21) + '" fill="#dc2626"/>';
+  w += '<text x="' + (x0 + lenTotal/2) + '" y="' + (y + h + 38) + '" font-size="15" fill="#dc2626" text-anchor="middle" font-weight="bold">θ = ' + f(r.theta) + '°</text>';
+  w += '<text x="' + (x0 - 4) + '" y="' + (y + h + 28) + '" font-size="11" fill="#64748b" text-anchor="end">0°</text>';
+  svg.innerHTML = w;
+}
+function renderSector(r){
+  const svg = $('#sectorSvg');
+  const cx = 88, cy = 105, rad = 74;
+  const degScale = Math.max(1, 60 / Math.max(r.theta, 0.001));
+  const zoomed = degScale > 1.02;
+  const aInv = r.invDeg * degScale, aHalf = r.halfDeg * degScale, aTot = aInv + aHalf;
+  const pt = (deg) => {
+    const a = (deg - 90) * RAD;
+    return [cx + rad*Math.cos(a), cy + rad*Math.sin(a)];
+  };
+  const path = (a1, a2) => {
+    const p1 = pt(a1), p2 = pt(a2);
+    const lg = (a2 - a1) > 180 ? 1 : 0;
+    return 'M' + cx + ',' + cy + ' L' + p1[0].toFixed(1) + ',' + p1[1].toFixed(1)
+         + ' A' + rad + ',' + rad + ' 0 ' + lg + ' 1 ' + p2[0].toFixed(1) + ',' + p2[1].toFixed(1) + ' Z';
+  };
+  let w = '';
+  w += '<circle cx="' + cx + '" cy="' + cy + '" r="' + rad + '" fill="none" stroke="#cbd5e1" stroke-width="1.2"/>';
+  if(aInv >= 0.5){
+    w += '<path d="' + path(0, aInv) + '" fill="#f59e0b" opacity="0.4"/>';
+  } else {
+    const p1 = pt(0);
+    w += '<line x1="' + cx + '" y1="' + cy + '" x2="' + p1[0].toFixed(1) + '" y2="' + p1[1].toFixed(1) + '" stroke="#f59e0b" stroke-width="2.4"/>';
+  }
+  w += '<path d="' + path(aInv, aTot) + '" fill="#10b981" opacity="0.32"/>';
+  const pMid = pt(aInv + aHalf/2);
+  w += '<line x1="' + cx + '" y1="' + cy + '" x2="' + pMid[0].toFixed(1) + '" y2="' + pMid[1].toFixed(1) + '" stroke="#dc2626" stroke-width="2" stroke-dasharray="6 4"/>';
+  const out = (deg) => {
+    const a = (deg - 90) * RAD;
+    return [cx + (rad + 24)*Math.cos(a), cy + (rad + 24)*Math.sin(a)];
+  };
+  const oInv = out(aInv/2), oHalf = out(aInv + aHalf/2), oTot = out(aTot);
+  w += '<text x="' + oInv[0].toFixed(1) + '" y="' + (oInv[1] + 4).toFixed(1) + '" font-size="11" fill="#d97706" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#ffffff" stroke-width="3">invα ' + f(r.invDeg) + '°</text>';
+  w += '<text x="' + oHalf[0].toFixed(1) + '" y="' + (oHalf[1] + 4).toFixed(1) + '" font-size="11.5" fill="#047857" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#ffffff" stroke-width="3">δ/2 ' + f(r.halfDeg) + '°</text>';
+  w += '<text x="' + oTot[0].toFixed(1) + '" y="' + (oTot[1] + 4).toFixed(1) + '" font-size="13" fill="#dc2626" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#ffffff" stroke-width="3">θ ' + f(r.theta) + '°</text>';
+  $('#sectorNote2').textContent = zoomed ? '角度已放大显示（实际 θ=' + f(r.theta) + '°）' : '';
+  svg.innerHTML = w;
+}
+function renderCircles(r){
+  const svg = $('#cirSvg');
+  const cx = 130, cy = 130;
+  const rMax = Math.max(r.da/2, r.d/2, r.df/2, r.db/2, 0.001);
+  const scale = 100 / rMax;
+  const circle = (d, stroke, dash, width) => {
+    const rr = d/2 * scale;
+    if(rr < 1.5) return '<circle cx="' + cx + '" cy="' + cy + '" r="1.5" fill="none" stroke="' + stroke + '" stroke-width="' + width + '" ' + (dash ? 'stroke-dasharray="' + dash + '"' : '') + '/>';
+    return '<circle cx="' + cx + '" cy="' + cy + '" r="' + rr.toFixed(1) + '" fill="none" stroke="' + stroke + '" stroke-width="' + width + '" ' + (dash ? 'stroke-dasharray="' + dash + '"' : '') + '/>';
+  };
+  let w = '';
+  if(r.da > 0) w += circle(r.da, '#dc2626', null, 1.8);
+  w += circle(r.d, '#2563eb', null, 2);
+  w += circle(r.db, '#f59e0b', '6 4', 2);
+  if(r.df > 0) w += circle(r.df, '#94a3b8', '3 3', 1.2);
+  const labels = [
+    [r.da/2, '齿顶 ' + f(r.da), '#dc2626', 45,  15],
+    [r.d/2,  '分度 ' + f(r.d),  '#2563eb', -45, 15],
+    [r.db/2, '基圆 ' + f(r.db), '#d97706', -135, 28],
+    [r.df/2, '齿根 ' + f(r.df), '#64748b', 135,  28]
+  ];
+  labels.forEach(it => {
+    const rr = it[0] * scale;
+    if(rr < 6) return;
+    const a = it[3] * RAD;
+    const x = cx + (rr + it[4]) * Math.cos(a);
+    const y = cy + (rr + it[4]) * Math.sin(a);
+    w += '<text x="' + x.toFixed(1) + '" y="' + (y + 4).toFixed(1) + '" font-size="11.5" fill="' + it[2]
+       + '" text-anchor="middle" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3">' + it[1] + '</text>';
+  });
+  svg.innerHTML = w;
+}
+function renderTooth(c){
+  const svg = $('#toothSvg');
+  if(!svg) return;
+  const cx = 210, cy = 215;
+  const ra = c.da/2, rP = c.d/2, rb = c.db/2, rf = c.df/2;
+  if(!(ra > 0 && rP > 0)){
+    svg.innerHTML = '<text x="210" y="200" text-anchor="middle" font-size="13" fill="#94a3b8">无有效齿形</text>';
+    return;
+  }
+  const scale = 145 / ra;
+  const Ra = ra*scale, RP = rP*scale, Rb = rb*scale, Rf = Math.max(0, rf*scale);
+  const inv = (t) => Math.tan(t) - t;
+  const tTop = Math.acos(Math.min(1, Math.max(rb/ra, 0.0001)));
+  const rhoOf = (t) => rb / Math.cos(t);
+  const px = (rho, thDeg) => {
+    const t = thDeg*RAD;
+    return [cx + rho*scale*Math.cos(t), cy - rho*scale*Math.sin(t)];
+  };
+  const thAdeg = (rho) => 90 - c.halfDeg - c.invDeg + inv(Math.acos(rb/Math.max(rho,1e-6)))/RAD;
+  const thBdeg = (rho) => 90 + c.halfDeg + c.invDeg - inv(Math.acos(rb/Math.max(rho,1e-6)))/RAD;
+  const rhoMin = Math.max(rb, rf);
+  const N = 42;
+  const ptsA = [], ptsB = [];
+  for(let i = 0; i <= N; i++){
+    const t = tTop * i / N;
+    const rho = rhoOf(t);
+    ptsA.push(px(rho, thAdeg(rho)));
+    ptsB.push(px(rho, thBdeg(rho)));
+  }
+  let w = '';
+  const circ = (R, col, dash, op) => { if(R > 1.5) w += '<circle cx="'+cx+'" cy="'+cy+'" r="'+R.toFixed(1)+'" fill="none" stroke="'+col+'" stroke-width="1" stroke-dasharray="'+dash+'" opacity="'+op+'"/>'; };
+  circ(Ra, '#dc2626', '', 0.55); circ(RP, '#2563eb', '', 0.55);
+  circ(Rb, '#f59e0b', '5 4', 0.55); circ(Rf, '#94a3b8', '3 3', 0.55);
+  w += '<line x1="'+cx+'" y1="8" x2="'+cx+'" y2="422" stroke="#eef2f7" stroke-width="1"/>';
+  w += '<line x1="8" y1="'+cy+'" x2="412" y2="'+cy+'" stroke="#eef2f7" stroke-width="1"/>';
+  const stepDeg = 360 / c.z;
+  const thN = (90 - stepDeg)*RAD;
+  const xN1 = cx + Rf*Math.cos(thN), yN1 = cy - Rf*Math.sin(thN);
+  const xN2 = cx + Ra*Math.cos(thN), yN2 = cy - Ra*Math.sin(thN);
+  w += '<line x1="'+xN1.toFixed(1)+'" y1="'+yN1.toFixed(1)+'" x2="'+xN2.toFixed(1)+'" y2="'+yN2.toFixed(1)+'" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 4"/>';
+  const thNb = (90 - stepDeg + c.halfDeg + c.invDeg);
+  const nb = [];
+  for(let i = 0; i <= N; i++){
+    const t = tTop*i/N, rho = rhoOf(t);
+    if(rho < rhoMin) continue;
+    nb.push(px(rho, thNb - inv(Math.acos(rb/rho))/RAD));
+  }
+  if(nb.length > 1)
+    w += '<polyline points="'+nb.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')+'" fill="none" stroke="#94a3b8" stroke-width="1.4"/>';
+  let dPath = 'M' + ptsA[0][0].toFixed(1) + ',' + ptsA[0][1].toFixed(1);
+  for(let i = 1; i < ptsA.length; i++) dPath += ' L' + ptsA[i][0].toFixed(1) + ',' + ptsA[i][1].toFixed(1);
+  for(let i = ptsB.length - 1; i >= 0; i--) dPath += ' L' + ptsB[i][0].toFixed(1) + ',' + ptsB[i][1].toFixed(1);
+  const a0 = ptsA[0], b0 = ptsB[0];
+  if(rf < rb){
+    const pA1 = px(rf, 90 - c.halfDeg - c.invDeg);
+    const pB1 = px(rf, 90 + c.halfDeg + c.invDeg);
+    dPath += ' L' + pA1[0].toFixed(1) + ',' + pA1[1].toFixed(1);
+    if(Rf > 2)
+      dPath += ' A' + Rf.toFixed(1) + ',' + Rf.toFixed(1) + ' 0 0 1 ' + pB1[0].toFixed(1) + ',' + pB1[1].toFixed(1);
+    dPath += ' L' + b0[0].toFixed(1) + ',' + b0[1].toFixed(1);
+  } else if(Rf > 1){
+    dPath += ' A' + Rf.toFixed(1) + ',' + Rf.toFixed(1) + ' 0 0 0 ' + a0[0].toFixed(1) + ',' + a0[1].toFixed(1);
+  }
+  dPath += ' Z';
+  w += '<path d="' + dPath + '" fill="#60a5fa" opacity="0.3" stroke="#1d4ed8" stroke-width="1.8"/>';
+  const pS1 = px(rP, 90 - c.halfDeg), pS2 = px(rP, 90 + c.halfDeg);
+  w += '<path d="M' + pS1[0].toFixed(1) + ',' + pS1[1].toFixed(1) + ' A' + RP.toFixed(1) + ',' + RP.toFixed(1) + ' 0 0 1 ' + pS2[0].toFixed(1) + ',' + pS2[1].toFixed(1) + '" fill="none" stroke="#1d4ed8" stroke-width="3.2" opacity="0.9"/>';
+  const ptD = (R, deg) => { const a = deg*RAD; return [cx + R*Math.cos(a), cy - R*Math.sin(a)]; };
+  const lead = (x1,y1,x2,y2) => '<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="#64748b" stroke-width="1.2"/>';
+  const lbl = (x,y,anchor,color,txt) => '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" font-size="12.5" fill="'+color+'" text-anchor="'+anchor+'" font-weight="700" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">'+txt+'</text>';
+  const daP = ptD(Ra,45), dP = ptD(RP,135), dbP = ptD(Rb,-45), dfP = ptD(Rf,225);
+  w += lead(daP[0],daP[1], daP[0]+30, daP[1]-14); w += lbl(daP[0]+32, daP[1]-8, 'start', '#dc2626', 'da=' + f(c.da));
+  w += lead(dP[0],dP[1], dP[0]-30, dP[1]-14);    w += lbl(dP[0]-32, dP[1]-8, 'end', '#2563eb', 'd=' + f(c.d));
+  w += lead(dbP[0],dbP[1], dbP[0]+30, dbP[1]+14); w += lbl(dbP[0]+32, dbP[1]+20, 'start', '#d97706', 'db=' + f(c.db));
+  w += lead(dfP[0],dfP[1], dfP[0]-30, dfP[1]+14); w += lbl(dfP[0]-32, dfP[1]+20, 'end', '#64748b', 'df=' + f(c.df));
+  w += lead(cx, cy - RP, cx, 64);
+  w += lbl(cx, 54, 'middle', '#1d4ed8', '齿厚 Sn=' + f(c.Sn) + 'mm');
+  w += '<text x="' + cx + '" y="408" font-size="11" fill="#94a3b8" text-anchor="middle">渐开线齿廓按真实公式采样 · 齿根过渡为示意简化</text>';
+  svg.innerHTML = w;
+}
+function renderSteps(r){
+  const steps = [
+    { f: 'd = m × z',          v: f(r.d) + ' mm',       n: '模数 × 齿数' },
+    { f: 'r = d ÷ 2',          v: f(r.r) + ' mm',       n: '半径 = 直径一半' },
+    { f: 'db = d × cosα',      v: f(r.db) + ' mm',      n: '基圆 = 渐开线出生的圆' },
+    { f: 'Sn = m(π/2+2x·tanα)',v: f(r.Sn) + ' mm',      n: '分度圆弧齿厚（软件 Sn 可对照）' },
+    { f: 'δ = Sn ÷ r',         v: f(r.deltaDeg) + '°',  n: '齿宽(mm) ÷ 半径 = 齿厚角' },
+    { f: 'δ/2 = 齿厚角 ÷ 2',    v: f(r.halfDeg) + '°',   n: '半个齿宽（镜子在正中间）' },
+    { f: 'invα = tanα − α',    v: f(r.invDeg) + '°',    n: '渐开线天生歪的角（20°压力角≈0.854°）' },
+    { f: 'θ = invα + δ/2',     v: f(r.theta) + '°',     n: '★ 镜像平面角度', final: true }
+  ];
+  const li = [];
+  steps.forEach(s => {
+    const cls = s.final ? 'r' : (s.f.indexOf('δ/2') === 0 || s.f.indexOf('δ =') === 0 ? 'g' : (s.f.indexOf('invα') === 0 ? 'o' : ''));
+    li.push('<li><span class="formula">' + s.f + ' = <span class="val' + (cls ? ' ' + cls : '') + '">' + s.v + '</span></span><span class="note">' + s.n + '</span></li>');
+  });
+  stepList.innerHTML = li.join('');
+}
+function run(){
+  const input = readInput();
+  ['z','m','a','x'].forEach(k => els[k].classList.toggle('invalid', false));
+  input.errs.forEach(e => els[e[0]].classList.add('invalid'));
+  if(!input.ok){
+    big.textContent = '输入有误';
+    exp.textContent = input.errs.map(e => e[1]).join('；');
+    midBody.innerHTML = '<tr><td colspan="3">' + input.errs.map(e => e[1]).join('<br>') + '</td></tr>';
+    stepList.innerHTML = '';
+    $('#barSvg').innerHTML = ''; $('#sectorSvg').innerHTML = ''; $('#cirSvg').innerHTML = ''; $('#toothSvg').innerHTML = '';
+    warnBox.style.display = 'none';
+    return;
+  }
+  const r = calc(input);
+  renderResult(r);
+  renderTable(r);
+  renderBar(r);
+  renderSector(r);
+  renderCircles(r);
+  renderTooth(r);
+  renderSteps(r);
+  try{ localStorage.setItem('gear_angle_inputs', JSON.stringify(input)); }catch(e){}
+}
+function copyResult(){
+  const input = readInput();
+  if(!input.ok){ showToast('先修正输入再复制'); return; }
+  const r = calc(input);
+  const txt = '镜像平面角度 θ = ' + f(r.theta) + '°\n'
+            + '参数：z=' + input.z + ', m=' + input.m + ', α=' + input.a + '°, x=' + input.x + '\n'
+            + '拆解：invα=' + f(r.invDeg) + '° + δ/2=' + f(r.halfDeg) + '° （δ=' + f(r.deltaDeg) + '°, Sn=' + f(r.Sn) + 'mm）';
+  navigator.clipboard.writeText(txt).then(()=>showToast('已复制 ✓')).catch(()=>showToast('复制失败'));
+}
+let timer;
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(timer);
+  timer = setTimeout(()=>toast.classList.remove('show'), 1800);
+}
+Object.keys(els).forEach(k => els[k].addEventListener('input', run));
+$('#copyBtn').addEventListener('click', copyResult);
+$('#printBtn').addEventListener('click', () => window.print());
+const themeBtn = $('#themeBtn');
+function applyTheme(dark){
+  document.body.classList.toggle('dark', dark);
+  themeBtn.textContent = dark ? '☀️ 浅色' : '🌙 深色';
+  try{ localStorage.setItem('gear_angle_theme', dark ? 'dark' : 'light'); }catch(e){}
+}
+themeBtn.addEventListener('click', () => applyTheme(!document.body.classList.contains('dark')));
+let savedTheme = 'light';
+try{ savedTheme = localStorage.getItem('gear_angle_theme'); }catch(e){}
+applyTheme(savedTheme ? savedTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches);
+let saved = null;
+try{ saved = JSON.parse(localStorage.getItem('gear_angle_inputs') || 'null'); }catch(e){}
+els.z.value = saved && saved.z ? saved.z : 10;
+els.m.value = saved && saved.m ? saved.m : 0.5;
+els.a.value = saved && saved.a ? saved.a : 20;
+els.x.value = saved && saved.x !== undefined ? saved.x : 0.44;
+run();
+})();
+</script>
+</body>
+</html>

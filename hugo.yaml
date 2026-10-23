@@ -146,6 +146,10 @@ menu:
       weight: 5
       params:
         icon: dashboard
+    - identifier: gear-tool
+      name: 齿轮计算器
+      url: /tools/gear-mirror-angle.html
+      weight: 6
     - identifier: recommended
       name: 推荐
       url: /recommended/
