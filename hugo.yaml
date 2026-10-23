@@ -150,10 +150,14 @@ menu:
       name: 齿轮计算器
       url: /tools/gear-mirror-angle.html
       weight: 6
+    - identifier: birthday-tool
+      name: 生日计算器
+      url: /tools/birthday-milestone.html
+      weight: 7
     - identifier: recommended
       name: 推荐
       url: /recommended/
-      weight: 7
+      weight: 8
       params:
         icon: messages
 
