@@ -5,7 +5,7 @@ description: "图纸上写着「跨齿数 3，公法线 6.14」，这个 3 是�
 date: 2026-09-16
 lastmod: 2026-09-16
 categories:
-  - 技术
+  - 机械
 tags:
   - 齿轮
   - 机械设计

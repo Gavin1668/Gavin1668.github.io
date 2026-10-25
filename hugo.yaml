@@ -88,6 +88,15 @@ params:
   comments:
     enabled: false
 
+  # ===== 留言板（Giscus，基于 GitHub Discussions）=====
+  # 配置方法：https://giscus.app/zh-CN 选择仓库 Gavin1668/Gavin1668.github.io
+  # 启用 Discussions，安装 giscus App 后，把生成的 repoID / categoryID 填进来即生效
+  giscus:
+    repo: Gavin1668/Gavin1668.github.io
+    repoID: ""
+    category: Announcements
+    categoryID: ""
+
   widgets:
     homepage:
       - type: search
@@ -141,19 +150,11 @@ menu:
   main:
     # 关于、归档、搜索 由对应页面的 front matter 管理，此处不重复定义
     - identifier: dashboard
-      name: 工作台
+      name: 仪表盘
       url: /dashboard/
       weight: 5
       params:
         icon: dashboard
-    - identifier: gear-tool
-      name: 齿轮计算器
-      url: /tools/gear-mirror-angle.html
-      weight: 6
-    - identifier: birthday-tool
-      name: 生日计算器
-      url: /tools/birthday-milestone.html
-      weight: 7
     - identifier: recommended
       name: 推荐
       url: /recommended/

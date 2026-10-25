@@ -5,7 +5,7 @@ description: "套餐只给 1 个定时任务，但我早上要简报、晚上要
 date: 2026-09-17
 lastmod: 2026-09-17
 categories:
-  - 工具
+  - AI 工具
 tags:
   - AI 自动化
   - 定时任务

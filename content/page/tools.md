@@ -6,6 +6,7 @@ description: 我开发、自用的在线小工具合集
 date: 2026-09-04
 menu:
   main:
+    name: 工具箱
     weight: 4
     params:
       icon: tools

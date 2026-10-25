@@ -5,7 +5,7 @@ description: 第一篇博客文章，记录博客搭建的过程。
 date: 2026-08-05
 lastmod: 2026-08-05
 categories:
-  - 杂谈
+  - 随笔
 tags:
   - Hugo
   - Blog

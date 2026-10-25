@@ -5,7 +5,7 @@ description: "跟 AI 聊天不等于学习。这篇分享一套能直接粘贴�
 date: 2026-09-16
 lastmod: 2026-09-16
 categories:
-  - 工具
+  - AI 工具
 tags:
   - AI
   - 学习

@@ -5,7 +5,7 @@ description: "记录从安装 Hugo、用 hugo-theme-stack 搭站，到通过 Git
 date: 2026-08-11
 lastmod: 2026-08-11
 categories:
-  - 技术
+  - 建站
 tags:
   - Hugo
   - GitHub Pages

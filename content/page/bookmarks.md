@@ -2,6 +2,9 @@
 title: "书签"
 date: 2026-10-11
 draft: false
+menu:
+  main:
+    weight: 10
 ---
 
 > 我自己用过、觉得不错的工具、书和网站，持续更新。

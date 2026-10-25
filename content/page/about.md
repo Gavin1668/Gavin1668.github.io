@@ -3,6 +3,9 @@ title: "关于我"
 date: 2026-10-11
 draft: false
 layout: "about"
+menu:
+  main:
+    weight: 11
 ---
 
 ## 你好，我是 Gavin
