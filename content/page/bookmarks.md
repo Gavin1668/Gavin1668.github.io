@@ -1,5 +1,8 @@
 ---
 title: "书签"
+slug: bookmarks
+aliases:
+  - "/书签/"
 date: 2026-10-11
 draft: false
 menu:
