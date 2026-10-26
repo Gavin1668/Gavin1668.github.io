@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#7da88a" stroke-opacity=".13" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="#101c24"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <g transform="translate(420 450)">
+    <circle r="210" fill="none" stroke="#e0a526" stroke-width="10"/>
+    <circle r="120" fill="none" stroke="#e0a526" stroke-opacity=".6" stroke-width="4"/>
+    <circle r="34" fill="#e0a526"/>
+    <g stroke="#e0a526" stroke-width="9" stroke-linecap="round">
+      <path d="M0 -260V-200M0 260V200M-260 0H-200M260 0H200"/>
+      <path d="M-184 -184l42 42M184 184l-42 -42M184 -184l-42 42M-184 184l42 -42"/>
+    </g>
+  </g>
+  <path d="M760 320h520M760 370h380" stroke="#7da88a" stroke-width="8" stroke-linecap="round" opacity=".7"/>
+  <text x="760" y="480" fill="#f5f5fa" font-family="Arial, Helvetica, sans-serif" font-size="86" font-weight="700">GD&amp;T</text>
+  <text x="760" y="560" fill="#e0a526" font-family="Arial, Helvetica, sans-serif" font-size="44" letter-spacing="4">0.009 mm</text>
+  <text x="110" y="150" fill="#e0a526" font-family="Arial, Helvetica, sans-serif" font-size="26" letter-spacing="7">WORK / QINGKE</text>
+  <text x="110" y="800" fill="#7da88a" font-family="Arial, Helvetica, sans-serif" font-size="24" letter-spacing="3">STRUCTURE · TOLERANCE · ASSEMBLY</text>
+</svg>

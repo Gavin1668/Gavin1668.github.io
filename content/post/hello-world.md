@@ -10,6 +10,7 @@ tags:
   - Hugo
   - Blog
   - GitHub Pages
+image: /img/covers/cover-hello.svg
 ---
 
 ## 为什么开始写博客？

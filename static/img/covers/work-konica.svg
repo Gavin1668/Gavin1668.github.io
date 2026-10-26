@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <rect width="1600" height="900" fill="#16241e"/>
+  <g transform="translate(1180 450)" fill="none" stroke="#e0a526">
+    <circle r="260" stroke-opacity=".18" stroke-width="2"/>
+    <circle r="190" stroke-opacity=".45" stroke-width="3"/>
+    <circle r="112" stroke-width="10"/>
+    <circle r="42" fill="#e0a526" stroke="none"/>
+    <g stroke-width="8" stroke-linecap="round">
+      <path d="M0 -230V-170M0 230V170M-230 0H-170M230 0H170"/>
+      <path d="M-163 -163l42 42M163 163l-42 -42M163 -163l-42 42M-163 163l42 -42"/>
+    </g>
+  </g>
+  <g fill="#7da88a" opacity=".7">
+    <circle cx="860" cy="250" r="5"/><circle cx="920" cy="250" r="5"/><circle cx="980" cy="250" r="5"/>
+    <circle cx="860" cy="310" r="5"/><circle cx="920" cy="310" r="5"/><circle cx="980" cy="310" r="5"/>
+  </g>
+  <text x="110" y="150" fill="#e0a526" font-family="Arial, Helvetica, sans-serif" font-size="26" letter-spacing="7">WORK / KONICA</text>
+  <text x="110" y="420" fill="#f5f5fa" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="700">PM</text>
+  <text x="110" y="510" fill="#f5f5fa" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="700">GEAR.</text>
+  <text x="110" y="590" fill="#8b93a5" font-family="Arial, Helvetica, sans-serif" font-size="32">变位系数 / 粉末冶金 / 寿命评估</text>
+  <text x="110" y="800" fill="#7da88a" font-family="Arial, Helvetica, sans-serif" font-size="24" letter-spacing="3">POWDER METALLURGY · 2026</text>
+</svg>

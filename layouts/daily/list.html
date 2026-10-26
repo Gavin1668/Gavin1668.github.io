@@ -1,32 +1,42 @@
+{{ define "body-class" }}blog-v4{{ end }}
+
 {{ define "main" }}
-<div class="daily-page">
-  <style>
-  .daily-page{max-width:900px;margin:0 auto;padding:20px;}
-  .daily-back{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:99px;font-size:13px;font-weight:500;background:var(--card-background,#fff);border:1px solid var(--card-border,#e5e7eb);color:#6b7280;text-decoration:none;margin-bottom:18px;transition:all .2s;}
-  .daily-back:hover{border-color:#E8500E;color:#E8500E;transform:translateX(-2px);}
-  .daily-head h1{font-size:28px;font-weight:700;margin:0 0 8px;}
-  .daily-head p{color:#6b7280;font-size:14px;margin:0 0 6px;}
-  .daily-count{font-size:12px;color:#9ca3af;}
-  </style>
+{{ partial "blog/header.html" . }}
 
-  <a class="daily-back" href="{{ "/" | relURL }}">← 返回首页</a>
+<div class="blog-page">
+  <section class="blog-section blog-wrap" style="padding-top:clamp(32px,4vw,48px);">
+    <div class="sec-head">
+      <span class="sec-no">01</span>
+      <h1 class="sec-title">{{ .Title }}</h1>
+      <span class="sec-line"></span>
+      <span class="sec-link">共 {{ len .Pages }} 期</span>
+    </div>
+    <p class="section-desc">{{ with .Params.description }}{{ . }}{{ else }}每天 08:00 自动汇总的天气、金价与热点{{ end }}</p>
 
-  <header class="daily-head">
-    <h1>{{ .Title }}</h1>
-    {{ with .Params.description }}<p>{{ . }}</p>{{ end }}
-    <p class="daily-count">共 {{ len .Pages }} 期 · 每天 08:00 更新</p>
-  </header>
+    {{- $paginator := .Paginate (.Pages.ByDate.Reverse) 20 -}}
+    <div class="daily-index-grid">
+      {{ range $paginator.Pages }}
+      {{ $dtitle := .Title | replaceRE "^[0-9]{4}-[0-9]{2}-[0-9]{2} " "" }}
+      {{ $ddesc := .Params.description | replaceRE "^[0-9]{4}-[0-9]{2}-[0-9]{2} [^：:]+[：:]\\s*" "" }}
+      <a class="daily-card" href="{{ .RelPermalink }}">
+        <div class="daily-date">
+          <b>{{ .Date.Format "01-02" }}</b>
+          <span>{{ .Date.Format "2006" }}</span>
+        </div>
+        <div class="daily-body">
+          <h3 class="daily-title">{{ $dtitle }}</h3>
+          <p class="daily-desc">{{ if $ddesc }}{{ $ddesc | truncate 120 }}{{ else }}{{ .Summary | plainify | truncate 120 }}{{ end }}</p>
+        </div>
+        <span class="daily-arrow">→</span>
+      </a>
+      {{ end }}
+    </div>
 
-  {{- $paginator := .Paginate (.Pages.ByDate.Reverse) 20 -}}
-  <section class="article-list">
-    {{ range $paginator.Pages }}
-      {{ partial "article-list/default" . }}
-    {{ end }}
+    {{ partial "pagination.html" . }}
   </section>
-
-  {{ partial "pagination.html" . }}
 </div>
-{{ partialCached "footer/footer" . }}
+
+{{ partial "blog/footer.html" . }}
 {{ end }}
 
 {{ define "left-sidebar" }}{{ end }}

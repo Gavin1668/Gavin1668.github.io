@@ -11,6 +11,7 @@ tags:
   - 定时任务
   - 效率工具
   - 知识库
+image: /img/covers/cover-ai-workflow.svg
 draft: false
 ---
 

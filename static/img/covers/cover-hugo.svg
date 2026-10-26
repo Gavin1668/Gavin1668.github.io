@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16251c"/>
+      <stop offset="1" stop-color="#22382b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="1320" cy="170" r="300" fill="#e0a526" fill-opacity=".12"/>
+  <circle cx="1320" cy="170" r="190" fill="none" stroke="#e0a526" stroke-opacity=".4" stroke-width="3"/>
+  <text x="110" y="170" fill="#e0a526" font-family="Arial, Helvetica, sans-serif" font-size="28" letter-spacing="8">HUGO / GITHUB PAGES</text>
+  <text x="110" y="440" fill="#f5f5fa" font-family="Arial, Helvetica, sans-serif" font-size="190" font-weight="700" letter-spacing="-8">Build.</text>
+  <text x="110" y="620" fill="#e0a526" font-family="Arial, Helvetica, sans-serif" font-size="190" font-weight="700" letter-spacing="-8">Deploy.</text>
+  <path d="M110 690H900" stroke="#7da88a" stroke-opacity=".5" stroke-width="4" stroke-linecap="round"/>
+  <text x="110" y="770" fill="#8b93a5" font-family="Arial, Helvetica, sans-serif" font-size="26" letter-spacing="4">MARKDOWN → STATIC → PAGES</text>
+  <path d="M1180 690h190M1320 640l50 50-50 50" fill="none" stroke="#e0a526" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

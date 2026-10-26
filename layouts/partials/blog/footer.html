@@ -1,0 +1,33 @@
+<footer class="blog-footer">
+  <div class="blog-footer-inner blog-wrap">
+    <div class="blog-footer-brand">
+      Gavin · 不愁有闲
+      <span>电机结构设计 / 写作 / 工具</span>
+    </div>
+    <nav class="blog-footer-nav" aria-label="页脚导航">
+      <a href="{{ "/" | relURL }}">首页</a>
+      <a href="{{ "/archives/" | relURL }}">文章</a>
+      <a href="{{ "/daily/" | relURL }}">日报</a>
+      <a href="{{ "/works.html" | relURL }}">作品集</a>
+      <a href="{{ "/tools/" | relURL }}">工具</a>
+      <a href="{{ "/bookmarks/" | relURL }}">书签</a>
+      <a href="{{ "/about/" | relURL }}">关于</a>
+      <a href="{{ "index.xml" | relURL }}">RSS</a>
+      <a href="https://github.com/Gavin1668" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </nav>
+    <div class="blog-footer-copy">© 2022–{{ now.Format "2006" }} · Built with Hugo</div>
+  </div>
+</footer>
+<button class="blog-backtop" id="blogBackTop" type="button" aria-label="回到顶部" title="回到顶部">↑</button>
+<script>
+(function () {
+  var btn = document.getElementById('blogBackTop');
+  if (!btn) return;
+  window.addEventListener('scroll', function () {
+    btn.classList.toggle('show', window.scrollY > 400);
+  }, { passive: true });
+  btn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>

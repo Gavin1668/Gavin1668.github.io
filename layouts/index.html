@@ -1,450 +1,241 @@
-{{ define "body-class" }}home-v3{{ end }}
+{{ define "body-class" }}blog-v4{{ end }}
 
 {{ define "main" }}
 {{- $posts := where .Site.RegularPages "Type" "in" .Site.Params.mainSections -}}
 {{- $notHidden := where .Site.RegularPages "Params.hidden" "!=" true -}}
 {{- $filtered := ($posts | intersect $notHidden).ByDate.Reverse -}}
 {{- $dailies := (where .Site.RegularPages "Type" "daily").ByDate.Reverse -}}
+{{- $days := 0 -}}
+{{- with $filtered -}}
+  {{- $first := index (last 1 .) 0 -}}
+  {{- $days = int (div (now.Sub $first.Date).Hours 24) -}}
+{{- end -}}
 
-<style>
-body.home-v3{background:#f5f5fa;}
-body.home-v3 .site-nav{display:none;}
-body.home-v3 .container.main-container{max-width:100%;padding:0;}
-body.home-v3 .container.main-container .main{padding:0;}
-body.home-v3 .site-footer{display:none;}
-body.home-v3{--bg:#f5f5fa;--card:#ffffff;--ink:#1a1a2e;--sub:#6b7280;--line:#e5e7eb;--accent:#3a5a40;--accent-soft:#e8efe9;--shadow:0 2px 12px rgba(0,0,0,.05);--shadow-hover:0 6px 20px rgba(0,0,0,.09);}
-body.home-v3.dark{--bg:#0f1117;--card:#1a1d28;--ink:#e4e6ef;--sub:#8b93a5;--line:#2a2e3d;--accent:#7da88a;--accent-soft:rgba(125,168,138,.15);--shadow:0 2px 12px rgba(0,0,0,.2);--shadow-hover:0 6px 20px rgba(0,0,0,.4);}
-body.home-v3{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);transition:background .25s,color .25s;}
-body.home-v3 *{box-sizing:border-box;margin:0;padding:0;}
-body.home-v3 a{color:inherit;text-decoration:none;}
-.hv3-topbar{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--line);transition:background .25s;}
-.hv3-topbar-inner{max-width:1320px;margin:0 auto;padding:clamp(10px,1.4vw,12px) clamp(16px,3.2vw,32px);display:flex;align-items:center;justify-content:space-between;}
-.hv3-logo{display:flex;align-items:center;}
-.hv3-logo img{height:38px;display:block;}
-body.home-v3.dark .hv3-logo img{content:url('{{ "logo-dark.png" | relURL }}');}
-.hv3-icons{display:flex;gap:4px;}
-.hv3-ibtn{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;color:var(--sub);transition:all .15s;}
-.hv3-ibtn:hover{background:var(--accent-soft);color:var(--accent);}
-.hv3-layout{display:grid;grid-template-columns:230px minmax(0,1fr) 280px;gap:clamp(20px,2.6vw,36px);width:100%;max-width:1320px;margin:0 auto;padding:clamp(16px,2.4vw,28px) clamp(16px,3.2vw,32px);align-items:start;}
-.hv3-l{position:sticky;top:72px;padding-right:8px;min-width:0;}
-.hv3-c{min-width:0;}
-.hv3-r{min-width:0;}
-.hv3-nav{display:flex;flex-direction:column;gap:4px;margin-bottom:20px;}
-.hv3-nav a{display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:12px;color:var(--sub);font-size:14.5px;font-weight:500;transition:all .15s;}
-.hv3-nav a:hover{background:var(--accent-soft);color:var(--ink);}
-.hv3-nav a.on{background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(58,90,64,.3);}
-.hv3-sub summary{list-style:none;display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:12px;color:var(--sub);font-size:14.5px;font-weight:500;cursor:pointer;transition:all .15s;}
-.hv3-sub summary::-webkit-details-marker{display:none;}
-.hv3-sub summary svg{flex-shrink:0;}
-.hv3-sub summary:hover{background:var(--accent-soft);color:var(--ink);}
-.hv3-sub details[open] summary{color:var(--accent);background:var(--accent-soft);}
-.hv3-sub .caret{margin-left:auto;font-size:10px;transition:transform .15s;}
-.hv3-sub details[open] .caret{transform:rotate(180deg);}
-.hv3-sub-links{display:flex;flex-direction:column;gap:2px;padding:4px 0 4px 26px;}
-.hv3-sub-links a{display:flex;align-items:center;gap:10px;padding:8px 16px;border-radius:10px;color:var(--sub);font-size:13.5px;font-weight:500;transition:all .15s;text-decoration:none;}
-.hv3-sub-links a:hover{background:var(--accent-soft);color:var(--ink);}
-.hv3-nav a svg{flex-shrink:0;}
-.hv3-card{background:var(--card);border-radius:16px;padding:20px;box-shadow:var(--shadow);margin-bottom:20px;transition:background .25s;}
-.hv3-card h4{font-size:11px;font-weight:600;color:var(--sub);letter-spacing:.1em;margin-bottom:12px;text-transform:uppercase;}
-.hv3-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.hv3-stat .num{font-size:19px;font-weight:700;}
-.hv3-stat .lbl{font-size:11px;color:var(--sub);margin-top:2px;}
-.hv3-socials{display:flex;gap:10px;}
-.hv3-socials a{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;transition:all .15s;box-shadow:0 2px 6px rgba(0,0,0,.12);}
-.hv3-socials a:hover{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.2);}
-.hv3-socials .ic-gh{background:#24292e;}
-.hv3-socials .ic-mail{background:#3b82f6;}
-.hv3-socials .ic-rss{background:#f59e0b;}
-.hv3-socials .ic-wechat{background:#07c160;}
-.hv3-search{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:50px;padding:12px 20px;box-shadow:var(--shadow);margin-bottom:20px;transition:background .25s;}
-.hv3-search .tag{font-size:12px;color:var(--sub);border-right:1px solid var(--line);padding-right:10px;}
-.hv3-search input{flex:1;border:none;outline:none;font-size:14px;background:transparent;color:var(--ink);}
-.hv3-banner{height:220px;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#5a8a6a,#3a5a40);position:relative;margin-bottom:24px;display:flex;align-items:flex-end;justify-content:flex-end;padding:20px;}
-.hv3-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.72) 0%,rgba(0,0,0,.32) 45%,rgba(0,0,0,0) 70%);z-index:0;}
-.hv3-banner .bq{color:#fff;text-align:right;position:relative;z-index:1;text-shadow:0 2px 10px rgba(0,0,0,.85);}
-.hv3-banner .bq .t{font-size:14px;font-weight:600;}
-.hv3-banner .bq .s{font-size:11px;opacity:.85;margin-top:3px;}
-.hv3-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
-.hv3-tab{padding:6px 15px;border-radius:99px;font-size:13px;background:var(--card);color:var(--sub);border:none;cursor:pointer;transition:all .15s;}
-.hv3-tab.on{background:var(--accent);color:#fff;font-weight:600;}
-.hv3-post{background:var(--card);border-radius:16px;padding:18px;display:flex;gap:18px;margin-bottom:16px;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s;cursor:pointer;}
-.hv3-post:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover);}
-.hv3-thumb{width:200px;height:125px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff;background-size:cover;background-position:center;background-color:#d8e2db;}
-.hv3-pbody{flex:1;min-width:0;display:flex;flex-direction:column;}
-.hv3-ptitle{font-size:16px;font-weight:700;margin-bottom:5px;line-height:1.4;}
-.hv3-post:hover .hv3-ptitle{color:var(--accent);}
-.hv3-pexerpt{font-size:13px;color:var(--sub);line-height:1.6;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.hv3-meta{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--sub);flex-wrap:wrap;margin-top:auto;padding-top:6px;}
-.hv3-tag{color:var(--accent);background:var(--accent-soft);padding:2px 8px;border-radius:99px;font-size:11px;}
-.hv3-countdown{text-align:center;padding:20px 16px;}
-.hv3-countdown .lbl{font-size:12px;color:var(--sub);margin-bottom:6px;}
-.hv3-countdown .num{font-size:42px;font-weight:200;color:var(--accent);line-height:1;}
-.hv3-countdown .dt{font-size:11px;color:var(--sub);margin-top:6px;}
-.hv3-quote .qhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
-.hv3-quote .day{font-size:12px;color:var(--sub);}
-.hv3-quote .day b{color:var(--ink);font-size:16px;font-weight:700;margin-right:5px;}
-.hv3-quote .next{font-size:11px;color:var(--accent);cursor:pointer;}
-.hv3-quote .qtext{font-size:12.5px;line-height:1.7;color:var(--ink);font-style:italic;}
-.hv3-hot{list-style:none;}
-.hv3-hot li{display:flex;gap:9px;padding:7px 0;border-bottom:1px solid var(--line);cursor:pointer;}
-.hv3-hot li:last-child{border-bottom:none;}
-.hv3-hot .ht{width:44px;height:44px;border-radius:8px;flex-shrink:0;background-size:cover;background-position:center;background-color:#d8e2db;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;}
-.hv3-hot .hTi{font-size:12.5px;font-weight:500;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.hv3-hot li:hover .hTi{color:var(--accent);}
-.hv3-msglist{max-height:280px;overflow-y:auto;margin-bottom:10px;}
-.hv3-msg{padding:8px 0;border-bottom:1px dashed var(--line);}
-.hv3-msg:last-child{border-bottom:none;}
-.hv3-msgh{display:flex;align-items:center;gap:7px;margin-bottom:3px;}
-.hv3-msga{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;}
-.hv3-msgname{font-size:12px;font-weight:600;}
-.hv3-msgt{font-size:10px;color:var(--sub);margin-left:auto;}
-.hv3-msgc{font-size:12.5px;line-height:1.6;padding-left:29px;}
-.hv3-msgtip{text-align:center;padding:10px 0;font-size:12.5px;color:var(--sub);}
-.hv3-msgtip button{padding:7px 18px;border:none;border-radius:20px;background:var(--accent);color:#fff;font-size:12.5px;cursor:pointer;}
-.hv3-msgform textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:10px;font-size:12.5px;resize:vertical;outline:none;background:var(--card);color:var(--ink);box-sizing:border-box;font-family:inherit;margin-bottom:6px;}
-.hv3-msgform textarea:focus{border-color:var(--accent);}
-.hv3-msgform button{width:100%;padding:8px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-size:12.5px;font-weight:600;cursor:pointer;}
-.hv3-mom-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
-.hv3-mom-modal.show{display:flex;}
-.hv3-mom-box{background:var(--card);border-radius:18px;padding:24px;width:440px;max-width:90vw;box-shadow:0 24px 64px rgba(0,0,0,.3);}
-.hv3-mom-box h3{font-size:17px;margin-bottom:14px;}
-.hv3-mom-box textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;resize:vertical;outline:none;background:var(--card);color:var(--ink);box-sizing:border-box;font-family:inherit;min-height:100px;}
-.hv3-mom-box textarea:focus{border-color:var(--accent);}
-.hv3-mom-btns{display:flex;gap:8px;margin-top:14px;justify-content:flex-end;}
-.hv3-mom-btns button{padding:8px 16px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:600;}
-.hv3-mom-cancel{background:var(--line);color:var(--sub);}
-.hv3-mom-send{background:var(--accent);color:#fff;}
-.hv3-backtop{position:fixed;right:22px;bottom:22px;width:42px;height:42px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;font-size:18px;box-shadow:0 4px 16px rgba(58,90,64,.4);opacity:0;pointer-events:none;transform:translateY(10px);transition:all .25s;z-index:99;}
-.hv3-backtop.show{opacity:1;pointer-events:auto;transform:translateY(0);}
-.hv3-footer{border-top:1px solid var(--line);padding:20px;text-align:center;font-size:12px;color:var(--sub);margin-top:20px;}
-.hv3-footer .fb{font-weight:700;color:var(--ink);font-size:13px;margin-bottom:4px;}
-/* ===== 响应式：三栏 → 两栏（隐藏右栏） ===== */
-@media (max-width:1199px){
-  .hv3-layout{grid-template-columns:minmax(170px,210px) minmax(0,1fr);gap:clamp(16px,2.2vw,28px);padding:clamp(14px,2vw,20px) clamp(16px,2.8vw,28px);}
-  .hv3-r{display:none;}
-}
-/* ===== 响应式：两栏 → 单栏（手机 / 竖屏小屏平板） ===== */
-@media (max-width:899px){
-  .hv3-layout{grid-template-columns:1fr;padding:12px clamp(12px,3vw,16px);gap:14px;}
-  .hv3-l{position:static;}
-  .hv3-nav{flex-direction:row;overflow-x:auto;padding-bottom:4px;gap:6px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
-  .hv3-nav::-webkit-scrollbar{display:none;}
-  .hv3-nav a{white-space:nowrap;padding:9px 13px;font-size:13.5px;}
-  .hv3-stats-card,.hv3-socials-card,.hv3-now{display:none;}
-  .hv3-post{flex-direction:column;gap:12px;padding:14px;}
-  .hv3-thumb{width:100%;height:clamp(120px,34vw,170px);}
-  .hv3-banner{height:clamp(120px,34vw,170px);padding:14px;margin-bottom:16px;}
-  .hv3-ptitle{font-size:clamp(15px,4.2vw,17px);}
-  .hv3-search{padding:10px 16px;margin-bottom:14px;}
-  .hv3-card{padding:16px;margin-bottom:14px;}
-  .hv3-topbar-inner{padding:10px 14px;}
-  .hv3-ibtn{width:34px;height:34px;}
-  .hv3-footer{padding:16px 12px;}
-  .hv3-mom-box{padding:18px;}
-}
-/* ===== 响应式：超窄屏（≤420px）再收紧 ===== */
-@media (max-width:420px){
-  .hv3-tab{padding:6px 11px;font-size:12px;}
-  .hv3-tabs{gap:6px;}
-}
-</style>
+{{ partial "blog/header.html" . }}
 
-<div class="hv3-topbar">
-  <div class="hv3-topbar-inner">
-    <a class="hv3-logo" href="/" title="不愁有闲"><img src="{{ "logo.png" | relURL }}" alt="不愁有闲"></a>
-    <div class="hv3-icons">
-      <a class="hv3-ibtn" href="{{ with .Site.Params.socialGithub }}{{ . }}{{ else }}https://github.com/Gavin1668{{ end }}" target="_blank" title="GitHub">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.17c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.26 3.35.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .3.21.66.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
-      </a>
-      <a class="hv3-ibtn" href="#messages" title="留言板" onclick="document.getElementById('hv3MsgCard').scrollIntoView({behavior:'smooth'});return false;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-      </a>
-      <a class="hv3-ibtn" href="{{ "index.xml" | relURL }}" target="_blank" title="RSS 订阅">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.5" fill="currentColor"/></svg>
-      </a>
-      <button class="hv3-ibtn" id="hv3ThemeBtn" title="切换深色模式">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
-    </div>
-  </div>
-</div>
+<div class="blog-page">
 
-<div class="hv3-layout">
+  <section class="blog-hero">
+    <div class="blog-wrap blog-hero-grid">
+      <div class="blog-hero-copy">
+        <div class="blog-eyebrow">BLOG · 2026</div>
+        <h1>Gavin<span class="thin">把「学东西」变成「真弄懂」</span></h1>
+        <div class="blog-role">电机结构设计工程师 · 写作者</div>
+        <p class="blog-lead">记录 AI 工作方法、机械设计与建站踩坑，也放一些自己写的小工具。白天跟图纸、公差打交道，晚上把学到的东西写成能复用的文章。</p>
+        <div class="blog-stats">
+          <div class="blog-stat"><div class="n">{{ len $filtered }}</div><div class="l">篇文章</div></div>
+          <div class="blog-stat"><div class="n">{{ len $dailies }}</div><div class="l">期日报</div></div>
+          <div class="blog-stat"><div class="n">4</div><div class="l">个工具</div></div>
+          <div class="blog-stat"><div class="n">{{ $days }}</div><div class="l">天运营</div></div>
+        </div>
+        <div class="blog-ctas">
+          <a class="btn btn-primary" href="#articles">读文章</a>
+          <a class="btn btn-outline" href="{{ "/works.html" | relURL }}">看作品集</a>
+        </div>
+      </div>
 
-  <aside class="hv3-l">
-    <nav class="hv3-nav">
-      <a href="/" class="on">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        首页
-      </a>
-      <a href="/archives/">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        文章
-      </a>
-      <a href="/daily/">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        日报
-      </a>
-      <a href="/recommended/">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-        推荐
-      </a>
-      <a href="/dashboard/">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        仪表盘
-      </a>
-      <div class="hv3-sub"><details><summary>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-        工具箱
-        <span class="caret">▾</span>
-      </summary>
-      <div class="hv3-sub-links">
-        <a href="/tools/">🧰 全部工具</a>
-      <a href="/tools/gear-mirror-angle.html">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        齿轮计算器
-      </a>
-      <a href="/tools/birthday-milestone.html">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>
-        生日计算器
-      </a>
-        <a href="/tools/#wallpaper">🖼️ 壁纸工坊</a>
-      </div></details></div>
-      <a href="/works.html">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="3 7 12 12 21 7"/></svg>
-        作品集
-      </a>
-      <a href="/bookmarks/">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        书签
-      </a>
-      <a href="/about/">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        关于
-      </a>
-    </nav>
-
-    <div class="hv3-card hv3-stats-card">
-      <h4>站点统计</h4>
-      <div class="hv3-stats">
-        <div class="hv3-stat"><div class="num">{{ len $filtered }}</div><div class="lbl">文章</div></div>
-        {{- $firstPost := index (last 1 $filtered) 0 -}}
-        <div class="hv3-stat"><div class="num">{{ int (div (now.Sub $firstPost.Date).Hours 24) }}</div><div class="lbl">运营天数</div></div>
-        <div class="hv3-stat"><div class="num">{{ len (where .Site.RegularPages "Type" "daily") }}</div><div class="lbl">日志</div></div>
-        <div class="hv3-stat"><div class="num">{{ (index $filtered 0).Date.Format "01-02" }}</div><div class="lbl">最近更新</div></div>
+      <div class="blog-hero-art" aria-hidden="true">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="core">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7M9 11h5"/></svg>
+        </div>
+        <div class="hero-tag hero-tag-a">WRITE · 2026</div>
+        <div class="hero-tag hero-tag-b">GD&amp;T · 0.009</div>
       </div>
     </div>
+  </section>
 
-    <div class="hv3-card hv3-socials-card">
-      <h4>社交媒体</h4>
-      <div class="hv3-socials">
-        <a class="ic-gh" href="{{ with .Site.Params.socialGithub }}{{ . }}{{ else }}https://github.com/Gavin1668{{ end }}" target="_blank" title="GitHub">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.17c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.26 3.35.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .3.21.66.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
-        </a>
-        <a class="ic-mail" href="{{ with .Site.Params.socialEmail }}mailto:{{ . }}{{ end }}" title="邮箱">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        </a>
-        <a class="ic-rss" href="{{ "index.xml" | relURL }}" title="RSS 订阅">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.5" fill="currentColor"/></svg>
-        </a>
-        <a class="ic-wechat" href="#" title="微信">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2C4.845 2 1.7 4.685 1.7 7.982c0 1.896 1.04 3.59 2.67 4.738l-.668 2.01 2.34-1.174c.62.174 1.28.27 1.97.27.16 0 .32-.006.48-.02a5.2 5.2 0 0 1-.22-1.47c0-3.06 2.86-5.54 6.39-5.54.16 0 .32.006.48.02C14.66 3.98 11.93 2 8.69 2zM6.3 6.28a.86.86 0 1 1 0 1.72.86.86 0 0 1 0-1.72zm4.78 0a.86.86 0 1 1 0 1.72.86.86 0 0 1 0-1.72zM22.3 12.97c0-2.76-2.76-5-6.16-5s-6.16 2.24-6.16 5 2.76 5 6.16 5c.7 0 1.37-.1 2-.27l1.94.97-.54-1.63c1.39-.94 2.24-2.32 2.24-3.97zm-8.2-.86a.72.72 0 1 1 0-1.44.72.72 0 0 1 0 1.44zm4.14 0a.72.72 0 1 1 0-1.44.72.72 0 0 1 0 1.44z"/></svg>
-        </a>
+  <section id="articles" class="blog-section blog-wrap">
+    <div class="sec-head">
+      <span class="sec-no">01</span>
+      <h2 class="sec-title">最新文章</h2>
+      <span class="sec-line"></span>
+      <a class="sec-link" href="{{ "/archives/" | relURL }}">全部文章 →</a>
+    </div>
+    <p class="section-desc">AI 工作方法、机械设计、建站记录与生活随笔。</p>
+
+    <div class="filter-row">
+      <div class="blog-tabs" id="blogTabs">
+        <button class="blog-tab on" type="button" data-cat="">全部</button>
+        <button class="blog-tab" type="button" data-cat="AI 工具">AI 工具</button>
+        <button class="blog-tab" type="button" data-cat="机械">机械</button>
+        <button class="blog-tab" type="button" data-cat="随笔">随笔</button>
+        <button class="blog-tab" type="button" data-cat="建站">建站</button>
       </div>
-    </div>
-  </aside>
-
-  <main class="hv3-c">
-    <div class="hv3-search">
-      <span class="tag">文章</span>
-      <input type="text" id="hv3Search" placeholder="Search" autocomplete="off">
+      <form class="blog-search" action="{{ "/search/" | relURL }}" method="get" role="search">
+        <input type="search" name="q" placeholder="搜索文章…" aria-label="搜索文章">
+        <button type="submit" aria-label="搜索">→</button>
+      </form>
     </div>
 
-    <div class="hv3-banner">
-      <div class="bq">
-        <div class="t">把「学东西」变成「真弄懂」</div>
-        <div class="s">分享 AI 效率方法、机械技术与生活随笔 — 不愁有闲</div>
-      </div>
-    </div>
+    <div class="post-grid" id="postGrid">
+      {{ range first 8 $filtered }}
+      {{- $cat := "" -}}
+      {{- with .Params.categories -}}{{- if gt (len .) 0 -}}{{- $cat = index . 0 -}}{{- end -}}{{- end -}}
+      {{- $title := .Title -}}
+      <a class="post-card" href="{{ .RelPermalink }}" data-cat="{{ $cat }}">
+        <div class="post-cover">
+          {{ with .Params.image }}
+            <img src="{{ . | relURL }}" alt="{{ $title }}" loading="lazy">
+          {{ else }}
+            <img src="{{ "/img/covers/cover-hello.svg" | relURL }}" alt="{{ $title }}" loading="lazy">
+          {{ end }}
+          {{ with $cat }}<span class="post-cat">{{ . }}</span>{{ end }}
+        </div>
+        <div class="post-body">
+          <h3 class="post-title">{{ .Title }}</h3>
+          <p class="post-desc">{{ with .Params.description }}{{ . | truncate 110 }}{{ else }}{{ .Summary | plainify | truncate 110 }}{{ end }}</p>
+          <div class="post-meta">
+            <span>{{ .Date.Format "2006-01-02" }}</span>
+            <span>·</span>
+            <span>{{ .ReadingTime }} 分钟</span>
+          </div>
+        </div>
+      </a>
+      {{ end }}
 
-    <div class="hv3-tabs" id="hv3Tabs">
-      <button class="hv3-tab on" data-cat="">全部</button>
-      {{ range $cat := slice "AI 工具" "机械" "随笔" "建站" }}
-      <button class="hv3-tab" data-cat="{{ $cat }}">{{ $cat }}</button>
+      <a class="post-card post-card--more" href="{{ "/archives/" | relURL }}" data-cat="__more">
+        <span class="more-arrow">→</span>
+        <span>Archive</span>
+        <strong>查看全部文章</strong>
+        <em>{{ len $filtered }} 篇文章 · {{ len $dailies }} 期日报</em>
+      </a>
+    </div>
+  </section>
+
+  <section id="daily" class="blog-section blog-wrap">
+    <div class="sec-head">
+      <span class="sec-no">02</span>
+      <h2 class="sec-title">最新日报</h2>
+      <span class="sec-line"></span>
+      <a class="sec-link" href="{{ "/daily/" | relURL }}">全部日报 →</a>
+    </div>
+    <p class="section-desc">每天 08:00 自动汇总的天气、金价与热点。</p>
+
+    <div class="daily-grid">
+      {{ range first 3 $dailies }}
+      {{ $dtitle := .Title | replaceRE "^[0-9]{4}-[0-9]{2}-[0-9]{2} " "" }}
+      {{ $ddesc := .Params.description | replaceRE "^[0-9]{4}-[0-9]{2}-[0-9]{2} [^：:]+[：:]\\s*" "" }}
+      <a class="daily-card" href="{{ .RelPermalink }}">
+        <div class="daily-date">
+          <b>{{ .Date.Format "01-02" }}</b>
+          <span>{{ .Date.Format "2006" }}</span>
+        </div>
+        <div class="daily-body">
+          <h3 class="daily-title">{{ $dtitle }}</h3>
+          <p class="daily-desc">{{ if $ddesc }}{{ $ddesc | truncate 90 }}{{ else }}{{ .Summary | plainify | truncate 90 }}{{ end }}</p>
+        </div>
+        <span class="daily-arrow">→</span>
+      </a>
       {{ end }}
     </div>
+  </section>
 
-    {{ range first 8 $filtered }}
-    {{ $cat := "" }}{{ with .Params.categories }}{{ if gt (len .) 0 }}{{ $cat = index . 0 }}{{ end }}{{ end }}
-    {{ $seed := .File.TranslationBaseName | default (md5 .Title) }}
-    <article class="hv3-post" data-cat="{{ $cat }}" onclick="window.location='{{ .RelPermalink }}'">
-      <div class="hv3-thumb" {{ with .Params.image }}style="background-image:url('{{ . | relURL }}')"{{ else }}style="background-image:url('https://picsum.photos/seed/{{ $seed }}/400/250')"{{ end }}></div>
-      <div class="hv3-pbody">
-        <div class="hv3-ptitle">{{ .Title }}</div>
-        <div class="hv3-pexerpt">{{ with .Description }}{{ . | truncate 90 }}{{ else }}{{ .Summary | plainify | truncate 90 }}{{ end }}</div>
-        <div class="hv3-meta">
-          {{ if $cat }}<span class="hv3-tag">{{ $cat }}</span>{{ end }}
-          <span>{{ .Date.Format "2006-01-02" }}</span>
+  <section id="tools" class="blog-section blog-wrap">
+    <div class="sec-head">
+      <span class="sec-no">03</span>
+      <h2 class="sec-title">自研工具</h2>
+      <span class="sec-line"></span>
+      <a class="sec-link" href="{{ "/tools/" | relURL }}">全部工具 →</a>
+    </div>
+    <p class="section-desc">把日常工程计算和重复动作，做成打开就能用的网页工具。</p>
+
+    <div class="tool-grid">
+      <a class="tool-card" href="{{ "/tools/gear-mirror-angle.html" | relURL }}">
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         </div>
-      </div>
-    </article>
-    {{ end }}
+        <h3>齿轮镜像角计算器</h3>
+        <p>输入齿数、模数、压力角与变位系数，自动计算渐开线镜像平面角度。</p>
+        <span class="tool-go">打开工具 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
 
-    <div style="margin-top:28px;">
-      <div class="hv3-card" id="hv3MsgCard">
-        <h4>✉️ 留言板</h4>
-        {{ if .Site.Params.giscus.repoID }}
-        <div class="giscus" style="margin-top:6px;"></div>
-        <script src="https://giscus.app/client.js"
-          data-repo="{{ .Site.Params.giscus.repo }}"
-          data-repo-id="{{ .Site.Params.giscus.repoID }}"
-          data-category="{{ .Site.Params.giscus.category }}"
-          data-category-id="{{ .Site.Params.giscus.categoryID }}"
-          data-mapping="pathname"
-          data-strict="0"
-          data-reactions-enabled="1"
-          data-emit-metadata="0"
-          data-input-position="top"
-          data-theme="preferred_color_scheme"
-          data-lang="zh-CN"
-          data-loading="lazy"
-          crossorigin="anonymous"
-          async>
-        </script>
-        {{ else }}
-        <div style="text-align:center;color:var(--sub);font-size:12.5px;padding:16px 8px;line-height:1.8;">
-          留言板即将上线：到 <a href="https://giscus.app/zh-CN" target="_blank" rel="noopener" style="color:var(--accent);">giscus.app</a> 选好仓库，把 repoID / categoryID 填入 hugo.yaml 的 giscus 配置即可。
+      <a class="tool-card" href="{{ "/tools/birthday-milestone.html" | relURL }}">
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>
         </div>
-        {{ end }}
+        <h3>生日 · 天数 · 里程碑</h3>
+        <p>公历 / 农历输入，计算累计天数、生日倒计时与纪念日清单。</p>
+        <span class="tool-go">打开工具 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <a class="tool-card" href="{{ "/tools/dimensional-chain-calculator.html" | relURL }}">
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/><rect x="7" y="7" width="10" height="10" rx="1"/></svg>
+        </div>
+        <h3>国标 5847 尺寸链计算器</h3>
+        <p>按 GB/T 5847 口径完成极值法与统计法计算，快速做公差校核。</p>
+        <span class="tool-go">打开工具 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <a class="tool-card" href="{{ "/tools/#wallpaper" | relURL }}">
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <h3>截图拼贴壁纸工坊</h3>
+        <p>多图拼贴、自由布局、圆角间距与背景模糊，一键导出高清壁纸。</p>
+        <span class="tool-go">打开工具 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
+  </section>
+
+  <section id="message" class="blog-section blog-wrap">
+    <div class="contact-card">
+      <div class="contact-kicker">Message Board</div>
+      <h2>有想法，或者想聊聊？</h2>
+      <p>电机结构、尺寸链、建站、AI 工作流，或者只是路过打个招呼，都欢迎。</p>
+      <div class="contact-actions">
+        <a class="btn btn-primary" href="mailto:changjian2026@126.com">发邮件</a>
+        <a class="btn btn-outline" href="https://github.com/Gavin1668" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
-    </div>
-  </main>
 
-  <aside class="hv3-r">
-    <div class="hv3-card hv3-countdown">
-      <div class="lbl">距离新年</div>
-      <div class="num" id="hv3CountNum">{{ printf "%.0f" (math.Ceil (div ((time (printf "%d-01-01T00:00:00+08:00" (add now.Year 1))).Sub now).Hours 24)) }}</div>
-      <div class="dt" id="hv3CountDate">2027-01-01</div>
+      {{ if .Site.Params.giscus.repoID }}
+      <div class="giscus" style="margin-top:28px;"></div>
+      <script src="https://giscus.app/client.js"
+        data-repo="{{ .Site.Params.giscus.repo }}"
+        data-repo-id="{{ .Site.Params.giscus.repoID }}"
+        data-category="{{ .Site.Params.giscus.category }}"
+        data-category-id="{{ .Site.Params.giscus.categoryID }}"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+      </script>
+      {{ else }}
+      <p class="contact-note">留言板即将上线：到 <a href="https://giscus.app/zh-CN" target="_blank" rel="noopener">giscus.app</a> 选好仓库，把 repoID / categoryID 填入 <code>hugo.yaml</code> 的 giscus 配置即可。</p>
+      {{ end }}
     </div>
+  </section>
 
-    <div class="hv3-card hv3-quote">
-      <div class="qhead">
-        <div class="day"><b id="hv3Day">--</b> <span id="hv3Week">--</span></div>
-        <span class="next" id="hv3NextQuote">下一句 →</span>
-      </div>
-      <div class="qtext" id="hv3Quote">"{{ index (slice "那些看似不起眼的日复一日，会在某天让你看到坚持的意义。" "人这一辈子，到底图个什么。" "修行哪有什么秘法，天天做不偷懒就行。" "日拱一卒无有尽，功不唐捐终入海。" "慢慢来，比较快。" "先做好手头事，再想远方路。" "把图纸画对，比画得快更重要。" "精度是设计师的尊严。" "在机械的世界里，公差就是金钱。" "今天的努力，是明天的底气。") (mod now.Day 10) }}"</div>
-    </div>
-
-    {{ with $dailies }}
-    <div class="hv3-card">
-      <h4>最新日报</h4>
-      <ul class="hv3-hot">
-        {{ range first 3 . }}
-        <li onclick="window.location='{{ .RelPermalink }}'">
-          <div class="ht" style="background:#3a5a40;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;">{{ .Date.Format "01-02" }}</div>
-          <div>
-            <div class="hTi">{{ .Title }}</div>
-            <div style="font-size:10.5px;color:var(--sub);margin-top:2px;">{{ .Date.Format "2006-01-02" }}</div>
-          </div>
-        </li>
-        {{ end }}
-      </ul>
-      <a href="/daily/" style="display:block;text-align:center;font-size:12px;color:var(--accent);text-decoration:none;padding-top:8px;">查看全部日报 →</a>
-    </div>
-    {{ end }}
-
-    <div class="hv3-card">
-      <h4>热门文章</h4>
-      <ul class="hv3-hot">
-        {{ range first 5 $filtered }}
-        {{ $seed := .File.TranslationBaseName | default (md5 .Title) }}
-        <li onclick="window.location='{{ .RelPermalink }}'">
-          <div class="ht" {{ with .Params.image }}style="background-image:url('{{ . | relURL }}')"{{ else }}style="background-image:url('https://picsum.photos/seed/{{ $seed }}/100/100')"{{ end }}></div>
-          <div>
-            <div class="hTi">{{ .Title }}</div>
-            <div style="font-size:10.5px;color:var(--sub);margin-top:2px;">{{ .Date.Format "2006-01-02" }}</div>
-          </div>
-        </li>
-        {{ end }}
-      </ul>
-    </div>
-  </aside>
 </div>
 
-<footer class="hv3-footer">
-  <div class="fb">不愁有闲</div>
-  <div>Copyright {{ with .Site.Params.footer.since }}{{ . }}-{{ end }}2026 不愁有闲 版权所有</div>
-</footer>
-
-<button class="hv3-backtop" id="hv3BackTop" title="回到顶部">↑</button>
+{{ partial "blog/footer.html" . }}
 
 <script>
-(function(){
-  var saved = localStorage.getItem('hv3theme');
-  if(saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)){
-    document.body.classList.add('dark');
-  }
-  document.getElementById('hv3ThemeBtn').onclick = function(){
-    document.body.classList.toggle('dark');
-    localStorage.setItem('hv3theme', document.body.classList.contains('dark')?'dark':'light');
-  };
-})();
-(function(){
-  var btn = document.getElementById('hv3BackTop');
-  window.addEventListener('scroll', function(){ btn.classList.toggle('show', window.scrollY > 300); });
-  btn.onclick = function(){ window.scrollTo({top:0,behavior:'smooth'}); };
-})();
-(function(){
-  var now = new Date();
-  var year = now.getFullYear();
-  var next = new Date(year+1, 0, 1);
-  var days = Math.ceil((next - now) / 86400000);
-  document.getElementById('hv3CountNum').textContent = days;
-  document.getElementById('hv3CountDate').textContent = (year+1)+'-01-01';
-})();
-(function(){
-  var quotes = [
-    "那些看似不起眼的日复一日，会在某天让你看到坚持的意义。",
-    "人这一辈子，到底图个什么。",
-    "修行哪有什么秘法，天天做不偷懒就行。",
-    "日拱一卒无有尽，功不唐捐终入海。",
-    "慢慢来，比较快。",
-    "先做好手头事，再想远方路。",
-    "把图纸画对，比画得快更重要。",
-    "精度是设计师的尊严。",
-    "在机械的世界里，公差就是金钱。",
-    "今天的努力，是明天的底气。"
-  ];
-  var qi = new Date().getDate() % quotes.length;
-  function renderQ(){
-    document.getElementById('hv3Quote').textContent = '"'+quotes[qi]+'"';
-  }
-  var now = new Date();
-  document.getElementById('hv3Day').textContent = (now.getMonth()+1)+'.'+now.getDate();
-  var weeks = ['周日','周一','周二','周三','周四','周五','周六'];
-  document.getElementById('hv3Week').textContent = weeks[now.getDay()];
-  renderQ();
-  document.getElementById('hv3NextQuote').onclick = function(){
-    qi = (qi + 1 + Math.floor(Math.random()*3)) % quotes.length;
-    renderQ();
-  };
-})();
-(function(){
-  var input = document.getElementById('hv3Search');
-  input.addEventListener('keydown', function(e){
-    if(e.key === 'Enter'){ var q = input.value.trim(); if(q) window.location.href = '/search/?q='+encodeURIComponent(q); }
+(function () {
+  var tabs = document.querySelectorAll('.blog-tab');
+  var cards = document.querySelectorAll('#postGrid .post-card');
+  if (!tabs.length || !cards.length) return;
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) { t.classList.remove('on'); });
+      tab.classList.add('on');
+      var cat = tab.getAttribute('data-cat') || '';
+      cards.forEach(function (card) {
+        var isMore = card.classList.contains('post-card--more');
+        var show = cat ? (card.getAttribute('data-cat') === cat && !isMore) : true;
+        card.style.display = show ? '' : 'none';
+      });
+    });
   });
 })();
-document.querySelectorAll('.hv3-tab').forEach(function(tab){
-  tab.onclick = function(){
-    document.querySelectorAll('.hv3-tab').forEach(function(t){t.classList.remove('on');});
-    tab.classList.add('on');
-    var cat = tab.dataset.cat || '';
-    document.querySelectorAll('.hv3-post').forEach(function(p){
-      if(!cat || p.dataset.cat === cat){ p.style.display=''; } else{ p.style.display='none'; }
-    });
-  };
-});
 </script>
 {{ end }}
 

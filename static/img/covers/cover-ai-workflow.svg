@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#141824"/>
+      <stop offset="1" stop-color="#202638"/>
+    </linearGradient>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="#ffffff" stroke-opacity=".055" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <circle cx="1185" cy="305" r="215" fill="none" stroke="#e0a526" stroke-opacity=".18" stroke-width="2"/>
+  <circle cx="1185" cy="305" r="135" fill="none" stroke="#e0a526" stroke-opacity=".42" stroke-width="3"/>
+  <circle cx="1185" cy="305" r="62" fill="#e0a526"/>
+  <path d="M1185 270v42l30 18" fill="none" stroke="#1a1a2e" stroke-width="9" stroke-linecap="round"/>
+  <path d="M300 470 C 430 310, 590 310, 710 400" fill="none" stroke="#e0a526" stroke-width="6" stroke-linecap="round"/>
+  <path d="M710 400 l-34 -3 12 -30z" fill="#e0a526"/>
+  <path d="M790 500 C 930 660, 1080 650, 1160 545" fill="none" stroke="#7da88a" stroke-width="6" stroke-linecap="round"/>
+  <path d="M1160 545 l-34 2 9 30z" fill="#7da88a"/>
+  <circle cx="300" cy="470" r="12" fill="#e0a526"/>
+  <circle cx="790" cy="500" r="12" fill="#7da88a"/>
+  <text x="110" y="170" fill="#e0a526" font-family="Arial, Helvetica, sans-serif" font-size="28" letter-spacing="8">AI WORKFLOW</text>
+  <text x="110" y="300" fill="#f5f5fa" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="700">Relay</text>
+  <text x="110" y="372" fill="#8b93a5" font-family="Arial, Helvetica, sans-serif" font-size="34">Prompt / Context / Output</text>
+  <text x="110" y="760" fill="#6b7280" font-family="Arial, Helvetica, sans-serif" font-size="24" letter-spacing="4">01 → 02 → 03</text>
+</svg>

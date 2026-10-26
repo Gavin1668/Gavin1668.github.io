@@ -11,6 +11,7 @@ tags:
   - GitHub Pages
   - 静态博客
   - 部署
+image: /img/covers/cover-hugo.svg
 draft: false
 ---
 
