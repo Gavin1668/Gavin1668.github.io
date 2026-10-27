@@ -78,6 +78,7 @@
   .steps li:nth-child(5)::before,.steps li:nth-child(6)::before{background:var(--greenT); color:var(--green)}
   .steps li:nth-child(7)::before{background:var(--orangeT); color:#d97706}
   .steps li:nth-child(8)::before{background:var(--redT); color:var(--red)}
+  .steps li:nth-child(9)::before,.steps li:nth-child(10)::before{background:var(--orangeT); color:#d97706}
   .steps .formula{font-family:Consolas,Menlo,monospace; font-weight:600; white-space:nowrap}
   .steps .note{color:var(--muted); font-size:12.5px; margin-left:10px}
   .steps .val{font-family:Consolas,Menlo,monospace; font-weight:700; color:var(--primary)}
@@ -101,7 +102,7 @@
   }
   .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
   footer{color:var(--muted); font-size:12px; text-align:center; padding:6px 0 16px}
-  @media (max-width:640px){ .wrap{padding:12px} h1{font-size:18px} .grid2{grid-template-columns:1fr} .result .big{font-size:36px} }
+  @media (max-width:640px){ .wrap{padding:12px} h1{font-size:18px} .grid2{grid-template-columns:1fr} .result .big{font-size:36px} .steps .formula{white-space:normal; word-break:break-word} .steps .note{margin-left:0} }
   @media print{
     header button, .row, .figs, .grid2{display:none !important}
     .card{box-shadow:none; border-color:#ccc}
@@ -139,6 +140,7 @@
       <div class="exp" id="thetaExp"></div>
       <button id="copyBtn" type="button">复制结果</button>
     </div>
+    <div class="wkline" id="wkLine" style="flex-basis:100%;margin-top:8px;font-size:14px;font-weight:700;color:var(--green);display:flex;gap:16px;flex-wrap:wrap;align-items:baseline;"></div>
   </div>
   <div class="card">
     <h2><span class="tag">示意</span>三张图看懂怎么来的</h2>
@@ -182,7 +184,7 @@
     <div class="warn" id="warnBox"></div>
   </div>
   <div class="card">
-    <h2><span class="tag">教学</span>八步公式 · 实时代入你的参数</h2>
+    <h2><span class="tag">教学</span>十步公式 · 实时代入你的参数</h2>
     <ol class="steps" id="stepList"></ol>
   </div>
   <footer>公式依据：ISO 21771 齿轮几何体系 · 压力角 20° 标准渐开线 · 直齿</footer>
@@ -193,7 +195,7 @@
 'use strict';
 const $ = s => document.querySelector(s);
 const els = { z:$('#z'), m:$('#m'), a:$('#a'), x:$('#x'), ha:$('#ha'), c:$('#c') };
-const big = $('#thetaBig'), exp = $('#thetaExp'), midBody = $('#midBody'),
+const big = $('#thetaBig'), exp = $('#thetaExp'), wkLine = $('#wkLine'), midBody = $('#midBody'),
       stepList = $('#stepList'), warnBox = $('#warnBox'), toast = $('#toast');
 const RAD = Math.PI/180;
 function readInput(){
@@ -226,7 +228,9 @@ function calc(p){
   const invRad   = Math.tan(rad) - rad;
   const invDeg   = invRad / RAD;
   const theta    = invDeg + halfDeg;
-  return { z: p.z, d, r, db, da, df, Sn, deltaDeg, halfDeg, invDeg, theta };
+  const k        = Math.round(p.z * p.a / 180 + 0.5);
+  const Wk       = p.m * Math.cos(rad) * ((k - 0.5) * Math.PI + p.z * invRad + 2 * p.x * Math.tan(rad));
+  return { z: p.z, d, r, db, da, df, Sn, deltaDeg, halfDeg, invDeg, theta, k, Wk };
 }
 function f(v){
   if(!isFinite(v)) return '--';
@@ -238,6 +242,8 @@ function renderResult(r){
   big.textContent = f(r.theta);
   exp.textContent = '拆解：invα(' + f(r.invDeg) + '°) + δ/2(' + f(r.halfDeg) + '°) '
                   + '= 齿厚角(' + f(r.deltaDeg) + '°) ÷ 2，再加天生弯';
+  wkLine.innerHTML = '<span>公法线 Wk = <b style="font-family:Consolas,Menlo,monospace">' + f(r.Wk) + ' mm</b></span>'
+                   + '<span>跨齿数 k = <b style="font-family:Consolas,Menlo,monospace">' + r.k + '</b> 齿（公法线千分尺跨 ' + r.k + ' 个齿测量）</span>';
 }
 function renderTable(r){
   const rows = [
@@ -249,7 +255,9 @@ function renderTable(r){
     ['分度圆弧齿厚 Sn', 'Sn = m(π/2 + 2x·tanα)', f(r.Sn) + ' mm'],
     ['齿厚角 δ', 'δ = Sn ÷ r', f(r.deltaDeg) + '°'],
     ['半个齿宽 δ/2', 'δ ÷ 2', f(r.halfDeg) + '°'],
-    ['渐开线函数 invα', 'invα = tanα − α(弧度)', f(r.invDeg) + '°']
+    ['渐开线函数 invα', 'invα = tanα − α(弧度)', f(r.invDeg) + '°'],
+    ['跨齿数 k', 'k = z·α/180° + 0.5（圆整）', f(r.k) + ' 齿'],
+    ['公法线长度 Wk', 'Wk = m·cosα[(k−0.5)π + z·invα + 2x·tanα]', f(r.Wk) + ' mm']
   ];
   const html = [];
   rows.forEach((row, i) => {
@@ -442,7 +450,9 @@ function renderSteps(r){
     { f: 'δ = Sn ÷ r',         v: f(r.deltaDeg) + '°',  n: '齿宽(mm) ÷ 半径 = 齿厚角' },
     { f: 'δ/2 = 齿厚角 ÷ 2',    v: f(r.halfDeg) + '°',   n: '半个齿宽（镜子在正中间）' },
     { f: 'invα = tanα − α',    v: f(r.invDeg) + '°',    n: '渐开线天生歪的角（20°压力角≈0.854°）' },
-    { f: 'θ = invα + δ/2',     v: f(r.theta) + '°',     n: '★ 镜像平面角度', final: true }
+    { f: 'θ = invα + δ/2',     v: f(r.theta) + '°',     n: '★ 镜像平面角度', final: true },
+    { f: 'k = z·α/180° + 0.5', v: f(r.k) + ' 齿',         n: '跨齿数（圆整取整，公法线测量用）' },
+    { f: 'Wk = m·cosα[(k−0.5)π+z·invα+2x·tanα]', v: f(r.Wk) + ' mm', n: '公法线长度（跨 k 齿）' }
   ];
   const li = [];
   steps.forEach(s => {
@@ -462,6 +472,7 @@ function run(){
     stepList.innerHTML = '';
     $('#barSvg').innerHTML = ''; $('#sectorSvg').innerHTML = ''; $('#cirSvg').innerHTML = ''; $('#toothSvg').innerHTML = '';
     warnBox.style.display = 'none';
+    wkLine.innerHTML = '';
     return;
   }
   const r = calc(input);
@@ -480,7 +491,8 @@ function copyResult(){
   const r = calc(input);
   const txt = '镜像平面角度 θ = ' + f(r.theta) + '°\n'
             + '参数：z=' + input.z + ', m=' + input.m + ', α=' + input.a + '°, x=' + input.x + ', ha*=' + input.ha + ', c*=' + input.c + '\n'
-            + '拆解：invα=' + f(r.invDeg) + '° + δ/2=' + f(r.halfDeg) + '° （δ=' + f(r.deltaDeg) + '°, Sn=' + f(r.Sn) + 'mm）';
+            + '拆解：invα=' + f(r.invDeg) + '° + δ/2=' + f(r.halfDeg) + '° （δ=' + f(r.deltaDeg) + '°, Sn=' + f(r.Sn) + 'mm）\n'
+            + '公法线 Wk=' + f(r.Wk) + 'mm（跨 ' + r.k + ' 齿）';
   navigator.clipboard.writeText(txt).then(()=>showToast('已复制 ✓')).catch(()=>showToast('复制失败'));
 }
 let timer;
