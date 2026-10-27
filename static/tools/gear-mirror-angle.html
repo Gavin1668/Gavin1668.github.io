@@ -36,7 +36,7 @@
   label span{font-weight:400; color:var(--muted); font-size:12px}
   input{
     width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:10px;
-    font:inherit; background:var(--card); color:var(--text); font-size:15px;
+    font:inherit; background:var(--card); color:var(--text); font-size:16px;
   }
   input:focus{outline:3px solid rgba(37,99,235,.2); border-color:var(--primary)}
   input.invalid{border-color:var(--danger); outline-color:rgba(220,38,38,.2)}
@@ -125,8 +125,10 @@
       <div><label for="m">模数 m <span>（mm）</span></label><input id="m" type="number" step="0.01" inputmode="decimal"></div>
       <div><label for="a">压力角 α <span>（度，常用 20°）</span></label><input id="a" type="number" step="0.5" inputmode="decimal"></div>
       <div><label for="x">变位系数 x <span>（正负可，默认 0）</span></label><input id="x" type="number" step="0.01" inputmode="decimal"></div>
+      <div><label for="ha">齿顶高系数 ha* <span>（标准 1，短齿 0.8）</span></label><input id="ha" type="number" step="0.01" inputmode="decimal" value="1"></div>
+      <div><label for="c">顶隙系数 c* <span>（标准 0.25）</span></label><input id="c" type="number" step="0.01" inputmode="decimal" value="0.25"></div>
     </div>
-    <p class="hint">输入即算，无需点按钮。示例：z=10、m=0.5、α=20°、x=+0.44 → θ = 11.69°。</p>
+    <p class="hint">输入即算，无需点按钮。示例：z=10、m=0.5、α=20°、x=+0.44、ha*=1、c*=0.25 → θ = 11.69°。</p>
   </div>
   <div class="result" id="resultBox">
     <div>
@@ -190,7 +192,7 @@
 (function(){
 'use strict';
 const $ = s => document.querySelector(s);
-const els = { z:$('#z'), m:$('#m'), a:$('#a'), x:$('#x') };
+const els = { z:$('#z'), m:$('#m'), a:$('#a'), x:$('#x'), ha:$('#ha'), c:$('#c') };
 const big = $('#thetaBig'), exp = $('#thetaExp'), midBody = $('#midBody'),
       stepList = $('#stepList'), warnBox = $('#warnBox'), toast = $('#toast');
 const RAD = Math.PI/180;
@@ -199,20 +201,24 @@ function readInput(){
   const m = parseFloat(els.m.value);
   const a = parseFloat(els.a.value);
   const x = parseFloat(els.x.value);
+  const ha = parseFloat(els.ha.value);
+  const c = parseFloat(els.c.value);
   const errs = [];
   if(!Number.isInteger(z) || z < 1) errs.push(['z','齿数 z：请输入 ≥ 1 的整数']);
   if(!isFinite(m) || m <= 0)       errs.push(['m','模数 m：请输入大于 0 的数字']);
   if(!isFinite(a) || a <= 0 || a >= 90) errs.push(['a','压力角 α：请输入 0 ~ 90 之间的数字']);
   if(!isFinite(x))                 errs.push(['x','变位系数 x：请输入数字']);
-  return { ok: errs.length === 0, errs, z, m, a, x };
+  if(!isFinite(ha) || ha <= 0)     errs.push(['ha','齿顶高系数 ha*：请输入大于 0 的数字']);
+  if(!isFinite(c) || c <= 0)       errs.push(['c','顶隙系数 c*：请输入大于 0 的数字']);
+  return { ok: errs.length === 0, errs, z, m, a, x, ha, c };
 }
 function calc(p){
   const rad = p.a * RAD;
   const d  = p.m * p.z;
   const r  = d / 2;
   const db = d * Math.cos(rad);
-  const da = d + 2*p.m*(1 + p.x);
-  const df = d - 2*p.m*(1.25 - p.x);
+  const da = d + 2*p.m*(p.ha + p.x);
+  const df = d - 2*p.m*(p.ha + p.c - p.x);
   const Sn = p.m * (Math.PI/2 + 2*p.x*Math.tan(rad));
   const delta = Sn / r;
   const deltaDeg = delta / RAD;
@@ -238,8 +244,8 @@ function renderTable(r){
     ['分度圆直径 d', 'd = m × z', f(r.d) + ' mm'],
     ['分度圆半径 r', 'r = d ÷ 2', f(r.r) + ' mm'],
     ['基圆直径 db', 'db = d × cosα', f(r.db) + ' mm'],
-    ['齿顶圆直径 da', 'da = d + 2m(1+x)', f(r.da) + ' mm'],
-    ['齿根圆直径 df', 'df = d − 2m(1.25−x)', f(r.df) + ' mm'],
+    ['齿顶圆直径 da', 'da = d + 2m(ha*+x)', f(r.da) + ' mm'],
+    ['齿根圆直径 df', 'df = d − 2m(ha*+c*−x)', f(r.df) + ' mm'],
     ['分度圆弧齿厚 Sn', 'Sn = m(π/2 + 2x·tanα)', f(r.Sn) + ' mm'],
     ['齿厚角 δ', 'δ = Sn ÷ r', f(r.deltaDeg) + '°'],
     ['半个齿宽 δ/2', 'δ ÷ 2', f(r.halfDeg) + '°'],
@@ -447,7 +453,7 @@ function renderSteps(r){
 }
 function run(){
   const input = readInput();
-  ['z','m','a','x'].forEach(k => els[k].classList.toggle('invalid', false));
+  ['z','m','a','x','ha','c'].forEach(k => els[k].classList.toggle('invalid', false));
   input.errs.forEach(e => els[e[0]].classList.add('invalid'));
   if(!input.ok){
     big.textContent = '输入有误';
@@ -473,7 +479,7 @@ function copyResult(){
   if(!input.ok){ showToast('先修正输入再复制'); return; }
   const r = calc(input);
   const txt = '镜像平面角度 θ = ' + f(r.theta) + '°\n'
-            + '参数：z=' + input.z + ', m=' + input.m + ', α=' + input.a + '°, x=' + input.x + '\n'
+            + '参数：z=' + input.z + ', m=' + input.m + ', α=' + input.a + '°, x=' + input.x + ', ha*=' + input.ha + ', c*=' + input.c + '\n'
             + '拆解：invα=' + f(r.invDeg) + '° + δ/2=' + f(r.halfDeg) + '° （δ=' + f(r.deltaDeg) + '°, Sn=' + f(r.Sn) + 'mm）';
   navigator.clipboard.writeText(txt).then(()=>showToast('已复制 ✓')).catch(()=>showToast('复制失败'));
 }
@@ -503,6 +509,8 @@ els.z.value = saved && saved.z ? saved.z : 10;
 els.m.value = saved && saved.m ? saved.m : 0.5;
 els.a.value = saved && saved.a ? saved.a : 20;
 els.x.value = saved && saved.x !== undefined ? saved.x : 0.44;
+els.ha.value = saved && saved.ha !== undefined ? saved.ha : 1;
+els.c.value = saved && saved.c !== undefined ? saved.c : 0.25;
 run();
 })();
 </script>
