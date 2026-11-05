@@ -1,0 +1,97 @@
+{{ define "body-class" }}blog-v4{{ end }}
+
+{{ define "main" }}
+{{ partial "blog/header.html" . }}
+<style>
+.repos-page{width:100%;max-width:1080px;margin:0 auto;padding:clamp(28px,4vw,44px) 20px 60px;}
+.repos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
+.repo-card{position:relative;display:flex;flex-direction:column;padding:18px 20px 16px;border-radius:14px;text-decoration:none;color:inherit;background:var(--card,#fff);border:1px solid var(--line,#e5e7eb);transition:transform .2s,box-shadow .2s,border-color .2s;}
+.repo-card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.08);border-color:var(--accent,#e0a526);}
+.repo-card .rc-no{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--accent-text,#9a6700);margin-bottom:7px;}
+.repo-card .rc-title{font-size:16px;font-weight:700;margin:0 0 8px;display:flex;align-items:center;gap:8px;line-height:1.35;}
+.repo-card .rc-star{flex-shrink:0;font-size:10.5px;font-weight:700;color:#fff;background:var(--ink,#1a1a2e);padding:2px 7px;border-radius:99px;}
+.blog-v4.dark .repo-card .rc-star{background:var(--accent,#f0b233);color:var(--accent-ink,#1a1a2e);}
+.repo-card .rc-desc{font-size:13px;line-height:1.65;color:var(--sub,#6b7280);margin:0;flex:1;}
+.repo-card .rc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;}
+.repo-card .rc-tag{font-size:10.5px;font-weight:600;color:var(--accent-text,#9a6700);background:var(--accent-soft,#faf3e0);padding:2px 8px;border-radius:99px;letter-spacing:.02em;}
+.repo-card .rc-arrow{font-size:14px;color:#9ca3af;transition:transform .2s,color .2s;}
+.repo-card:hover .rc-arrow{color:var(--accent-text,#9a6700);transform:translateX(2px);}
+.repos-table-sec{margin-top:38px;}
+.repos-table-sec h2{font-size:20px;font-weight:700;margin:0 0 4px;display:flex;align-items:center;gap:8px;}
+.repos-table-sec p{font-size:13px;color:var(--sub,#6b7280);margin:0 0 12px;}
+.repos-table-wrap{width:100%;overflow-x:auto;}
+.repos-table{width:100%;border-collapse:collapse;font-size:13px;min-width:680px;}
+.repos-table th,.repos-table td{border:1px solid var(--line,#e5e7eb);padding:8px 10px;text-align:left;vertical-align:top;line-height:1.55;}
+.repos-table th{background:var(--accent-soft,#faf3e0);font-weight:700;white-space:nowrap;}
+.repos-table tbody tr:hover td{background:rgba(224,165,38,.06);}
+.repos-table a{color:var(--accent-text,#9a6700);text-decoration:none;white-space:nowrap;}
+.repos-table a:hover{text-decoration:underline;}
+.repos-note{margin-top:28px;padding:18px 22px;border-radius:12px;background:var(--accent-soft,#faf3e0);border-left:3px solid var(--accent,#e0a526);font-size:13px;color:var(--sub,#6b7280);line-height:1.75;}
+.repos-note ul{margin:8px 0 0;padding-left:20px;}
+.repos-note li{margin:4px 0;}
+@media (max-width:480px){
+  .repos-page{padding:20px 14px 40px;}
+  .repos-grid{gap:10px;grid-template-columns:1fr;}
+  .repo-card{padding:14px 16px 13px;}
+  .repo-card .rc-title{font-size:14.5px;}
+  .repo-card .rc-desc{font-size:12.5px;}
+  .repos-table{font-size:12px;}
+  .repos-table th,.repos-table td{padding:6px 7px;}
+}
+</style>
+<div class="repos-page">
+  <div class="sec-head">
+    <span class="sec-no">01</span>
+    <h1 class="sec-title">{{ .Title }}</h1>
+    <span class="sec-line"></span>
+    <a class="sec-link" href="{{ "/" | relURL }}">返回首页 →</a>
+  </div>
+  {{ with .Params.description }}<p class="section-desc">{{ . }}</p>{{ end }}
+
+  <div class="repos-grid">
+    {{ range $i, $r := .Params.repos }}
+    <a class="repo-card" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
+      <span class="rc-no">NO.{{ printf "%02d" (add $i 1) }}</span>
+      <div class="rc-title">{{ $r.name }}{{ with $r.star }}<span class="rc-star">★ {{ . }}</span>{{ end }}</div>
+      <p class="rc-desc">{{ $r.desc }}</p>
+      <div class="rc-foot">
+        {{ with $r.tag }}<span class="rc-tag">{{ . }}</span>{{ end }}
+        <span class="rc-arrow">↗</span>
+      </div>
+    </a>
+    {{ end }}
+  </div>
+
+  <section class="repos-table-sec">
+    <h2>📋 快速检索</h2>
+    <p>按定位查，Ctrl+F 也能直接搜项目名。</p>
+    <div class="repos-table-wrap">
+      <table class="repos-table">
+        <thead>
+          <tr><th>#</th><th>项目</th><th>Star</th><th>定位</th><th>核心亮点</th><th>地址</th></tr>
+        </thead>
+        <tbody>
+          {{ range $i, $r := .Params.repos }}
+          <tr>
+            <td>{{ printf "%02d" (add $i 1) }}</td>
+            <td>{{ $r.name }}</td>
+            <td>{{ $r.star }}</td>
+            <td>{{ $r.tag }}</td>
+            <td>{{ $r.short }}</td>
+            <td><a href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">GitHub ↗</a></td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {{ with .Content }}
+  <div class="repos-note">{{ . }}</div>
+  {{ end }}
+</div>
+{{ partial "blog/footer.html" . }}
+{{ end }}
+
+{{ define "left-sidebar" }}{{ end }}
+{{ define "right-sidebar" }}{{ end }}

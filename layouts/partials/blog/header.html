@@ -14,6 +14,7 @@
       <a href="{{ "/daily/" | relURL }}"{{ if $isDaily }} class="on"{{ end }}>日报</a>
       <a href="{{ "/works.html" | relURL }}">作品集</a>
       <a href="{{ "/tools/" | relURL }}"{{ if eq .RelPermalink "/tools/" }} class="on"{{ end }}>工具</a>
+      <a href="{{ "/repos/" | relURL }}"{{ if eq .RelPermalink "/repos/" }} class="on"{{ end }}>资源</a>
       <a href="{{ "/about/" | relURL }}"{{ if eq .RelPermalink "/about/" }} class="on"{{ end }}>关于</a>
     </nav>
 
