@@ -2,7 +2,7 @@
 title: 开源资源合集
 slug: repos
 layout: repos
-description: 收集一批实用性很强的中文开源指南，覆盖生活应急、健康、厨艺、金融科普、人际情感与自我提升，遇到问题时可以随时翻查。
+description: 收集一批实用性很强的中文开源指南，覆盖生活应急、健康、厨艺、金融科普、人际情感、自我提升，也补上了找工作与住房两块，遇到问题时可以随时翻查。
 notice: GitHub 直连经常打不开。每张卡片都备了镜像和文本入口，按「镜像 1 → 镜像 2 → 文本」的顺序换着点。文本入口是仓库 README 的纯文本版，能读文字，但看不到图片和子页面。
 date: 2026-11-05
 draft: false
@@ -16,8 +16,8 @@ repos:
   - name: 高性价比人生指南
     star: "7 万+"
     tag: 生活指南
-    desc: 767 条生活建议，租房、突然失业、给家里备应急物资都能查到；还讲安全习惯、疫苗建议、身体预警信号和消费避坑。
-    short: "767 条建议，安全健康、省钱、应急物资"
+    desc: 767 条生活建议，租房、突然失业、给家里备应急物资都能查到；还讲安全习惯、疫苗建议、身体预警信号和消费避坑。租房与买房单独成章，押金、返还时间、扣减情形都写明了要确认什么。
+    short: "767 条建议，安全健康、省钱、应急物资、租房"
     url: https://github.com/eternity4719/HowToLiveBetter
     mirror1: https://kkgithub.com/eternity4719/HowToLiveBetter
     mirror2: https://bgithub.xyz/eternity4719/HowToLiveBetter
@@ -92,7 +92,7 @@ repos:
       - 校园合作、求助、职场沟通、朋友借钱都有场景分析
       - 每条含情境、考量、示例表达和可能代价
   - name: 人生进阶指南 up
-    star: "—"
+    star: "7 万+"
     tag: 学习成长
     desc: 从英语学习起步，扩展到怎样借助 AI 学习、怎样做真实项目、生活节奏乱掉以后怎样重新开始。
     short: "英语学习 → AI 学习 → 项目复盘与重启"
@@ -104,6 +104,45 @@ repos:
       - 从英语词汇、语法、听说读写起步
       - 扩展到用 AI 学习、完成真实项目
       - 教记录水平和目标、留下作品与反馈、定期复盘重启
+  - name: 面试反问指南
+    star: "1.8 万+"
+    tag: 求职面试
+    desc: 面试最后「你有什么想问的」这一环节的提问清单，按团队、职责、流程、技术、职业发展分组。用来判断岗位真实情况，也避开问了会减分的问题。
+    short: "面试反问清单，判断岗位真实情况"
+    url: https://github.com/perkfly/reverse-interview-zh
+    mirror1: https://kkgithub.com/perkfly/reverse-interview-zh
+    mirror2: https://bgithub.xyz/perkfly/reverse-interview-zh
+    raw: https://cdn.jsdelivr.net/gh/perkfly/reverse-interview-zh@master/README.md
+    points:
+      - 按团队、职责、流程、技术、职业发展分组的提问清单
+      - 用来判断加班情况、团队归属、成长空间
+      - 也标注了哪些问题问出口会减分
+  - name: 校招避雷清单
+    star: "5 千+"
+    tag: 求职避雷
+    desc: 收集校招过程中毁约、虚假承诺、流程不规范的记录，签三方或接 offer 之前，可以先按公司名查一遍再决定。
+    short: "校招污点记录，签三方前先查公司"
+    url: https://github.com/ShameCom/ShameCom
+    mirror1: https://kkgithub.com/ShameCom/ShameCom
+    mirror2: https://bgithub.xyz/ShameCom/ShameCom
+    raw: https://cdn.jsdelivr.net/gh/ShameCom/ShameCom@main/README.md
+    points:
+      - 记录校招毁约、虚假承诺、流程不规范的公司与组织
+      - 按公司名和事件检索，接 offer 前先查一遍
+      - 内容是社区补充，看到记录建议自己再核实
+  - name: 买房实战功课
+    star: "2.6 万+"
+    tag: 住房买房
+    desc: 2017 年杭州买房过程整理出来的功课，从看房、查购房资格、算税费到签约过户一步步讲。政策条款已经过时，流程和要提前问清的问题仍然有用。
+    short: "买房流程、资格税费、签约过户功课"
+    url: https://github.com/houshanren/hangzhou_house_knowledge
+    mirror1: https://kkgithub.com/houshanren/hangzhou_house_knowledge
+    mirror2: https://bgithub.xyz/houshanren/hangzhou_house_knowledge
+    raw: https://cdn.jsdelivr.net/gh/houshanren/hangzhou_house_knowledge@master/README.md
+    points:
+      - 从看房、查购房资格到算税费的完整功课
+      - 讲签约、贷款、过户这些环节要确认的细节
+      - 2017 年杭州案例，政策已变，流程思路仍可参考
 ---
 
 > 收集一些可以反复查阅的开源指南，全部指向 GitHub 仓库，点开即用。
@@ -114,3 +153,7 @@ repos:
 - **想补点金融常识**：04 投资指南
 - **感情上拿不准**：05 狗头军师
 - **想重新进入学习状态**：07 人生进阶指南
+- **要找工作**：08 面试反问、09 校招避雷
+- **要租房或看房**：01 生活指南的「租房与买房」章节（押金、返还、扣减情形都写了要确认什么）、10 买房实战功课
+
+> 租房这块，GitHub 上还没有独立的高星中文项目，目前最扎实的内容在 01 的租房章节里；买房流程和要问清的问题看 10。
