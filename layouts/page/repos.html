@@ -4,28 +4,42 @@
 {{ partial "blog/header.html" . }}
 <style>
 .repos-page{width:100%;max-width:1080px;margin:0 auto;padding:clamp(28px,4vw,44px) 20px 60px;}
+.repos-notice{display:flex;gap:10px;align-items:flex-start;margin:16px 0 24px;padding:12px 16px;border-radius:12px;background:var(--accent-soft,#faf3e0);border-left:3px solid var(--accent,#e0a526);font-size:12.5px;line-height:1.7;color:var(--sub,#6b7280);}
+.repos-notice .rn-icon{flex-shrink:0;font-size:15px;line-height:1.4;}
 .repos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
-.repo-card{position:relative;display:flex;flex-direction:column;padding:18px 20px 16px;border-radius:14px;text-decoration:none;color:inherit;background:var(--card,#fff);border:1px solid var(--line,#e5e7eb);transition:transform .2s,box-shadow .2s,border-color .2s;}
+.repo-card{position:relative;display:flex;flex-direction:column;padding:18px 20px 16px;border-radius:14px;background:var(--card,#fff);border:1px solid var(--line,#e5e7eb);transition:transform .2s,box-shadow .2s,border-color .2s;}
 .repo-card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.08);border-color:var(--accent,#e0a526);}
-.repo-card .rc-no{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--accent-text,#9a6700);margin-bottom:7px;}
-.repo-card .rc-title{font-size:16px;font-weight:700;margin:0 0 8px;display:flex;align-items:center;gap:8px;line-height:1.35;}
+.repo-card .rc-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px;}
+.repo-card .rc-no{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--accent-text,#9a6700);}
+.repo-card .rc-tag{font-size:10.5px;font-weight:600;color:var(--accent-text,#9a6700);background:var(--accent-soft,#faf3e0);padding:2px 8px;border-radius:99px;letter-spacing:.02em;}
+.repo-card .rc-title{font-size:16px;font-weight:700;margin:0 0 8px;display:flex;align-items:center;gap:8px;line-height:1.35;flex-wrap:wrap;}
+.repo-card .rc-name{color:inherit;text-decoration:none;}
+.repo-card .rc-name:hover{color:var(--accent-text,#9a6700);}
 .repo-card .rc-star{flex-shrink:0;font-size:10.5px;font-weight:700;color:#fff;background:var(--ink,#1a1a2e);padding:2px 7px;border-radius:99px;}
 .blog-v4.dark .repo-card .rc-star{background:var(--accent,#f0b233);color:var(--accent-ink,#1a1a2e);}
 .repo-card .rc-desc{font-size:13px;line-height:1.65;color:var(--sub,#6b7280);margin:0;flex:1;}
-.repo-card .rc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;}
-.repo-card .rc-tag{font-size:10.5px;font-weight:600;color:var(--accent-text,#9a6700);background:var(--accent-soft,#faf3e0);padding:2px 8px;border-radius:99px;letter-spacing:.02em;}
-.repo-card .rc-arrow{font-size:14px;color:#9ca3af;transition:transform .2s,color .2s;}
-.repo-card:hover .rc-arrow{color:var(--accent-text,#9a6700);transform:translateX(2px);}
+.repo-card .rc-more{margin-top:10px;font-size:12px;color:var(--sub,#6b7280);}
+.repo-card .rc-more summary{cursor:pointer;font-weight:600;color:var(--accent-text,#9a6700);list-style:none;display:inline-flex;align-items:center;gap:5px;padding:2px 0;}
+.repo-card .rc-more summary::-webkit-details-marker{display:none;}
+.repo-card .rc-more summary::before{content:"▸";font-size:11px;transition:transform .2s;}
+.repo-card .rc-more[open] summary::before{transform:rotate(90deg);}
+.repo-card .rc-more ul{margin:6px 0 0;padding-left:18px;line-height:1.7;}
+.repo-card .rc-more li{margin:3px 0;}
+.repo-card .rc-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+.repo-card .rc-links a{display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:4px 10px;border-radius:999px;border:1px solid var(--line,#e5e7eb);font-size:11.5px;font-weight:600;line-height:1.2;color:var(--sub,#6b7280);text-decoration:none;transition:background .15s,color .15s,border-color .15s;}
+.repo-card .rc-links a:hover{background:var(--accent-soft,#faf3e0);color:var(--accent-text,#9a6700);border-color:var(--accent,#e0a526);}
+.repo-card .rc-links a.primary{color:var(--accent-text,#9a6700);border-color:var(--accent,#e0a526);}
 .repos-table-sec{margin-top:38px;}
 .repos-table-sec h2{font-size:20px;font-weight:700;margin:0 0 4px;display:flex;align-items:center;gap:8px;}
 .repos-table-sec p{font-size:13px;color:var(--sub,#6b7280);margin:0 0 12px;}
 .repos-table-wrap{width:100%;overflow-x:auto;}
-.repos-table{width:100%;border-collapse:collapse;font-size:13px;min-width:680px;}
+.repos-table{width:100%;border-collapse:collapse;font-size:13px;min-width:760px;}
 .repos-table th,.repos-table td{border:1px solid var(--line,#e5e7eb);padding:8px 10px;text-align:left;vertical-align:top;line-height:1.55;}
 .repos-table th{background:var(--accent-soft,#faf3e0);font-weight:700;white-space:nowrap;}
 .repos-table tbody tr:hover td{background:rgba(224,165,38,.06);}
-.repos-table a{color:var(--accent-text,#9a6700);text-decoration:none;white-space:nowrap;}
-.repos-table a:hover{text-decoration:underline;}
+.repos-table .tbl-links{display:flex;flex-wrap:wrap;gap:5px;}
+.repos-table .tbl-links a{font-size:11.5px;font-weight:600;color:var(--accent-text,#9a6700);text-decoration:none;padding:2px 7px;border:1px solid var(--line,#e5e7eb);border-radius:99px;white-space:nowrap;}
+.repos-table .tbl-links a:hover{background:var(--accent-soft,#faf3e0);border-color:var(--accent,#e0a526);}
 .repos-note{margin-top:28px;padding:18px 22px;border-radius:12px;background:var(--accent-soft,#faf3e0);border-left:3px solid var(--accent,#e0a526);font-size:13px;color:var(--sub,#6b7280);line-height:1.75;}
 .repos-note ul{margin:8px 0 0;padding-left:20px;}
 .repos-note li{margin:4px 0;}
@@ -35,6 +49,7 @@
   .repo-card{padding:14px 16px 13px;}
   .repo-card .rc-title{font-size:14.5px;}
   .repo-card .rc-desc{font-size:12.5px;}
+  .repo-card .rc-links a{min-height:34px;padding:6px 12px;font-size:12px;}
   .repos-table{font-size:12px;}
   .repos-table th,.repos-table td{padding:6px 7px;}
 }
@@ -48,27 +63,50 @@
   </div>
   {{ with .Params.description }}<p class="section-desc">{{ . }}</p>{{ end }}
 
+  {{ with .Params.notice }}
+  <div class="repos-notice">
+    <span class="rn-icon">💡</span>
+    <span>{{ . }}</span>
+  </div>
+  {{ end }}
+
   <div class="repos-grid">
     {{ range $i, $r := .Params.repos }}
-    <a class="repo-card" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">
-      <span class="rc-no">NO.{{ printf "%02d" (add $i 1) }}</span>
-      <div class="rc-title">{{ $r.name }}{{ with $r.star }}<span class="rc-star">★ {{ . }}</span>{{ end }}</div>
-      <p class="rc-desc">{{ $r.desc }}</p>
-      <div class="rc-foot">
+    <div class="repo-card">
+      <div class="rc-head">
+        <span class="rc-no">NO.{{ printf "%02d" (add $i 1) }}</span>
         {{ with $r.tag }}<span class="rc-tag">{{ . }}</span>{{ end }}
-        <span class="rc-arrow">↗</span>
       </div>
-    </a>
+      <div class="rc-title">
+        <a class="rc-name" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">{{ $r.name }}</a>
+        {{ with $r.star }}<span class="rc-star">★ {{ . }}</span>{{ end }}
+      </div>
+      <p class="rc-desc">{{ $r.desc }}</p>
+      {{ with $r.points }}
+      <details class="rc-more">
+        <summary>展开速览</summary>
+        <ul>
+          {{ range . }}<li>{{ . }}</li>{{ end }}
+        </ul>
+      </details>
+      {{ end }}
+      <div class="rc-links">
+        <a class="primary" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        {{ with $r.mirror1 }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">镜像 1 ↗</a>{{ end }}
+        {{ with $r.mirror2 }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">镜像 2 ↗</a>{{ end }}
+        {{ with $r.raw }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">文本 ↗</a>{{ end }}
+      </div>
+    </div>
     {{ end }}
   </div>
 
   <section class="repos-table-sec">
     <h2>📋 快速检索</h2>
-    <p>按定位查，Ctrl+F 也能直接搜项目名。</p>
+    <p>按定位查，Ctrl+F 也能直接搜项目名；入口打不开时换下一个。</p>
     <div class="repos-table-wrap">
       <table class="repos-table">
         <thead>
-          <tr><th>#</th><th>项目</th><th>Star</th><th>定位</th><th>核心亮点</th><th>地址</th></tr>
+          <tr><th>#</th><th>项目</th><th>Star</th><th>定位</th><th>核心亮点</th><th>入口</th></tr>
         </thead>
         <tbody>
           {{ range $i, $r := .Params.repos }}
@@ -78,7 +116,14 @@
             <td>{{ $r.star }}</td>
             <td>{{ $r.tag }}</td>
             <td>{{ $r.short }}</td>
-            <td><a href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">GitHub ↗</a></td>
+            <td>
+              <div class="tbl-links">
+                <a href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+                {{ with $r.mirror1 }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">镜像 1</a>{{ end }}
+                {{ with $r.mirror2 }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">镜像 2</a>{{ end }}
+                {{ with $r.raw }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">文本</a>{{ end }}
+              </div>
+            </td>
           </tr>
           {{ end }}
         </tbody>
