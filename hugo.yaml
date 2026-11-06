@@ -92,12 +92,13 @@ params:
   # 配置方法：https://giscus.app/zh-CN 选择仓库 Gavin1668/Gavin1668.github.io
   # 启用 Discussions，安装 giscus App 后，把生成的 repoID / categoryID 填进来即生效
   giscus:
+    enabled: false
     repo: Gavin1668/Gavin1668.github.io
     repoID: ""
     category: Announcements
     categoryID: ""
 
-  # ===== 留言板（Twikoo，0 元方案）=====
+  # ===== 留言板（Twikoo，0 元方案，备用）=====
   # 后端部署到 Vercel 或 Netlify（免费），envId 填部署后的完整 URL
   # 拿到 envId 后把 enabled 改为 true 即生效
   twikoo:

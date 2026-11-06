@@ -45,7 +45,14 @@
       {{ .Content }}
     </div>
 
-    {{ if and .Site.Params.twikoo.enabled .Site.Params.twikoo.envId }}
+    {{ if and .Site.Params.giscus.enabled .Site.Params.giscus.repoID .Site.Params.giscus.categoryID }}
+    <section class="article-comments">
+      <div class="tcomment-wrap">
+        <h2 class="comments-title">留言</h2>
+        <div class="giscus"></div>
+      </div>
+    </section>
+    {{ else if and .Site.Params.twikoo.enabled .Site.Params.twikoo.envId }}
     <section class="article-comments">
       <div class="tcomment-wrap">
         <h2 class="comments-title">留言</h2>
@@ -75,7 +82,27 @@
 
 {{ partial "blog/footer.html" . }}
 
-{{ if and .Site.Params.twikoo.enabled .Site.Params.twikoo.envId }}
+{{ if and .Site.Params.giscus.enabled .Site.Params.giscus.repoID .Site.Params.giscus.categoryID }}
+<style>
+.article-comments{margin-top:36px;padding-top:24px;border-top:1px solid var(--line,#e5e7eb);}
+.tcomment-wrap{max-width:100%;}
+.comments-title{font-size:18px;font-weight:700;margin:0 0 16px;color:var(--ink,#1a1a2e);}
+</style>
+<script src="https://giscus.app/client.js"
+        data-repo="{{ .Site.Params.giscus.repo }}"
+        data-repo-id="{{ .Site.Params.giscus.repoID }}"
+        data-category="{{ .Site.Params.giscus.category }}"
+        data-category-id="{{ .Site.Params.giscus.categoryID }}"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async></script>
+{{ else if and .Site.Params.twikoo.enabled .Site.Params.twikoo.envId }}
 <style>
 .article-comments{margin-top:36px;padding-top:24px;border-top:1px solid var(--line,#e5e7eb);}
 .tcomment-wrap{max-width:100%;}
@@ -93,4 +120,4 @@ twikoo.init({
 {{ end }}
 
 {{ define "left-sidebar" }}{{ end }}
-{{ define "right-sidebar" }}{{ end }}
+{{ define "right-sidebar" }}
