@@ -45,6 +45,15 @@
   color:#fff;background:#6b7280;padding:2px 7px;border-radius:99px;letter-spacing:.05em;
 }
 .tool-card.external .tc-arrow{color:#6b7280;}
+.sites-sec{margin-top:34px;padding-top:22px;border-top:1px solid var(--line,#e5e7eb);}
+.sites-head{display:flex;align-items:baseline;gap:10px;margin:0 0 14px;}
+.sites-head h2{font-size:18px;font-weight:700;margin:0;color:inherit;}
+.sites-head span{font-size:12px;color:var(--sub,#6b7280);}
+.tool-card .tc-icon.site-logo{position:relative;overflow:hidden;border-radius:12px;color:#fff;}
+.tool-card .tc-icon.site-logo.has-logo{background:#fff;}
+.blog-v4.dark .tools-page .tc-icon.site-logo.has-logo{background:#fff;}
+.tc-letter{font-size:19px;font-weight:800;line-height:1;color:#fff;}
+.site-logo img{position:absolute;inset:0;margin:auto;width:28px;height:28px;object-fit:contain;}
 .tools-note{margin-top:28px;padding:18px 22px;border-radius:12px;background:var(--accent-soft,#faf3e0);border-left:3px solid var(--accent,#e0a526);font-size:13px;color:var(--sub,#6b7280);line-height:1.7;}
 .tools-note p{margin:0;}
 .embed-section{margin-top:32px;}
@@ -102,6 +111,32 @@
     </a>
     {{ end }}
   </div>
+
+  {{ with .Params.sites }}
+  <section class="sites-sec">
+    <div class="sites-head">
+      <h2>常用在线工具</h2>
+      <span>外部站点 · 点开即用</span>
+    </div>
+    <div class="tools-grid">
+      {{ range . }}
+      <a class="tool-card external" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
+        <div class="tc-icon site-logo{{ if .logo }} has-logo{{ end }}"{{ if not .logo }} style="background:{{ .bg | default "#6b7280" }}"{{ end }}>
+          <span class="tc-letter">{{ .letter | default "?" }}</span>
+          {{ with .logo }}<img src="{{ . }}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">{{ end }}
+        </div>
+        <div class="tc-body">
+          <h3 class="tc-title">{{ .name }}</h3>
+          <p class="tc-desc">{{ .desc }}</p>
+          {{ with .tag }}<span class="tc-tag">{{ . }}</span>{{ end }}
+        </div>
+        <span class="tc-external-badge">↗ 外部</span>
+        <span class="tc-arrow">↗</span>
+      </a>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
 
   <div class="embed-section" id="wallpaper">
     <h2>🖼️ 截图拼贴壁纸工坊</h2>
