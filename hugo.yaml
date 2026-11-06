@@ -4,12 +4,12 @@ languageCode: zh-cn
 theme: hugo-theme-stack
 pagination:
   pagerSize: 5
-title: Gavin's Blog
+title: Gavin · 电机结构工程师
 
 languages:
   zh-cn:
     languageName: 中文
-    title: Gavin's Blog
+    title: Gavin · 电机结构工程师
     description: Gavin 的个人主页：电机结构设计工程师，收录作品集、技术博客、随笔与自研网页工具。
     weight: 1
 
@@ -29,7 +29,6 @@ params:
   rssFullContent: true
   favicon:
 
-  # ===== 首页 Hero（个人展示区，可按需修改） =====
   hero:
     greeting: "你好，我是"
     name: "Gavin"
@@ -45,7 +44,6 @@ params:
       - 样机管理
       - CAD
 
-  # ===== 每日信息源（scripts/fetch_sources.sh 每日 08:00 自动抓取，deploy.yml 定时重建）=====
   enableNewsSource: true
   enableTrendingSource: true
   newsSourceUrl: "https://www.chinanews.com.cn/rss/society.xml"
@@ -55,7 +53,6 @@ params:
   socialGithub: "https://github.com/Gavin1668"
   socialEmail: "changjian2026@126.com"
 
-  # ===== 首页推荐文章（按 slug 匹配，顺序即展示顺序） =====
   featuredPosts:
     - sankuaifa-ai-assistant
     - kuachishu-k
@@ -88,9 +85,6 @@ params:
   comments:
     enabled: false
 
-  # ===== 留言板（Giscus，基于 GitHub Discussions）=====
-  # 配置方法：https://giscus.app/zh-CN 选择仓库 Gavin1668/Gavin1668.github.io
-  # 启用 Discussions，安装 giscus App 后，把生成的 repoID / categoryID 填进来即生效
   giscus:
     enabled: false
     repo: Gavin1668/Gavin1668.github.io
@@ -98,9 +92,6 @@ params:
     category: Announcements
     categoryID: ""
 
-  # ===== 留言板（Twikoo，0 元方案，备用）=====
-  # 后端部署到 Vercel 或 Netlify（免费），envId 填部署后的完整 URL
-  # 拿到 envId 后把 enabled 改为 true 即生效
   twikoo:
     enabled: false
     envId: ""
@@ -156,7 +147,6 @@ params:
 
 menu:
   main:
-    # 关于、归档、搜索 由对应页面的 front matter 管理，此处不重复定义
     - identifier: dashboard
       name: 仪表盘
       url: /dashboard/
