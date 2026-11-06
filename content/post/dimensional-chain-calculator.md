@@ -2,6 +2,7 @@
 title: "尺寸链计算器怎么用？增环减环先认对，封闭环一次算清"
 slug: dimensional-chain-calculator
 description: "装配间隙老是超差？尺寸链算不对，公差就放不准。这篇讲清我那个在线计算器每个字段填什么、结果怎么读、最容易填错的三个地方。"
+image: /img/covers/cover-dimension-chain.svg
 date: 2026-11-06
 lastmod: 2026-11-06
 categories:

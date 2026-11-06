@@ -2,6 +2,7 @@
 title: "齿轮镜像角 θ 怎么算？6 个参数一次填对（附在线计算器）"
 slug: gear-mirror-angle-guide
 description: "渐开线齿轮建模、切齿的时候，镜像面为什么要偏一个角度？这个 θ 怎么来的？我做了个在线计算器，这篇讲清 6 个参数填什么、图怎么看。"
+image: /img/covers/cover-gear-mirror.svg
 date: 2026-11-06
 lastmod: 2026-11-06
 categories:
