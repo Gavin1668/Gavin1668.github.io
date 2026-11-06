@@ -141,11 +141,11 @@ site_groups:
         url: "http://www.hgjxjd.com/"
         bg: "#d6001c"
         letter: "信"
-      - name: "3xmotion"
-        desc: "站点当前打不开，待核实用途"
+      - name: "常州三协电机"
+        desc: "常州三协电机股份"
         url: "https://3xmotion.cn/"
         bg: "#2b6de8"
-        letter: "3"
+        letter: "三"
   - title: "设计与计算工具"
     note: "齿轮、轴承、图形计算"
     items:
@@ -243,6 +243,12 @@ site_groups:
         url: "https://app.flowoss.com/zh-CN"
         bg: "#2b6de8"
         letter: "F"
+      - name: "PDF24 工具箱"
+        desc: "PDF 合并、拆分、压缩、转 Word、OCR"
+        url: "https://tools.pdf24.org/zh/"
+        logo: "https://tools.pdf24.org/favicon.ico"
+        bg: "#c8102e"
+        letter: "P"
       - name: "PKMer"
         desc: "Obsidian、Zotero 知识管理社区"
         url: "https://pkmer.cn/"
@@ -322,7 +328,7 @@ site_groups:
         bg: "#d97706"
         letter: "桃"
       - name: "药品查询"
-        desc: "药品信息查询（站点当前打不开，待核实）"
+        desc: "查原研药名单"
         url: "https://medicine.lvwzhen.com/"
         bg: "#0f766e"
         letter: "药"
@@ -364,6 +370,7 @@ site_groups:
 | Hugo | 静态网站生成器 | [gohugo.io](https://gohugo.io) |
 | Supabase | 免费的后端（数据库/登录） | [supabase.com](https://supabase.com) |
 | Decap CMS | Hugo 可视化后台 | [decapcms.org](https://decapcms.org) |
+| PDF24 | PDF 合并、压缩、转 Word，浏览器里直接跑 | [tools.pdf24.org](https://tools.pdf24.org/zh/) |
 | Picsum | 免费占位图 | [picsum.photos](https://picsum.photos) |
 | Open-Meteo | 免费天气 API | [open-meteo.com](https://open-meteo.com) |
 
