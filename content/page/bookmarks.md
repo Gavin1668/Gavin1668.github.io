@@ -1,13 +1,49 @@
 ---
 title: "书签"
 slug: bookmarks
+layout: bookmarks
 aliases:
   - "/书签/"
-date: 2026-10-11
+date: 2026-11-06
 draft: false
 menu:
   main:
     weight: 10
+blogs:
+  - name: 陈少文
+    desc: 个人博客，技术与日常随想。
+    url: https://www.chenshaowen.com/
+    tag: 个人博客
+    logo: https://www.chenshaowen.com/favicon/apple-icon-120x120.png
+    bg: "#b8442e"
+    letter: 陈
+  - name: A 大前端随笔
+    desc: 前端开发笔记与源码阅读。
+    url: https://adevjoe.com/
+    tag: 前端
+    logo: https://adevjoe.com/favicon.ico
+    bg: "#2b6de8"
+    letter: A
+  - name: BMPI 笔记
+    desc: 程序员效率、职业成长与读书笔记。
+    url: https://www.bmpi.dev/
+    tag: 成长
+    bg: "#5b6b7c"
+    letter: B
+  - name: Mr.Wu
+    desc: 个人技术博客。
+    url: https://www.mr-wu.cn/
+    tag: 个人博客
+    logo: https://www.mr-wu.cn/favicon.ico
+    bg: "#1f74c9"
+    letter: W
+  - name: 阮一峰的网络日志
+    desc: 科技周刊、技术英语与网络随笔。
+    url: https://www.ruanyifeng.com/blog/index.html
+    tag: 综合
+    logo: https://www.ruanyifeng.com/favicon.ico
+    bg: "#c9a227"
+    letter: 阮
 ---
 
 > 我自己用过、觉得不错的工具、书和网站，持续更新。
@@ -44,4 +80,4 @@ menu:
 
 ---
 
-*最后更新：2026-10-11*
+*最后更新：2026-11-06*

@@ -1,0 +1,125 @@
+{{ define "body-class" }}blog-v4{{ end }}
+
+{{ define "main" }}
+{{ partial "blog/header.html" . }}
+<style>
+.tools-page{width:100%;max-width:1080px;margin:0 auto;padding:clamp(28px,4vw,44px) 20px 60px;}
+.blog-v4 .tools-page .tool-card{flex-direction:row;align-items:center;}
+.tools-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:16px;
+}
+.tool-card{
+  position:relative;display:flex;flex-direction:row;align-items:center;gap:14px;
+  padding:16px 18px;border-radius:14px;text-decoration:none;color:inherit;
+  background:var(--card,#fff);border:1px solid var(--line,#e5e7eb);
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  overflow:hidden;
+}
+.tool-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 28px rgba(0,0,0,.08);
+  border-color:var(--accent,#e0a526);
+}
+.tool-card .tc-icon{
+  width:48px;height:48px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  background:var(--ink,#1a1a2e);color:var(--bg,#f5f5fa);
+}
+.blog-v4.dark .tools-page .tc-icon{background:var(--accent,#f0b233);color:var(--accent-ink,#1a1a2e);}
+.tool-card .tc-body{flex:1;min-width:0;}
+.tool-card .tc-title{font-size:15px;font-weight:700;margin:0 0 3px;display:flex;align-items:center;gap:8px;line-height:1.3;}
+.tool-card .tc-desc{font-size:12.5px;line-height:1.55;color:var(--sub,#6b7280);margin:0;}
+.tool-card .tc-tag{
+  display:inline-block;margin-top:6px;font-size:10.5px;font-weight:600;
+  color:var(--accent-text,#9a6700);background:var(--accent-soft,#faf3e0);padding:2px 8px;border-radius:99px;
+  letter-spacing:.03em;
+}
+.tool-card .tc-arrow{
+  position:absolute;top:14px;right:14px;font-size:15px;color:#9ca3af;
+  transition:transform .2s,color .2s;
+}
+.tool-card:hover .tc-arrow{color:var(--accent-text,#9a6700);transform:translateX(2px);}
+.tool-card .tc-external-badge{
+  position:absolute;top:14px;right:40px;font-size:10px;font-weight:700;
+  color:#fff;background:#6b7280;padding:2px 7px;border-radius:99px;letter-spacing:.05em;
+}
+.tool-card.external .tc-arrow{color:#6b7280;}
+.sites-sec{margin-top:34px;}
+.sites-sec:first-of-type{margin-top:0;}
+.sites-head{display:flex;align-items:baseline;gap:10px;margin:0 0 14px;}
+.sites-head h2{font-size:18px;font-weight:700;margin:0;color:inherit;}
+.sites-head span{font-size:12px;color:var(--sub,#6b7280);}
+.tool-card .tc-icon.site-logo{position:relative;overflow:hidden;border-radius:12px;color:#fff;}
+.tool-card .tc-icon.site-logo.has-logo{background:#fff;}
+.blog-v4.dark .tools-page .tc-icon.site-logo.has-logo{background:#fff;}
+.tc-letter{font-size:19px;font-weight:800;line-height:1;color:#fff;}
+.site-logo img{position:absolute;inset:0;margin:auto;width:28px;height:28px;object-fit:contain;}
+.bm-body{margin-top:36px;padding-top:22px;border-top:1px solid var(--line,#e5e7eb);font-size:14px;line-height:1.8;color:var(--ink,#1a1a2e);}
+.bm-body h2{font-size:17px;font-weight:700;margin:26px 0 10px;}
+.bm-body h2:first-child{margin-top:0;}
+.bm-body p{margin:8px 0;}
+.bm-body ul{padding-left:20px;margin:8px 0;}
+.bm-body li{margin:4px 0;}
+.bm-body table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px;}
+.bm-body th,.bm-body td{border:1px solid var(--line,#e5e7eb);padding:7px 11px;text-align:left;}
+.bm-body th{background:var(--accent-soft,#faf3e0);font-weight:600;}
+.bm-body a{color:var(--accent-text,#9a6700);text-decoration:none;}
+.bm-body a:hover{text-decoration:underline;}
+.bm-body blockquote{margin:10px 0;padding:2px 14px;border-left:3px solid var(--accent,#e0a526);color:var(--sub,#6b7280);}
+@media (max-width:480px){
+  .tools-page{padding:20px 14px 40px;}
+  .tools-grid{gap:10px;grid-template-columns:1fr;}
+  .tool-card{padding:12px 14px;gap:10px;}
+  .tool-card .tc-icon{width:40px;height:40px;}
+  .tool-card .tc-title{font-size:14px;}
+  .tool-card .tc-desc{font-size:12px;}
+  .tool-card .tc-tag{font-size:10px;margin-top:4px;}
+  .tool-card .tc-arrow{top:12px;right:12px;font-size:13px;}
+  .tool-card .tc-external-badge{top:12px;right:34px;font-size:9px;padding:1px 5px;}
+  .bm-body{font-size:13.5px;}
+}
+</style>
+<div class="tools-page">
+  <div class="sec-head">
+    <span class="sec-no">01</span>
+    <h1 class="sec-title">{{ .Title }}</h1>
+    <span class="sec-line"></span>
+    <a class="sec-link" href="{{ "/" | relURL }}">返回首页 →</a>
+  </div>
+
+  {{ with .Params.blogs }}
+  <section class="sites-sec">
+    <div class="sites-head">
+      <h2>常读博客</h2>
+      <span>点开即达 · 图标加载失败时显示纯色首字</span>
+    </div>
+    <div class="tools-grid">
+      {{ range . }}
+      <a class="tool-card external" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
+        <div class="tc-icon site-logo{{ if .logo }} has-logo{{ end }}"{{ if not .logo }} style="background:{{ .bg | default "#6b7280" }}"{{ end }}>
+          <span class="tc-letter">{{ .letter | default "?" }}</span>
+          {{ with .logo }}<img src="{{ . }}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">{{ end }}
+        </div>
+        <div class="tc-body">
+          <h3 class="tc-title">{{ .name }}</h3>
+          <p class="tc-desc">{{ .desc }}</p>
+          {{ with .tag }}<span class="tc-tag">{{ . }}</span>{{ end }}
+        </div>
+        <span class="tc-external-badge">↗ 外部</span>
+        <span class="tc-arrow">↗</span>
+      </a>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+
+  {{ with .Content }}
+  <div class="bm-body">{{ . }}</div>
+  {{ end }}
+</div>
+
+{{ partial "blog/footer.html" . }}
+{{ end }}
+
+{{ define "left-sidebar" }}{{ end }}
+{{ define "right-sidebar" }}{{ end }}
