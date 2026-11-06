@@ -16,6 +16,16 @@ tools:
     desc: 机械尺寸链自动计算，支持极值法 / 统计法，依据 GB/T 5847-2004。
     url: /tools/dimensional-chain-calculator.html
     tag: 机械设计
+  - name: 齿轮镜像角计算器
+    icon: ⚙️
+    desc: 输入齿数、模数、压力角、变位系数，自动计算渐开线镜像平面角度。
+    url: /tools/gear-mirror-angle.html
+    tag: 机械设计
+  - name: 生日 · 天数 · 里程碑
+    icon: 🎂
+    desc: 公历/农历输入，计算累计天数、生日倒计时与纪念日清单。
+    url: /tools/birthday-milestone.html
+    tag: 效率工具
   - name: 书签收藏夹
     icon: 🔖
     desc: 常用网站分类收纳与快速检索，我的网络入口。
