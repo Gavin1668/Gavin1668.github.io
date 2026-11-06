@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <rect width="1600" height="900" fill="#f5f5fa"/>
+  <circle cx="1270" cy="220" r="330" fill="#2563eb" fill-opacity=".14"/>
+  <circle cx="1270" cy="220" r="210" fill="none" stroke="#2563eb" stroke-opacity=".45" stroke-width="3"/>
+  <g transform="translate(1130,190)">
+    <line x1="0" y1="60" x2="280" y2="60" stroke="#1e3a8a" stroke-width="4"/>
+    <polygon points="0,60 18,52 18,68" fill="#1e3a8a"/>
+    <polygon points="280,60 262,52 262,68" fill="#1e3a8a"/>
+    <line x1="0" y1="30" x2="0" y2="90" stroke="#1e3a8a" stroke-width="3"/>
+    <line x1="280" y1="30" x2="280" y2="90" stroke="#1e3a8a" stroke-width="3"/>
+    <text x="140" y="50" text-anchor="middle" fill="#1e3a8a" font-family="Arial" font-size="32" font-weight="700">L₀</text>
+  </g>
+  <text x="110" y="180" fill="#2563eb" font-family="Arial, Helvetica, sans-serif" font-size="28" letter-spacing="8">DIMENSION CHAIN · 2026</text>
+  <text x="110" y="430" fill="#1a1a2e" font-family="Arial, Helvetica, sans-serif" font-size="150" font-weight="800" letter-spacing="-6">尺寸链</text>
+  <text x="110" y="575" fill="#2563eb" font-family="Arial, Helvetica, sans-serif" font-size="150" font-weight="800" letter-spacing="-6">怎么算？</text>
+  <path d="M110 650h540" stroke="#e5e7eb" stroke-width="3"/>
+  <text x="110" y="720" fill="#6b7280" font-family="Arial, Helvetica, sans-serif" font-size="30">增环减环先认对，封闭环一次算清。</text>
+</svg>
