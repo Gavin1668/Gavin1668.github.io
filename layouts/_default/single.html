@@ -45,6 +45,15 @@
       {{ .Content }}
     </div>
 
+    {{ if and .Site.Params.twikoo.enabled .Site.Params.twikoo.envId }}
+    <section class="article-comments">
+      <div class="tcomment-wrap">
+        <h2 class="comments-title">留言</h2>
+        <div id="tcomment"></div>
+      </div>
+    </section>
+    {{ end }}
+
     {{ if or .PrevInSection .NextInSection }}
     <nav class="article-pager" aria-label="上下篇">
       {{ with .NextInSection }}
@@ -65,6 +74,22 @@
 </div>
 
 {{ partial "blog/footer.html" . }}
+
+{{ if and .Site.Params.twikoo.enabled .Site.Params.twikoo.envId }}
+<style>
+.article-comments{margin-top:36px;padding-top:24px;border-top:1px solid var(--line,#e5e7eb);}
+.tcomment-wrap{max-width:100%;}
+.comments-title{font-size:18px;font-weight:700;margin:0 0 16px;color:var(--ink,#1a1a2e);}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js"></script>
+<script>
+twikoo.init({
+  envId: '{{ .Site.Params.twikoo.envId }}',
+  el: '#tcomment',
+  path: '{{ .RelPermalink }}',
+});
+</script>
+{{ end }}
 {{ end }}
 
 {{ define "left-sidebar" }}{{ end }}

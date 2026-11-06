@@ -97,6 +97,13 @@ params:
     category: Announcements
     categoryID: ""
 
+  # ===== 留言板（Twikoo，0 元方案）=====
+  # 后端部署到 Vercel 或 Netlify（免费），envId 填部署后的完整 URL
+  # 拿到 envId 后把 enabled 改为 true 即生效
+  twikoo:
+    enabled: false
+    envId: ""
+
   widgets:
     homepage:
       - type: search
