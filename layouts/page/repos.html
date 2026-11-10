@@ -6,6 +6,11 @@
 .repos-page{width:100%;max-width:1080px;margin:0 auto;padding:clamp(28px,4vw,44px) 20px 60px;}
 .repos-notice{display:flex;gap:10px;align-items:flex-start;margin:16px 0 24px;padding:12px 16px;border-radius:12px;background:var(--accent-soft,#faf3e0);border-left:3px solid var(--accent,#e0a526);font-size:12.5px;line-height:1.7;color:var(--sub,#6b7280);}
 .repos-notice .rn-icon{flex-shrink:0;font-size:15px;line-height:1.4;}
+.repo-group{margin-top:34px;}
+.repo-group:first-of-type{margin-top:20px;}
+.rg-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;margin:0 0 14px;padding-bottom:9px;border-bottom:1px solid var(--line,#e5e7eb);}
+.rg-head h2{font-size:17px;font-weight:700;margin:0;letter-spacing:.01em;}
+.rg-note{font-size:11.5px;color:var(--sub,#6b7280);}
 .repos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
 .repo-card{position:relative;display:flex;flex-direction:column;padding:18px 20px 16px;border-radius:14px;background:var(--card,#fff);border:1px solid var(--line,#e5e7eb);transition:transform .2s,box-shadow .2s,border-color .2s;}
 .repo-card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.08);border-color:var(--accent,#e0a526);}
@@ -37,6 +42,7 @@
 .repos-table th,.repos-table td{border:1px solid var(--line,#e5e7eb);padding:8px 10px;text-align:left;vertical-align:top;line-height:1.55;}
 .repos-table th{background:var(--accent-soft,#faf3e0);font-weight:700;white-space:nowrap;}
 .repos-table tbody tr:hover td{background:rgba(224,165,38,.06);}
+.repos-table .grp-row td{background:var(--accent-soft,#faf3e0);font-weight:700;letter-spacing:.02em;}
 .repos-table .tbl-links{display:flex;flex-wrap:wrap;gap:5px;}
 .repos-table .tbl-links a{font-size:11.5px;font-weight:600;color:var(--accent-text,#9a6700);text-decoration:none;padding:2px 7px;border:1px solid var(--line,#e5e7eb);border-radius:99px;white-space:nowrap;}
 .repos-table .tbl-links a:hover{background:var(--accent-soft,#faf3e0);border-color:var(--accent,#e0a526);}
@@ -52,6 +58,7 @@
   .repo-card .rc-links a{min-height:34px;padding:6px 12px;font-size:12px;}
   .repos-table{font-size:12px;}
   .repos-table th,.repos-table td{padding:6px 7px;}
+  .rg-head h2{font-size:15.5px;}
 }
 </style>
 <div class="repos-page">
@@ -70,61 +77,87 @@
   </div>
   {{ end }}
 
-  <div class="repos-grid">
-    {{ range $i, $r := .Params.repos }}
-    <div class="repo-card">
-      <div class="rc-head">
-        <span class="rc-no">NO.{{ printf "%02d" (add $i 1) }}</span>
-        {{ with $r.tag }}<span class="rc-tag">{{ . }}</span>{{ end }}
-      </div>
-      <div class="rc-title">
-        <a class="rc-name" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">{{ $r.name }}</a>
-        {{ with $r.star }}<span class="rc-star">★ {{ . }}</span>{{ end }}
-      </div>
-      <p class="rc-desc">{{ $r.desc }}</p>
-      {{ with $r.points }}
-      <details class="rc-more">
-        <summary>展开速览</summary>
-        <ul>
-          {{ range . }}<li>{{ . }}</li>{{ end }}
-        </ul>
-      </details>
-      {{ end }}
-      <div class="rc-links">
-        <a class="primary" href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-        {{ with $r.mirror1 }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">镜像 1 ↗</a>{{ end }}
-        {{ with $r.mirror2 }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">镜像 2 ↗</a>{{ end }}
-        {{ with $r.raw }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">文本 ↗</a>{{ end }}
-      </div>
+  {{ $groups := .Params.repo_groups }}
+  {{ if not $groups }}{{ $groups = slice (dict "title" "" "note" "" "items" .Params.repos) }}{{ end }}
+  {{ $idx := newScratch }}
+  {{ $idx.Set "n" 0 }}
+
+  {{ range $groups }}
+  {{ $g := . }}
+  <section class="repo-group">
+    {{ with $g.title }}
+    <div class="rg-head">
+      <h2>{{ . }}</h2>
+      {{ with $g.note }}<span class="rg-note">{{ . }}</span>{{ end }}
     </div>
     {{ end }}
-  </div>
+    <div class="repos-grid">
+      {{ range $g.items }}
+      {{ $idx.Add "n" 1 }}
+      {{ $n := $idx.Get "n" }}
+      <div class="repo-card">
+        <div class="rc-head">
+          <span class="rc-no">NO.{{ printf "%02d" $n }}</span>
+          {{ with .tag }}<span class="rc-tag">{{ . }}</span>{{ end }}
+        </div>
+        <div class="rc-title">
+          <a class="rc-name" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .name }}</a>
+          {{ with .star }}<span class="rc-star">★ {{ . }}</span>{{ end }}
+        </div>
+        <p class="rc-desc">{{ .desc }}</p>
+        {{ with .points }}
+        <details class="rc-more">
+          <summary>展开速览</summary>
+          <ul>
+            {{ range . }}<li>{{ . }}</li>{{ end }}
+          </ul>
+        </details>
+        {{ end }}
+        <div class="rc-links">
+          <a class="primary" href="{{ .url }}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          {{ with .raw }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">文本 ↗</a>{{ end }}
+          {{ with .raw2 }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">文本备用 ↗</a>{{ end }}
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
 
   <section class="repos-table-sec">
     <h2>📋 快速检索</h2>
-    <p>按定位查，Ctrl+F 也能直接搜项目名；入口打不开时换下一个。</p>
+    <p>按分组查，Ctrl+F 也能直接搜项目名；入口打不开时换下一个。</p>
     <div class="repos-table-wrap">
       <table class="repos-table">
         <thead>
           <tr><th>#</th><th>项目</th><th>Star</th><th>定位</th><th>核心亮点</th><th>入口</th></tr>
         </thead>
         <tbody>
-          {{ range $i, $r := .Params.repos }}
+          {{ $idx2 := newScratch }}
+          {{ $idx2.Set "n" 0 }}
+          {{ range $groups }}
+          {{ $g := . }}
+          {{ with $g.title }}
+          <tr class="grp-row"><td colspan="6">{{ . }}{{ with $g.note }} · {{ . }}{{ end }}</td></tr>
+          {{ end }}
+          {{ range $g.items }}
+          {{ $idx2.Add "n" 1 }}
+          {{ $n := $idx2.Get "n" }}
           <tr>
-            <td>{{ printf "%02d" (add $i 1) }}</td>
-            <td>{{ $r.name }}</td>
-            <td>{{ $r.star }}</td>
-            <td>{{ $r.tag }}</td>
-            <td>{{ $r.short }}</td>
+            <td>{{ printf "%02d" $n }}</td>
+            <td>{{ .name }}</td>
+            <td>{{ .star }}</td>
+            <td>{{ .tag }}</td>
+            <td>{{ .short }}</td>
             <td>
               <div class="tbl-links">
-                <a href="{{ $r.url }}" target="_blank" rel="noopener noreferrer">GitHub</a>
-                {{ with $r.mirror1 }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">镜像 1</a>{{ end }}
-                {{ with $r.mirror2 }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">镜像 2</a>{{ end }}
-                {{ with $r.raw }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">文本</a>{{ end }}
+                <a href="{{ .url }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+                {{ with .raw }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">文本</a>{{ end }}
+                {{ with .raw2 }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">备用</a>{{ end }}
               </div>
             </td>
           </tr>
+          {{ end }}
           {{ end }}
         </tbody>
       </table>
