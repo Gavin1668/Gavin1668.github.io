@@ -49,6 +49,19 @@
 .repos-note{margin-top:28px;padding:18px 22px;border-radius:12px;background:var(--accent-soft,#faf3e0);border-left:3px solid var(--accent,#e0a526);font-size:13px;color:var(--sub,#6b7280);line-height:1.75;}
 .repos-note ul{margin:8px 0 0;padding-left:20px;}
 .repos-note li{margin:4px 0;}
+.rf-fab{position:fixed;right:18px;bottom:22px;z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
+.rf-btn{width:48px;height:48px;border:none;border-radius:50%;background:var(--accent,#e0a526);color:#fff;font-size:12px;font-weight:700;letter-spacing:.06em;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.16);display:flex;align-items:center;justify-content:center;transition:transform .18s,box-shadow .18s;}
+.rf-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.2);}
+.rf-btn:focus-visible{outline:2px solid var(--accent-text,#9a6700);outline-offset:3px;}
+.rf-panel{width:196px;max-height:62vh;overflow:auto;padding:10px 8px;border-radius:14px;background:var(--card,#fff);border:1px solid var(--line,#e5e7eb);box-shadow:0 14px 36px rgba(0,0,0,.16);animation:rfIn .16s ease-out;}
+@keyframes rfIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.rf-panel[hidden]{display:none;}
+.rf-panel .rf-h{font-size:10.5px;font-weight:800;letter-spacing:.14em;color:var(--accent-text,#9a6700);padding:2px 10px 8px;}
+.rf-panel a{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--sub,#6b7280);text-decoration:none;transition:background .14s,color .14s;}
+.rf-panel a:hover,.rf-panel a.active{background:var(--accent-soft,#faf3e0);color:var(--accent-text,#9a6700);}
+.rf-panel a .rf-c{font-size:10.5px;font-weight:700;color:var(--sub,#6b7280);background:rgba(0,0,0,.06);border-radius:99px;padding:1px 6px;}
+.rf-panel a.active .rf-c{background:transparent;color:var(--accent-text,#9a6700);}
+.repo-group{scroll-margin-top:84px;}
 @media (max-width:480px){
   .repos-page{padding:20px 14px 40px;}
   .repos-grid{gap:10px;grid-template-columns:1fr;}
@@ -59,6 +72,9 @@
   .repos-table{font-size:12px;}
   .repos-table th,.repos-table td{padding:6px 7px;}
   .rg-head h2{font-size:15.5px;}
+  .rf-fab{right:12px;bottom:16px;}
+  .rf-btn{width:44px;height:44px;}
+  .rf-panel{width:172px;}
 }
 </style>
 <div class="repos-page">
@@ -82,9 +98,8 @@
   {{ $idx := newScratch }}
   {{ $idx.Set "n" 0 }}
 
-  {{ range $groups }}
-  {{ $g := . }}
-  <section class="repo-group">
+  {{ range $gi, $g := $groups }}
+  <section class="repo-group" id="cat-{{ add $gi 1 }}">
     {{ with $g.title }}
     <div class="rg-head">
       <h2>{{ . }}</h2>
@@ -166,6 +181,41 @@
 
   {{ with .Content }}
   <div class="repos-note">{{ . }}</div>
+  {{ end }}
+
+  {{ if gt (len $groups) 1 }}
+  <nav class="rf-fab" id="repoFab" aria-label="分组目录">
+    <div class="rf-panel" id="rfPanel" hidden>
+      <div class="rf-h">分组</div>
+      {{ range $gi, $g := $groups }}
+      {{ with $g.title }}
+      <a href="#cat-{{ add $gi 1 }}">{{ . }}<span class="rf-c">{{ len $g.items }}</span></a>
+      {{ end }}
+      {{ end }}
+    </div>
+    <button class="rf-btn" id="rfBtn" type="button" aria-expanded="false" aria-controls="rfPanel" aria-label="展开分组目录">目录</button>
+  </nav>
+  <script>
+  (function(){
+    var fab=document.getElementById('repoFab');
+    if(!fab)return;
+    var btn=fab.querySelector('.rf-btn'),panel=document.getElementById('rfPanel');
+    function setOpen(o){panel.hidden=!o;btn.setAttribute('aria-expanded',o?'true':'false');}
+    btn.addEventListener('click',function(e){e.stopPropagation();setOpen(panel.hidden);});
+    document.addEventListener('click',function(e){if(!fab.contains(e.target))setOpen(false);});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')setOpen(false);});
+    panel.addEventListener('click',function(e){if(e.target.closest('a'))setOpen(false);});
+    var secs=[].slice.call(document.querySelectorAll('.repo-group'));
+    var links=[].slice.call(panel.querySelectorAll('a'));
+    function spy(){
+      var y=(window.pageYOffset||document.documentElement.scrollTop)+150,cur=-1;
+      for(var i=0;i<secs.length;i++){if(secs[i].offsetTop<=y)cur=i;}
+      for(var j=0;j<links.length;j++){links[j].classList.toggle('active',j===cur);}
+    }
+    window.addEventListener('scroll',spy,{passive:true});
+    spy();
+  })();
+  </script>
   {{ end }}
 </div>
 {{ partial "blog/footer.html" . }}
