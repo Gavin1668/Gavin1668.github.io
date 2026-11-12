@@ -44,6 +44,13 @@ blogs:
     logo: https://www.ruanyifeng.com/favicon.ico
     bg: "#c9a227"
     letter: 阮
+  - name: 吴鹏 Peter Wu
+    desc: 独立开发者，帮海外买家在中国找货找厂，也讲建站出海。
+    url: https://www.iampeterwu.com/
+    tag: 独立开发
+    logo: https://www.iampeterwu.com/favicon.ico
+    bg: "#0f4c5c"
+    letter: 吴
 site_groups:
   - title: "电机与机械"
     note: "设计与选型常用"
@@ -580,4 +587,4 @@ site_groups:
 
 ---
 
-*最后更新：2026-11-10*
+*最后更新：2026-11-12*
