@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>交付自检卡</title>
+<style>
+:root{
+  --bg:#f5f5fa; --card:#fff; --ink:#1a1a2e; --sub:#6b7280; --line:#e5e7eb;
+  --accent:#e0a526; --accent-soft:#faf3e0; --accent-text:#9a6700;
+  --green:#3a5a40; --green-soft:#e8efe9; --red:#a4243b; --red-soft:#fbeaec;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0f1117; --card:#1a1d28; --ink:#e4e6ef; --sub:#9aa0b0; --line:#2a2f3d;
+    --accent:#f0b233; --accent-soft:#2a2416; --accent-text:#f0b233;
+    --green:#8fb99a; --green-soft:#1c2a20; --red:#e08b9c; --red-soft:#2a1a1e; }
+}
+*{box-sizing:border-box}
+body{
+  margin:0; padding:28px 18px 60px; background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+  font-size:15px; line-height:1.6;
+}
+.wrap{max-width:860px;margin:0 auto}
+
+.head{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px}
+.head h1{margin:0;font-size:26px;letter-spacing:-.5px}
+.head .sub{margin:4px 0 0;color:var(--sub);font-size:13px}
+.badge{
+  margin-left:auto;flex:none;border:1px solid var(--line);background:var(--card);
+  border-radius:10px;padding:8px 14px;text-align:center;min-width:96px;
+}
+.badge .n{font-size:20px;font-weight:700;color:var(--accent-text);line-height:1.2}
+.badge .t{font-size:11px;color:var(--sub)}
+
+.bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin:0 0 22px}
+.bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .25s ease}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:16px}
+.card h2{margin:0 0 4px;font-size:17px;display:flex;align-items:center;gap:9px}
+.card h2 .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none}
+.card .hint{margin:0 0 16px;color:var(--sub);font-size:12.5px}
+
+.q{margin-bottom:14px}
+.q label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+.q label em{font-style:normal;color:var(--sub);font-weight:400;margin-left:6px;font-size:12px}
+.q textarea{
+  width:100%;min-height:52px;resize:vertical;padding:10px 12px;
+  border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);
+  font:inherit;font-size:14px;line-height:1.55;
+}
+.q textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+
+.item{
+  display:flex;gap:11px;align-items:flex-start;padding:11px 12px;border-radius:10px;
+  cursor:pointer;transition:background .15s;border:1px solid transparent;user-select:none;
+}
+.item:hover{background:var(--bg)}
+.item.on{background:var(--green-soft);border-color:color-mix(in srgb,var(--green) 25%,transparent)}
+.box{
+  flex:none;width:19px;height:19px;margin-top:2px;border:1.5px solid var(--line);border-radius:5px;
+  display:flex;align-items:center;justify-content:center;background:var(--card);transition:.15s;
+}
+.item.on .box{background:var(--green);border-color:var(--green)}
+.box svg{width:12px;height:12px;opacity:0;stroke:#fff;stroke-width:2.2;fill:none}
+.item.on .box svg{opacity:1}
+.item .txt{flex:1;min-width:0}
+.item .txt b{display:block;font-weight:600;font-size:14px;line-height:1.5}
+.item .txt small{display:block;color:var(--sub);font-size:12px;margin-top:2px;line-height:1.5}
+.item.inp{cursor:auto;background:transparent;border-color:transparent}
+.item.inp:hover{background:transparent}
+
+.card.danger h2 .dot{background:var(--red)}
+.card.danger .item.on{background:var(--red-soft);border-color:color-mix(in srgb,var(--red) 25%,transparent)}
+.card.danger .item.on .box{background:var(--red);border-color:var(--red)}
+
+.acts{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 14px}
+.btn{
+  flex:1 1 150px;min-height:46px;padding:0 18px;border-radius:11px;border:1px solid var(--line);
+  background:var(--card);color:var(--ink);font:inherit;font-size:14px;font-weight:600;
+  cursor:pointer;transition:.15s;
+}
+.btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#1a1a2e}
+.btn.primary:hover{filter:brightness(1.05)}
+
+.out{
+  width:100%;min-height:150px;padding:14px;border:1px dashed var(--line);border-radius:12px;
+  background:var(--card);color:var(--ink);font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;
+}
+.outcap{display:flex;align-items:center;gap:10px;margin:0 0 8px;color:var(--sub);font-size:12.5px}
+.toast{
+  position:fixed;left:50%;bottom:28px;transform:translate(-50%,14px);opacity:0;
+  background:var(--ink);color:var(--card);padding:10px 20px;border-radius:99px;font-size:13px;
+  pointer-events:none;transition:.22s;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.foot{margin-top:26px;color:var(--sub);font-size:12px;line-height:1.8;text-align:center}
+
+@page{ size:A4 portrait; margin:1.2cm; }
+@media print{
+  body{background:#fff;color:#000;padding:0;font-size:10pt;font-family:"宋体",SimSun,serif}
+  .wrap{max-width:none}
+  .bar,.acts,.toast,.head .badge,.card .hint{display:none}
+  .card{background:#fff;border:1px solid #bbb;box-shadow:none;page-break-inside:avoid;
+        padding:10pt 12pt;margin:0 0 8pt;border-radius:0}
+  .card h2{font-size:11pt;margin-bottom:6pt}
+  .item{padding:4pt 0;border:none;background:#fff !important;gap:7pt}
+  .item.on{background:#fff !important}
+  .box{border:1pt solid #555;border-radius:2pt;width:11pt;height:11pt;margin-top:2pt;background:#fff !important}
+  .item.on .box{background:#fff !important;border-color:#000}
+  .box svg{stroke:#000 !important}
+  .item .txt b{font-size:10pt}
+  .item .txt small{font-size:8.5pt;color:#444}
+  .q textarea{min-height:30pt;border:1pt solid #bbb;background:#fff;font-size:10pt;border-radius:0}
+  .q label{font-size:10pt}
+  .out{border:1pt dashed #888;background:#fff;font-size:9pt;min-height:60pt}
+  .outcap{font-size:9pt}
+  .foot{font-size:8.5pt}
+  .head h1{font-size:16pt}
+  .head .sub{font-size:9pt}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <div>
+      <h1>交付自检卡</h1>
+      <p class="sub">每次改完东西，走一遍。不是为了合规，是为了三天后你还记得自己验过什么。</p>
+    </div>
+    <div class="badge"><div class="n" id="num">0/16</div><div class="t">已确认</div></div>
+  </div>
+
+  <div class="bar"><i id="pbar"></i></div>
+
+  <div class="card">
+    <h2><span class="dot"></span>先答三问</h2>
+    <p class="hint">这三行是核心。答不出来，说明活儿还没干完，只是动了手。</p>
+    <div class="q">
+      <label>1. 改了什么<em>一句话，别写过程</em></label>
+      <textarea data-note="what" placeholder="例：尺寸链计算器新增 3山 M0 缺省自动计算"></textarea>
+    </div>
+    <div class="q">
+      <label>2. 怎么证明它对<em>能跑的命令，或能看见的现象</em></label>
+      <textarea data-note="how" placeholder="例：输入 12 组参数，与手算结果逐组对照一致；A4 打印边距没跑版"></textarea>
+    </div>
+    <div class="q">
+      <label>3. 证据在哪<em>截图 / 输出 / commit / 文件路径</em></label>
+      <textarea data-note="ev" placeholder="例：对照表截图 1 张；commit 54cc3caf"></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="dot"></span>改博客站点时</h2>
+    <p class="hint">Hugo 站一次改错，整站可能白屏，所以这几条必须过。</p>
+    <label class="item" data-k="s1">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>本地构建通过，页数跟上次一样</b><small>hugo --minify 不出 error；页数落在基线范围，突然少一截就是有页面炸了</small></span>
+    </label>
+    <label class="item" data-k="s2">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>目标页面的关键数量对得上</b><small>不是“能打开”就算过，要看实际条目数：书签 82 条、百站 100 格、导航 8 项</small></span>
+    </label>
+    <label class="item" data-k="s3">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>顺手看了别的页面</b><small>至少回访 /repos/ /bookmarks/ /tools/ 三个，改一个不塌全站</small></span>
+    </label>
+    <label class="item" data-k="s4">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>线上真的更新了，才说“已上线”</b><small>推完等 2 分钟，带时间戳参数访问一次，别拿本地截图当线上结果</small></span>
+    </label>
+    <label class="item" data-k="s5">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>记下了 commit 号</b><small>出事能回滚到具体那一次，而不是“大概上周改的”</small></span>
+    </label>
+  </div>
+
+  <div class="card">
+    <h2><span class="dot"></span>交 HTML 工具时</h2>
+    <p class="hint">你这边的坑集中在公式、边界和打印，挨个过。</p>
+    <label class="item" data-k="t1">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>公式对照过至少 3 组</b><small>拿标准值或手算结果比，不是“看着差不多”；组数越多越稳</small></span>
+    </label>
+    <label class="item" data-k="t2">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>边界值都试过</b><small>空输入、0、负数、超范围、极大极小值；空值最容易算出错数还不报错</small></span>
+    </label>
+    <label class="item" data-k="t3">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>断网双击也能用</b><small>没有外部字体、CDN、在线图标；公司电脑不给装东西，这条是硬要求</small></span>
+    </label>
+    <label class="item" data-k="t4">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>A4 打印不跑版</b><small>边距、字号、分页都看一眼，表格没被切到两页去</small></span>
+    </label>
+    <label class="item" data-k="t5">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>窄屏和深色都能用</b><small>手机上文字不溢出、按钮不挤成一坨；深色下字还能看清</small></span>
+    </label>
+    <label class="item" data-k="t6">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>点击区域够大</b><small>按钮和输入至少 44×44，手指和鼠标都不容易点错</small></span>
+    </label>
+  </div>
+
+  <div class="card danger">
+    <h2><span class="dot"></span>红线自查</h2>
+    <p class="hint">勾上表示“确认没碰”，任何一条没勾，就先停手。</p>
+    <label class="item" data-k="r1">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>没跑破坏性删除</b><small>rm -rf、批量删文件；真要删，先确认有备份、范围没写错</small></span>
+    </label>
+    <label class="item" data-k="r2">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>没强推覆盖历史</b><small>git push --force 只在确认远端没人依赖时才用</small></span>
+    </label>
+    <label class="item" data-k="r3">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>没覆盖没确认过的原文件</b><small>改之前留了副本，或者本来就该改那一份</small></span>
+    </label>
+    <label class="item" data-k="r4">
+      <span class="box"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"/></svg></span>
+      <span class="txt"><b>没往共享的地方发东西</b><small>群、邮件、线上系统，发出去就收不回，先确认再发</small></span>
+    </label>
+  </div>
+
+  <div class="outcap">本次记录 <span id="count"></span></div>
+  <textarea class="out" id="out" readonly placeholder="点下面的“生成记录”，会拼出一段可以直接贴到日报或提交说明里的文字"></textarea>
+
+  <div class="acts">
+    <button class="btn primary" id="gen">生成记录</button>
+    <button class="btn" id="copy">复制</button>
+    <button class="btn" id="print">打印 / 存 PDF</button>
+    <button class="btn" id="reset">清空重来</button>
+  </div>
+
+  <p class="foot">
+    勾选和填写会自动存在这台电脑的浏览器里，下次打开还在。<br>
+    这套东西的源头是 SCALE Engine 的 verification 与 workflow 模板，只留了能用的部分。
+  </p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var KEY = 'delivery-check-v1';
+  var items = [].slice.call(document.querySelectorAll('.item[data-k]'));
+  var notes = [].slice.call(document.querySelectorAll('textarea[data-note]'));
+  var out = document.getElementById('out');
+  var num = document.getElementById('num');
+  var pbar = document.getElementById('pbar');
+  var countEl = document.getElementById('count');
+  var state = { checks:{}, notes:{} };
+
+  function load(){
+    try{
+      var s = JSON.parse(localStorage.getItem(KEY) || '{}');
+      if (s && typeof s === 'object'){
+        state.checks = s.checks || {};
+        state.notes = s.notes || {};
+      }
+    }catch(e){}
+  }
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var MISS = {};
+  items.forEach(function(el){ MISS[el.getAttribute('data-k')] = el.querySelector('b'); });
+
+  function paint(){
+    var done = 0, total = items.length;
+    var grp = { s:0, t:0, r:0 };
+    items.forEach(function(el){
+      var k = el.getAttribute('data-k');
+      var on = !!state.checks[k];
+      el.classList.toggle('on', on);
+      var g = k.charAt(0);
+      if (on){ done++; if (grp[g] !== undefined) grp[g]++; }
+    });
+    num.textContent = done + '/' + total;
+    pbar.style.width = (total ? Math.round(done / total * 100) : 0) + '%';
+    countEl.textContent = '站点 ' + grp.s + '/5 · 工具 ' + grp.t + '/6 · 红线 ' + grp.r + '/4';
+  }
+
+  items.forEach(function(el){
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('role', 'checkbox');
+    el.addEventListener('click', function(ev){
+      if (ev.target.tagName === 'TEXTAREA' || ev.target.tagName === 'INPUT') return;
+      var k = el.getAttribute('data-k');
+      state.checks[k] = !state.checks[k];
+      save(); paint();
+    });
+    el.addEventListener('keydown', function(ev){
+      if (ev.key === ' ' || ev.key === 'Enter'){
+        ev.preventDefault();
+        var k = el.getAttribute('data-k');
+        state.checks[k] = !state.checks[k];
+        save(); paint();
+      }
+    });
+  });
+
+  notes.forEach(function(t){
+    var k = t.getAttribute('data-note');
+    t.value = state.notes[k] || '';
+    t.addEventListener('input', function(){ state.notes[k] = t.value; save(); });
+  });
+
+  function pad(n){ return n < 10 ? '0' + n : '' + n; }
+  function today(){
+    var d = new Date();
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+  }
+
+  document.getElementById('gen').addEventListener('click', function(){
+    var grp = { s:0, t:0, r:0 };
+    var miss = [];
+    items.forEach(function(el){
+      var k = el.getAttribute('data-k');
+      if (state.checks[k]){
+        var g = k.charAt(0);
+        if (grp[g] !== undefined) grp[g]++;
+      } else {
+        miss.push(el.querySelector('b').textContent.trim());
+      }
+    });
+    var lines = [];
+    lines.push('【交付记录】' + today());
+    lines.push('改了什么：' + (state.notes.what || '').trim());
+    lines.push('怎么证明：' + (state.notes.how || '').trim());
+    lines.push('证据在哪：' + (state.notes.ev || '').trim());
+    lines.push('自检：站点 ' + grp.s + '/5，工具 ' + grp.t + '/6，红线 ' + grp.r + '/4');
+    lines.push('未确认：' + (miss.length ? miss.join('；') : '无'));
+    out.value = lines.join('\n');
+    toast('已生成');
+  });
+
+  function fallbackCopy(){
+    out.focus(); out.select();
+    try{ document.execCommand('copy'); toast('已复制'); }
+    catch(e){ toast('复制失败，请手动选中'); }
+  }
+
+  document.getElementById('copy').addEventListener('click', function(){
+    if (!out.value.trim()) document.getElementById('gen').click();
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(out.value).then(function(){ toast('已复制'); }, fallbackCopy);
+    } else { fallbackCopy(); }
+  });
+
+  document.getElementById('print').addEventListener('click', function(){
+    if (!out.value.trim()) document.getElementById('gen').click();
+    window.print();
+  });
+
+  document.getElementById('reset').addEventListener('click', function(){
+    if (!confirm('清空本卡所有勾选和填写？')) return;
+    state = { checks:{}, notes:{} };
+    save();
+    notes.forEach(function(t){ t.value = ''; });
+    out.value = '';
+    paint();
+    toast('已清空');
+  });
+
+  var toastTimer = null;
+  function toast(msg){
+    var el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 1600);
+  }
+
+  load(); paint();
+})();
+</script>
+</body>
+</html>
