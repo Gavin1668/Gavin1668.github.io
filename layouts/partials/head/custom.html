@@ -6,10 +6,10 @@
 {{ $blog := resources.Get "css/blog.css" | minify | resources.Fingerprint "sha256" }}
 <link rel="stylesheet" href="{{ $blog.RelPermalink }}">
 
-{{/* 站点图标：内联 SVG（齿轮），不依赖外部文件，避免 favicon.ico 404 */}}
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkZ2h0PSIzMiIgaGVpZ2h0PSIzMiIgcng9IjciIGZsllPSIjZTBhNTI2Ii8+PGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iNy40IiBmaWxsPSJub25lIiBzdHJva2U9IiMxYTFhMmUiIHN0cm9rZS13aWR0aD0iMi44Ii8+PGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMi42IiBmaWxsPSIjMWExYTJlIi8+PGcgc3Ryb2tlPSIjMWExYTJlIiBzdHJva2Utd2lkdGgu9IjIuNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48bGlnZSB4MT0iMTYIIHkxPSIzLjIiIHg9IjE2IiB5Mj0iOC42Ii8+PGxpbmUgeDE9IjE2IiB5MT0iMjMuNCIgeDI9IjE2IiB5Mj0iMjguOCIvPjxsaW5lIHgxPSIzLjIiIHkxPSIxNiIgeDI9IjguNiIgeTI9IjE2Ii8+PGxpbmUgeDE9IjIzLjQiIHkxPSIxNiIgeDI9IjI4LjgiIHkyPSIxNiIvPjwvZz48L3N2Zz4=">
+{{/* 站点图标 32×32，SVG 矢量 */}}
+<link rel="icon" type="image/svg+xml" href="{{ "img/favicon.svg" | relURL }}">
 
-{{/* 字体：覆盖主题默认的 Lato（依赖 Google Fonts），改用系统字体栈 */}}
+{{/* 字体：去掉主题默认的 Lato（依赖 Google Fonts），改用系统字体栈 */}}
 <style>
 :root{
   --base-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
