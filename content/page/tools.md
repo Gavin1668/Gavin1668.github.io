@@ -39,7 +39,7 @@ tools:
     external: true
   - name: 交付自检卡
     icon: ✅
-    desc: 交付前走一遍：改了什么、怎么证明、证据在哪。站点、工具、红线共 16 项，可打印存档。
+    desc: 交付前走一遍：改了什么、怎么证明、证据在哪。站点、工具、红线共 15 项，可打印存档。
     url: /tools/delivery-check.html
     tag: 效率工具
 sites:
