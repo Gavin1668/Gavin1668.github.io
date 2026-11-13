@@ -1,0 +1,114 @@
+{{ define "body-class" }}blog-v4{{ end }}
+
+{{ define "main" }}
+{{ partial "blog/header.html" . }}
+<style>
+.tools-page{width:100%;max-width:1080px;margin:0 auto;padding:clamp(28px,4vw,44px) 20px 60px;}
+.st-lead{display:flex;flex-wrap:wrap;gap:14px 18px;align-items:center;justify-content:space-between;margin:0 0 20px;}
+.st-lead-txt{margin:0;flex:1;min-width:240px;font-size:13px;line-height:1.7;color:var(--sub,#6b7280);}
+.st-lead-txt p{margin:0;}
+.st-prog{display:flex;align-items:center;gap:9px;flex-shrink:0;}
+.st-prog b{font-family:var(--mono);font-size:16px;color:var(--ink,#1a1a2e);}
+.st-prog em{font-family:var(--mono);font-size:12px;font-style:normal;color:var(--sub,#6b7280);}
+.st-prog .bar{width:110px;height:7px;border-radius:99px;background:var(--line,#e5e7eb);overflow:hidden;}
+.st-prog .bar i{display:block;height:100%;background:var(--accent,#e0a526);border-radius:99px;}
+.st-search{position:relative;max-width:320px;margin:0 0 22px;}
+.st-search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:#9ca3af;pointer-events:none;}
+.st-search input{width:100%;box-sizing:border-box;padding:9px 12px 9px 34px;border:1px solid var(--line,#e5e7eb);border-radius:10px;background:var(--card,#fff);color:var(--ink,#1a1a2e);font-size:13px;font-family:inherit;outline:none;transition:border-color .18s;}
+.st-search input:focus{border-color:var(--accent,#e0a526);}
+.st-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+.st-card{display:flex;flex-direction:column;background:var(--card,#fff);border:1px solid var(--line,#e5e7eb);border-radius:14px;padding:15px 17px 0;transition:transform .2s,box-shadow .2s,border-color .2s;}
+.st-card.live:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.08);border-color:var(--accent,#e0a526);}
+.st-card.blank{border-style:dashed;background:transparent;}
+.st-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
+.st-no{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--bg,#f5f5fa);background:var(--ink,#1a1a2e);padding:2px 7px;border-radius:6px;}
+.blog-v4.dark .st-no{color:var(--accent-ink,#1a1a2e);background:var(--accent,#f0b233);}
+.st-card.blank .st-no{opacity:.3;}
+.st-kind{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:.04em;}
+.st-kind.personal{color:var(--accent-text,#9a6700);background:var(--accent-soft,#faf3e0);}
+.st-kind.biz{color:var(--green,#3a5a40);background:var(--green-soft,#e8efe9);}
+.st-dom{font-size:16px;font-weight:800;line-height:1.35;margin:0 0 7px;word-break:break-all;}
+.st-card.blank .st-dom{font-size:14px;font-weight:600;color:var(--sub,#6b7280);}
+.st-desc{font-size:12.5px;line-height:1.6;color:var(--sub,#6b7280);margin:0 0 13px;flex:1;}
+.st-btn{display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 0;border-radius:10px;border:1px solid var(--line,#e5e7eb);font-size:12.5px;font-weight:700;color:var(--ink,#1a1a2e);text-decoration:none;transition:.18s;}
+.st-btn:hover{background:var(--accent,#e0a526);border-color:var(--accent,#e0a526);color:var(--accent-ink,#1a1a2e);}
+.st-foot{margin-top:13px;padding:9px 0;border-top:1px solid var(--line,#e5e7eb);text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#9ca3af;text-transform:uppercase;}
+.st-card.blank .st-foot{border-top-color:transparent;color:var(--line,#e5e7eb);}
+@media(max-width:900px){.st-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}}
+@media(max-width:520px){.tools-page{padding:20px 14px 40px;}.st-grid{grid-template-columns:1fr;gap:10px;}.st-card{padding:13px 14px 0;}.st-prog .bar{width:80px;}}
+</style>
+<div class="tools-page">
+  <div class="sec-head">
+    <span class="sec-no">01</span>
+    <h1 class="sec-title">{{ .Title }}</h1>
+    <span class="sec-line"></span>
+    <a class="sec-link" href="{{ "/" | relURL }}">返回首页 →</a>
+  </div>
+
+  {{ $items := .Params.site_items }}
+  {{ $live := len $items }}
+  {{ $total := .Params.sites_total | default 100 }}
+  {{ $pct := 0 }}
+  {{ if and (gt $total 0) (gt $live 0) }}{{ $pct = div (mul $live 100) $total }}{{ end }}
+
+  <div class="st-lead">
+    <div class="st-lead-txt">{{ .Content }}</div>
+    <div class="st-prog">
+      <b>{{ $live }}</b><em>/ {{ $total }} 已上线</em>
+      <span class="bar"><i style="width:{{ $pct }}%"></i></span>
+    </div>
+  </div>
+
+  <div class="st-search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    <input id="stSearch" type="search" placeholder="搜域名或说明，只搜已上线的" autocomplete="off">
+  </div>
+
+  <div class="st-grid" id="stGrid">
+    {{ range $i, $e := $items }}
+    <article class="st-card live" data-k="{{ lower $e.name }} {{ lower $e.desc }} {{ lower $e.kind }}">
+      <div class="st-top">
+        <span class="st-no">{{ printf "#%03d" (add $i 1) }}</span>
+        {{ if eq $e.kind "商业站" }}<span class="st-kind biz">{{ $e.kind }}</span>{{ else }}<span class="st-kind personal">{{ $e.kind }}</span>{{ end }}
+      </div>
+      <h3 class="st-dom">{{ $e.name }}</h3>
+      <p class="st-desc">{{ $e.desc }}</p>
+      <a class="st-btn" href="{{ $e.url }}" target="_blank" rel="noopener noreferrer">访问网站 ↗</a>
+      <div class="st-foot">{{ with $e.released }}Released on {{ . }}{{ else }}Online{{ end }}</div>
+    </article>
+    {{ end }}
+    {{ if lt $live $total }}
+    {{ range seq (add $live 1) $total }}
+    <article class="st-card blank">
+      <div class="st-top"><span class="st-no">{{ printf "#%03d" (int .) }}</span></div>
+      <h3 class="st-dom">更多作品开发中…</h3>
+      <p class="st-desc">这一格还没开工，上线后这里会换成它的域名。</p>
+      <div class="st-foot">Coming soon</div>
+    </article>
+    {{ end }}
+    {{ end }}
+  </div>
+</div>
+
+<script>
+(function () {
+  var box = document.getElementById('stSearch');
+  var grid = document.getElementById('stGrid');
+  if (!box || !grid) return;
+  var cards = [].slice.call(grid.querySelectorAll('.st-card.live'));
+  var blanks = [].slice.call(grid.querySelectorAll('.st-card.blank'));
+  box.addEventListener('input', function () {
+    var q = this.value.trim().toLowerCase();
+    cards.forEach(function (c) {
+      c.style.display = (c.getAttribute('data-k') || '').indexOf(q) > -1 ? '' : 'none';
+    });
+    blanks.forEach(function (c) { c.style.display = q ? 'none' : ''; });
+  });
+})();
+</script>
+
+{{ partial "blog/footer.html" . }}
+{{ end }}
+
+{{ define "left-sidebar" }}{{ end }}
+{{ define "right-sidebar" }}{{ end }}
