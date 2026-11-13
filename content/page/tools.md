@@ -37,6 +37,11 @@ tools:
     url: https://4kvgyn6n4s4um.doubaoapps.com/app/app_17fsr1zh4yc
     tag: 设计工具
     external: true
+  - name: 交付自检卡
+    icon: ✅
+    desc: 交付前走一遍：改了什么、怎么证明、证据在哪。站点、工具、红线共 16 项，可打印存档。
+    url: /tools/delivery-check.html
+    tag: 效率工具
 sites:
   - name: PDF24 工具箱
     desc: PDF 合并、拆分、压缩、转 Word、OCR 识别，全在浏览器里跑，不用装软件。
