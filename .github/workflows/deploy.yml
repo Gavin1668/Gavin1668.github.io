@@ -56,6 +56,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-hugo-
 
+      - name: Optimize cover images
+        run: |
+          for f in static/img/kuachishu-k-cover.jpg static/img/sankuaifa-ai-assistant-cover.jpg; do
+            if [ -f "$f" ] && command -v convert >/dev/null 2>&1; then
+              convert "$f" -resize 1200x -quality 78 -strip -interlace Plane "$f"
+            fi
+          done
+          ls -lh static/img/*.jpg || true
+
       - name: Build
         run: hugo --minify --gc
 

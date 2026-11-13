@@ -98,7 +98,6 @@ params:
 
   widgets:
     homepage:
-      - type: search
       - type: archives
         params:
           limit: 5
@@ -110,11 +109,6 @@ params:
           limit: 10
     page:
       - type: toc
-
-  opengraph:
-    twitter:
-      site: "@Gavin1668"
-      card: summary_large_image
 
   defaultImage:
     opengraph:
