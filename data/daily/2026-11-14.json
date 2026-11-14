@@ -1,0 +1,368 @@
+{
+ "date": "2026-11-14",
+ "generatedAt": "2026-11-14T10:57:44+08:00",
+ "week": "星期六",
+ "boards": [
+  {
+   "key": "itzhijia",
+   "name": "IT之家",
+   "en": "ITHOME",
+   "span": 2,
+   "grad": "linear-gradient(135deg,#7a96ff,#3d5bff)",
+   "items": [
+    {
+     "title": "真 · 互通：国行 Apple 智能创作内容问询结果会同步至千问 App",
+     "url": "https://www.ithome.com/1/022/459.htm",
+     "extra": ""
+    },
+    {
+     "title": "视频苦等两年，终于来了：Apple 智能国行版本实测，千问撑起了一片天",
+     "url": "https://www.ithome.com/1/022/376.htm",
+     "extra": ""
+    },
+    {
+     "title": "连续 2 小时 40 分钟纯代码生成 66 秒动画，Anthropic 新旗舰 Fable 5.5 实测曝光",
+     "url": "https://www.ithome.com/1/022/468.htm",
+     "extra": ""
+    },
+    {
+     "title": "安卓首款阔直板手机酷派 COOL X Wide 宣布延期发货，官方发布致歉说明",
+     "url": "https://www.ithome.com/1/022/386.htm",
+     "extra": ""
+    },
+    {
+     "title": "京东宣布率先在行业内推出安装充电桩线缆“按米收费”：0 米起售，用多少米买多少米",
+     "url": "https://www.ithome.com/1/022/414.htm",
+     "extra": ""
+    },
+    {
+     "title": "中兴手机官方微信公众号账号迁移，主体变更为上海申启纪元智能终端有限责任公司",
+     "url": "https://www.ithome.com/1/022/428.htm",
+     "extra": ""
+    },
+    {
+     "title": "华为小艺 Work 率先上线 openPangu-2.1-Pro 模型，主打“鸿蒙任务增强”",
+     "url": "https://www.ithome.com/1/022/472.htm",
+     "extra": ""
+    },
+    {
+     "title": "22.98 万元起 2027 款极氪 7X 开启预售，CLTC 续航 620802km",
+     "url": "https://www.ithome.com/1/022/535.htm",
+     "extra": ""
+    },
+    {
+     "title": "尝鲜需谨慎：曝 iPhone Duo 升级 iOS 27.3 测试版微信暂缺“和其他设备同时登录”功能",
+     "url": "https://www.ithome.com/1/022/265.htm",
+     "extra": ""
+    },
+    {
+     "title": "张雪：中国摩托车超越全球顶级对手和品牌要耐得住寂寞，这个过程一定是痛并快乐着的",
+     "url": "https://www.ithome.com/1/022/427.htm",
+     "extra": ""
+    }
+   ],
+   "fetched": "2026-11-05"
+  },
+  {
+   "key": "juejin",
+   "name": "掘金",
+   "en": "JUEJIN",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#12b58f,#0a8f70)",
+   "items": [
+    {
+     "title": "Cursor 转 Codex 大半个月，聊聊我的真实感受",
+     "url": "https://juejin.cn/post/7637856870833635343",
+     "extra": ""
+    },
+    {
+     "title": "面试官问你：“AI 能写 80% 的代码了，公司为什么还需要你”",
+     "url": "https://juejin.cn/post/7655245911811784750",
+     "extra": ""
+    },
+    {
+     "title": "排名算法一变，国产模型全部滑铁卢了！",
+     "url": "https://juejin.cn/post/7701637989948784659",
+     "extra": ""
+    },
+    {
+     "title": "手机到底有没有偷听我们我抓包了 72 小时，抓到了真凶",
+     "url": "https://juejin.cn/post/7698382188488048649",
+     "extra": ""
+    },
+    {
+     "title": "一个人+AI做情侣食谱小程序，30天纯赚",
+     "url": "https://juejin.cn/post/7691030977348108351",
+     "extra": ""
+    },
+    {
+     "title": "副业搞起来，小说，漫画，漫剧的成本优化思路",
+     "url": "https://juejin.cn/post/7692440533922971667",
+     "extra": ""
+    },
+    {
+     "title": "Spring AI Alibaba已停更了，Java还有希望吗",
+     "url": "https://juejin.cn/post/7693821701955567670",
+     "extra": ""
+    },
+    {
+     "title": "16 个超火的 DeepSeek Harness 插件，大肥鱼已经落后 N 个版本了。。。",
+     "url": "https://juejin.cn/post/7676098169974292530",
+     "extra": ""
+    },
+    {
+     "title": "用了一个月 WorkBuddy，聊聊我的真实感受",
+     "url": "https://juejin.cn/post/7686407614478237748",
+     "extra": ""
+    },
+    {
+     "title": "2026年金九银十，我面了22个前端",
+     "url": "https://juejin.cn/post/7691154454523576354",
+     "extra": ""
+    }
+   ],
+   "fetched": "2026-11-04"
+  },
+  {
+   "key": "weibo",
+   "name": "微博热搜",
+   "en": "WEIBO",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#ff8a5c,#e0563f)",
+   "items": [
+    {
+     "title": "独生子女不一定能继承父母全部遗产",
+     "url": "https://s.weibo.com/weibo?q=%23独生子女不一定能继承父母全部遗产%23",
+     "extra": "94.5万"
+    },
+    {
+     "title": "100秒解锁进博会亮点",
+     "url": "https://s.weibo.com/weibo?q=%23100秒解锁进博会亮点%23",
+     "extra": "70.3万"
+    },
+    {
+     "title": "2026年河南省网络文明大会",
+     "url": "https://s.weibo.com/weibo?q=%232026年河南省网络文明大会%23",
+     "extra": "67.6万"
+    },
+    {
+     "title": "青稚听到王子璇说不会和好表情",
+     "url": "https://s.weibo.com/weibo?q=%23青稚听到王子璇说不会和好表情%23",
+     "extra": "67.5万"
+    },
+    {
+     "title": "AI短剧持械入宋剧情太牛",
+     "url": "https://s.weibo.com/weibo?q=%23AI短剧持械入宋剧情太牛%23",
+     "extra": "60.0万"
+    },
+    {
+     "title": "厉娜说和许飞不会成为朋友",
+     "url": "https://s.weibo.com/weibo?q=%23厉娜说和许飞不会成为朋友%23",
+     "extra": "58.0万"
+    },
+    {
+     "title": "白小纯青稚排名",
+     "url": "https://s.weibo.com/weibo?q=%23白小纯青稚排名%23",
+     "extra": "41.3万"
+    },
+    {
+     "title": "克莱绝杀快船",
+     "url": "https://s.weibo.com/weibo?q=%23克莱绝杀快船%23",
+     "extra": "39.1万"
+    },
+    {
+     "title": "男子买金亏114万割肉后隔天大涨",
+     "url": "https://s.weibo.com/weibo?q=%23男子买金亏114万割肉后隔天大涨%23",
+     "extra": "39.0万"
+    },
+    {
+     "title": "张萌觉得马天宇认为她是老板娘",
+     "url": "https://s.weibo.com/weibo?q=%23张萌觉得马天宇认为她是老板娘%23",
+     "extra": "38.9万"
+    }
+   ],
+   "fetched": "2026-11-05"
+  },
+  {
+   "key": "zhihu",
+   "name": "知乎热榜",
+   "en": "ZHIHU",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#5c9dff,#2f6bff)",
+   "items": [
+    {
+     "title": "如何评价张雪回应校招起薪 10 万被嫌低，称你不能逼我把应届生工资提到 20 万其拿老员工举例算傲慢吗",
+     "url": "https://www.zhihu.com/question/2101274789797282938",
+     "extra": "2634 万"
+    },
+    {
+     "title": "为什么字节跳动如此害怕字节时间",
+     "url": "https://www.zhihu.com/question/2100649711723963421",
+     "extra": "844 万"
+    },
+    {
+     "title": "钱德勒·帕森斯吐槽中国品牌球鞋给钱多，但鞋太烂，我受伤绝对跟这有关系，这算实话实说，还是吃饭砸锅",
+     "url": "https://www.zhihu.com/question/2101352581674919157",
+     "extra": "824 万"
+    },
+    {
+     "title": "小伙 200 多万买 14 套房年收租 21 万，成功实现 30 岁退休，这是怎么做到的会涉及交税问题吗",
+     "url": "https://www.zhihu.com/question/2101275943104951665",
+     "extra": "498 万"
+    },
+    {
+     "title": "巴菲特称已 48 年不喝水只喝可乐，是真的吗健康吗如何从医学角度看待这一饮食习惯",
+     "url": "https://www.zhihu.com/question/2100626480447370431",
+     "extra": "442 万"
+    },
+    {
+     "title": "S16 半决赛 iG vs GEN，此前 6 次中韩大战 LPL 仅 1 胜，这次你看好 iG 取胜吗",
+     "url": "https://www.zhihu.com/question/2101609098030445461",
+     "extra": "287 万"
+    },
+    {
+     "title": "如何看待曾冲上万店的幸运咖，门店回落至 8000 多家蜜雪冰城的低价模式为何没在咖啡赛道复制成功",
+     "url": "https://www.zhihu.com/question/2101006901689557185",
+     "extra": "277 万"
+    },
+    {
+     "title": "南京一老人横穿快速路，后方车辆反应不及致多车连环追尾，如何看待交警判决老人不担责，追尾车辆按比担责",
+     "url": "https://www.zhihu.com/question/2100991454428522427",
+     "extra": "274 万"
+    },
+    {
+     "title": "年近 37 岁了，公司感觉马上要黄了，是熬到公司倒闭拿到赔偿金还是尽早跳槽找下一份工作",
+     "url": "https://www.zhihu.com/question/2099138993510159245",
+     "extra": "264 万"
+    },
+    {
+     "title": "曝华晨宝马裁员约 1800 人，赔偿 n+5，这是真的吗为什么现在裁员",
+     "url": "https://www.zhihu.com/question/2101237047214040266",
+     "extra": "239 万"
+    }
+   ],
+   "fetched": "2026-11-05"
+  },
+  {
+   "key": "bilibili",
+   "name": "B站",
+   "en": "BILIBILI",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#ff9ec2,#e0568f)",
+   "items": [
+    {
+     "title": "大家好，这里是 DeepSeek Harness，正式入驻 B 站！",
+     "url": "https://www.bilibili.com/BV1i24P6rEmt",
+     "extra": "软件应用"
+    },
+    {
+     "title": "《崩坏：星穹铁道》即兴巡演PV——当阿哈来敲门",
+     "url": "https://www.bilibili.com/BV1XJ4g6WEyL",
+     "extra": "手机游戏"
+    },
+    {
+     "title": "网络热传生物鉴定 第65期",
+     "url": "https://www.bilibili.com/BV18wxY63Erp",
+     "extra": "搞笑"
+    },
+    {
+     "title": "《原神》角色预告-米提亚：井井有条",
+     "url": "https://www.bilibili.com/BV19b4A6PECX",
+     "extra": "手机游戏"
+    },
+    {
+     "title": "只对你有感觉|“恋爱小曲”",
+     "url": "https://www.bilibili.com/BV1w5xh6sEEz",
+     "extra": "乐评盘点"
+    },
+    {
+     "title": "一条没下巴的鱼杀穿奥陶纪",
+     "url": "https://www.bilibili.com/BV1Xx4c6tEKM",
+     "extra": "动物二创"
+    },
+    {
+     "title": "痛失爱女十周年！",
+     "url": "https://www.bilibili.com/BV1K64A6oEeA",
+     "extra": "社科·法律·心理"
+    },
+    {
+     "title": "全网最全DeepSeek Harness超详细教程！50分钟吃透DSH，让SuperAgent给你干活！",
+     "url": "https://www.bilibili.com/BV1REx46NEc4",
+     "extra": "数码"
+    },
+    {
+     "title": "《这是我儿子》",
+     "url": "https://www.bilibili.com/BV1PF4g6ME26",
+     "extra": "搞笑"
+    },
+    {
+     "title": "开破车挑战纽北！证明中国人比德国人更会玩车",
+     "url": "https://www.bilibili.com/BV1HH4u6PEsa",
+     "extra": "汽车生活"
+    }
+   ],
+   "fetched": "2026-11-05"
+  },
+  {
+   "key": "douban",
+   "name": "豆瓣热话",
+   "en": "DOUBAN",
+   "span": 2,
+   "grad": "linear-gradient(135deg,#3ecfae,#12b58f)",
+   "items": [
+    {
+     "title": "练力量后我对自己的新认识",
+     "url": "https://www.douban.com/gallery/topic/3667838/",
+     "extra": ""
+    },
+    {
+     "title": "零线消灭大作战",
+     "url": "https://www.douban.com/gallery/topic/3667826/",
+     "extra": ""
+    },
+    {
+     "title": "一人一道便宜但很绝的饭",
+     "url": "https://www.douban.com/gallery/topic/3667825/",
+     "extra": ""
+    },
+    {
+     "title": "我为FIRE做的十件小事",
+     "url": "https://www.douban.com/gallery/topic/3667829/",
+     "extra": ""
+    },
+    {
+     "title": "我的下班丰容计划",
+     "url": "https://www.douban.com/gallery/topic/3667830/",
+     "extra": ""
+    },
+    {
+     "title": "免费得到的快乐有多香",
+     "url": "https://www.douban.com/gallery/topic/3667831/",
+     "extra": ""
+    },
+    {
+     "title": "便宜但穿三年",
+     "url": "https://www.douban.com/gallery/topic/3667832/",
+     "extra": ""
+    },
+    {
+     "title": "多年后再见到已经走散的朋友，你最想问TA什么",
+     "url": "https://www.douban.com/gallery/topic/3667837/",
+     "extra": ""
+    },
+    {
+     "title": "你和朋友之间，有过多年没有说开的误会吗",
+     "url": "https://www.douban.com/gallery/topic/3667836/",
+     "extra": ""
+    },
+    {
+     "title": "高认知环境表达你的真诚，低认知环境展示你的强大",
+     "url": "https://www.douban.com/gallery/topic/3667835/",
+     "extra": ""
+    }
+   ],
+   "fetched": "2026-11-05"
+  }
+ ],
+ "errors": []
+}
