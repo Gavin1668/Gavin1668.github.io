@@ -1,0 +1,368 @@
+{
+ "date": "2026-11-24",
+ "generatedAt": "2026-11-24T14:52:06+08:00",
+ "week": "星期二",
+ "boards": [
+  {
+   "key": "itzhijia",
+   "name": "IT之家",
+   "en": "ITHOME",
+   "span": 2,
+   "grad": "linear-gradient(135deg,#7a96ff,#3d5bff)",
+   "items": [
+    {
+     "title": "英伟达董事会恢复黄仁勋总裁兼首席执行官职务，英伟达美股盘前涨幅最高达 30%",
+     "url": "https://www.ithome.com/1/031/207.htm",
+     "extra": ""
+    },
+    {
+     "title": "英伟达恢复黄仁勋 CEO 职务，马斯克称“错误已更正”",
+     "url": "https://www.ithome.com/1/031/218.htm",
+     "extra": ""
+    },
+    {
+     "title": "黄仁勋：很荣幸重返英伟达，迫不及待想回去工作",
+     "url": "https://www.ithome.com/1/031/211.htm",
+     "extra": ""
+    },
+    {
+     "title": "黄仁勋恢复 CEO 职务：英伟达美股开盘大涨 32%，市值增加超 1 万亿美元",
+     "url": "https://www.ithome.com/1/031/217.htm",
+     "extra": ""
+    },
+    {
+     "title": "“感谢大家给我第二次机会”：黄仁勋重返英伟达总部，员工高呼欢迎",
+     "url": "https://www.ithome.com/1/031/250.htm",
+     "extra": ""
+    },
+    {
+     "title": "懂车帝回应“测试内容大调整”：信息多处失实，部分内容为 AI 撰写",
+     "url": "https://www.ithome.com/1/031/091.htm",
+     "extra": ""
+    },
+    {
+     "title": "黄仁勋回归英伟达首日：没有办公电脑用，希望配台 RTX Spark",
+     "url": "https://www.ithome.com/1/031/389.htm",
+     "extra": ""
+    },
+    {
+     "title": "3399 元起荣耀 700  700S  Pro 系列手机发布：AI 灵动背屏支持长焦增距镜",
+     "url": "https://www.ithome.com/1/030/931.htm",
+     "extra": ""
+    },
+    {
+     "title": "黄仁勋更新 X 平台个人简介：英伟达创始人首席执行官",
+     "url": "https://www.ithome.com/1/031/251.htm",
+     "extra": ""
+    },
+    {
+     "title": "英伟达盘前股价大涨 30%，此前董事会宣布恢复黄仁勋 CEO 职务",
+     "url": "https://www.ithome.com/1/031/209.htm",
+     "extra": ""
+    }
+   ],
+   "fetched": "2026-11-24"
+  },
+  {
+   "key": "juejin",
+   "name": "掘金",
+   "en": "JUEJIN",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#12b58f,#0a8f70)",
+   "items": [
+    {
+     "title": "面试官问你：“AI 能写 80% 的代码了，公司为什么还需要你”",
+     "url": "https://juejin.cn/post/7655245911811784750",
+     "extra": ""
+    },
+    {
+     "title": "你们公司有 35 岁以上的前端吗",
+     "url": "https://juejin.cn/post/7706534471420461098",
+     "extra": ""
+    },
+    {
+     "title": "我用workBuddy开发了自己的第一个小程序并成功上线了",
+     "url": "https://juejin.cn/post/7702866392132337718",
+     "extra": ""
+    },
+    {
+     "title": "GLM5.4“买家秀”来咯，这模型得...慢慢来！",
+     "url": "https://juejin.cn/post/7711209531375796224",
+     "extra": ""
+    },
+    {
+     "title": "一个人+AI做情侣食谱小程序，30天纯赚",
+     "url": "https://juejin.cn/post/7691030977348108351",
+     "extra": ""
+    },
+    {
+     "title": "再见了 Typora",
+     "url": "https://juejin.cn/post/7706418656682803200",
+     "extra": ""
+    },
+    {
+     "title": "AI会让程序员失业吗200年前的手工织工已经给出了答案",
+     "url": "https://juejin.cn/post/7685276242113019938",
+     "extra": ""
+    },
+    {
+     "title": "2026 上半年，前端圈已经炸了五次",
+     "url": "https://juejin.cn/post/7669622241974632490",
+     "extra": ""
+    },
+    {
+     "title": "从codex转战workbuddy使用一周的感受",
+     "url": "https://juejin.cn/post/7684460980934049807",
+     "extra": ""
+    },
+    {
+     "title": "每天白嫖 WorkBuddy 100 积分，我让WorkBuddy自己领",
+     "url": "https://juejin.cn/post/7683353819855077412",
+     "extra": ""
+    }
+   ],
+   "fetched": "2026-11-24"
+  },
+  {
+   "key": "weibo",
+   "name": "微博热搜",
+   "en": "WEIBO",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#ff8a5c,#e0563f)",
+   "items": [
+    {
+     "title": "万斯介入黄仁勋复职",
+     "url": "https://s.weibo.com/weibo?q=%23万斯介入黄仁勋复职%23",
+     "extra": "112.0万"
+    },
+    {
+     "title": "白小纯青稚不能关打赏",
+     "url": "https://s.weibo.com/weibo?q=%23白小纯青稚不能关打赏%23",
+     "extra": "81.9万"
+    },
+    {
+     "title": "全方位织密一老一小照护网",
+     "url": "https://s.weibo.com/weibo?q=%23全方位织密一老一小照护网%23",
+     "extra": "66.0万"
+    },
+    {
+     "title": "华为MateX8及全场景新品发布会",
+     "url": "https://s.weibo.com/weibo?q=%23华为MateX8及全场景新品发布会%23",
+     "extra": "60.5万"
+    },
+    {
+     "title": "央视披露四川雅安无名女尸悬案",
+     "url": "https://s.weibo.com/weibo?q=%23央视披露四川雅安无名女尸悬案%23",
+     "extra": "46.1万"
+    },
+    {
+     "title": "BLG奖金收入断档第一",
+     "url": "https://s.weibo.com/weibo?q=%23BLG奖金收入断档第一%23",
+     "extra": "40.7万"
+    },
+    {
+     "title": "49岁李维嘉家里干净得没有一根头发",
+     "url": "https://s.weibo.com/weibo?q=%2349岁李维嘉家里干净得没有一根头发%23",
+     "extra": "40.6万"
+    },
+    {
+     "title": "大爷抵着脖子不放小伙喊心脏疼倒地",
+     "url": "https://s.weibo.com/weibo?q=%23大爷抵着脖子不放小伙喊心脏疼倒地%23",
+     "extra": "40.3万"
+    },
+    {
+     "title": "杜兰特连续三分杀死比赛",
+     "url": "https://s.weibo.com/weibo?q=%23杜兰特连续三分杀死比赛%23",
+     "extra": "31.8万"
+    },
+    {
+     "title": "A股",
+     "url": "https://s.weibo.com/weibo?q=%23A股%23",
+     "extra": "29.9万"
+    }
+   ],
+   "fetched": "2026-11-24"
+  },
+  {
+   "key": "zhihu",
+   "name": "知乎热榜",
+   "en": "ZHIHU",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#5c9dff,#2f6bff)",
+   "items": [
+    {
+     "title": "懂车帝回应测试内容大调整，称不再开放对比类内容等信息失实，具体是怎么回事实际有哪些调整",
+     "url": "https://www.zhihu.com/question/2108257367678613356",
+     "extra": "909 万"
+    },
+    {
+     "title": "幼儿园要招两岁孩子了，新政策支持幼儿园改造扩建，举办两至三岁幼儿的托班，该举措对家长和孩子有哪些好处",
+     "url": "https://www.zhihu.com/question/2108198291775165166",
+     "extra": "452 万"
+    },
+    {
+     "title": "美股集体大幅收高，英伟达暴涨超 31%，单日市值大增 9500 亿美元创全球纪录，如何理解行情能持续多久",
+     "url": "https://www.zhihu.com/question/2108463757307240853",
+     "extra": "375 万"
+    },
+    {
+     "title": "U17 世界杯小组赛中国 U17 男足 vs 摩洛哥，怎样评价本场比赛",
+     "url": "https://www.zhihu.com/question/2108346189238067728",
+     "extra": "249 万"
+    },
+    {
+     "title": "淘股吧两届冠军仅 5 个月就从 1541 万亏到 74 万，最后宣告破产，一代炒股冠军的陨落带给投资者哪些反思",
+     "url": "https://www.zhihu.com/question/2108201156111327398",
+     "extra": "210 万"
+    },
+    {
+     "title": "黄仁勋称将以最大的谦卑和新的承诺承担这一责任，英伟达接下来将怎样发展此前的策略会发生变化吗",
+     "url": "https://www.zhihu.com/question/2108335183820579086",
+     "extra": "204 万"
+    },
+    {
+     "title": "某部委员工与间谍签署保密与忠诚条款窃取百余份情报被判死刑，哪些信息值得关注",
+     "url": "https://www.zhihu.com/question/2108143417800615253",
+     "extra": "199 万"
+    },
+    {
+     "title": "Digital Foundry 称《GTA6》即便高端 PC 也难稳 60 帧，其核心瓶颈要如何解决",
+     "url": "https://www.zhihu.com/question/2107441603245876469",
+     "extra": "187 万"
+    },
+    {
+     "title": "骑手一句treetree 的带火披萨店炸鸡，老板直言爆单做不过来，为啥此类视频能迅速调起大众购买欲",
+     "url": "https://www.zhihu.com/question/2108166891873072954",
+     "extra": "181 万"
+    },
+    {
+     "title": "《后会友期》第六期马天宇爆哭，他的问题好像和友情无关了，他不能和任何人建立亲密关系，根本问题是什么",
+     "url": "https://www.zhihu.com/question/2107131481713815700",
+     "extra": "169 万"
+    }
+   ],
+   "fetched": "2026-11-24"
+  },
+  {
+   "key": "bilibili",
+   "name": "B站",
+   "en": "BILIBILI",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#ff9ec2,#e0568f)",
+   "items": [
+    {
+     "title": "当我用AI续写爱情公寓4关谷悠悠婚礼AI全民制作人",
+     "url": "https://www.bilibili.com/BV1atse6EEfx",
+     "extra": "预告·资讯"
+    },
+    {
+     "title": "侠盗猎车手6 第一期，GTA 6 Part 1",
+     "url": "https://www.bilibili.com/BV1JpyazXEUD",
+     "extra": "单机游戏"
+    },
+    {
+     "title": "IGN独家《鸣潮：永明的烬焰》实机演示",
+     "url": "https://www.bilibili.com/BV1jKsq6cEEP",
+     "extra": "单机游戏"
+    },
+    {
+     "title": "我是Tim，我爹太离谱了",
+     "url": "https://www.bilibili.com/BV1VvyazyEBo",
+     "extra": "日常"
+    },
+    {
+     "title": "多国领导人明确表态：坚定恪守一个中国原则",
+     "url": "https://www.bilibili.com/BV1bMyazAEap",
+     "extra": "日常"
+    },
+    {
+     "title": "考公务员很难，但是为人民服务却很容易！",
+     "url": "https://www.bilibili.com/BV1uyyazBEUA",
+     "extra": "日常"
+    },
+    {
+     "title": "合集人类消失后，深度思考三百年的大肥鱼",
+     "url": "https://www.bilibili.com/BV1Poyaz8Ep4",
+     "extra": "同人·手书"
+    },
+    {
+     "title": "真相，假是假了点，但看了不烧心。",
+     "url": "https://www.bilibili.com/BV1tdypzgEx2",
+     "extra": "综合"
+    },
+    {
+     "title": "《明日方舟：终末地》特别映像基石",
+     "url": "https://www.bilibili.com/BV1MMyazPEKy",
+     "extra": "手机游戏"
+    },
+    {
+     "title": "《猫富贵 狗不让》",
+     "url": "https://www.bilibili.com/BV1rhyszPE6p",
+     "extra": "搞笑"
+    }
+   ],
+   "fetched": "2026-11-24"
+  },
+  {
+   "key": "douban",
+   "name": "豆瓣热话",
+   "en": "DOUBAN",
+   "span": 2,
+   "grad": "linear-gradient(135deg,#3ecfae,#12b58f)",
+   "items": [
+    {
+     "title": "秋冬编织Bingo挑战",
+     "url": "https://www.douban.com/gallery/topic/3667893/",
+     "extra": "607"
+    },
+    {
+     "title": "原来钱要花在这种地方",
+     "url": "https://www.douban.com/gallery/topic/3667892/",
+     "extra": ""
+    },
+    {
+     "title": "我的古建筑散步地图",
+     "url": "https://www.douban.com/gallery/topic/3667891/",
+     "extra": ""
+    },
+    {
+     "title": "一个人散发顶级魅力的时刻",
+     "url": "https://www.douban.com/gallery/topic/3667889/",
+     "extra": ""
+    },
+    {
+     "title": "工作能力强的人都很会汇报",
+     "url": "https://www.douban.com/gallery/topic/3667888/",
+     "extra": ""
+    },
+    {
+     "title": "选择一段关系，本质上是在选择你想要过的生活",
+     "url": "https://www.douban.com/gallery/topic/3667887/",
+     "extra": ""
+    },
+    {
+     "title": "在书店被这段文字震撼了",
+     "url": "https://www.douban.com/gallery/topic/3667886/",
+     "extra": ""
+    },
+    {
+     "title": "体脂率正在下降的身体信号",
+     "url": "https://www.douban.com/gallery/topic/3667885/",
+     "extra": "6660"
+    },
+    {
+     "title": "徒步登山佬的影视清单",
+     "url": "https://www.douban.com/gallery/topic/3667884/",
+     "extra": ""
+    },
+    {
+     "title": "越是困难的时候，越不要自我磨损",
+     "url": "https://www.douban.com/gallery/topic/3667883/",
+     "extra": ""
+    }
+   ],
+   "fetched": "2026-11-23"
+  }
+ ],
+ "errors": []
+}
