@@ -1,0 +1,368 @@
+{
+ "date": "2026-11-26",
+ "generatedAt": "2026-11-26T12:49:18+08:00",
+ "week": "星期四",
+ "boards": [
+  {
+   "key": "itzhijia",
+   "name": "IT之家",
+   "en": "ITHOME",
+   "span": 2,
+   "grad": "linear-gradient(135deg,#7a96ff,#3d5bff)",
+   "items": [
+    {
+     "title": "懂车帝最新回应“尊界 V800 刹车踏板支架断裂”事件：公司内部仍在等待相关结果",
+     "url": "https://www.ithome.com/1/032/464.htm",
+     "extra": ""
+    },
+    {
+     "title": "踩刹车！李想宣布理想汽车更新节奏从一年一次调整为两年一次",
+     "url": "https://www.ithome.com/1/032/523.htm",
+     "extra": ""
+    },
+    {
+     "title": "网警公开典型案例：一网民针对华为手机  鸿蒙  问界持续发布数百条不实评论捏造“千亿营销”等虚假信息，已被行政处罚",
+     "url": "https://www.ithome.com/1/032/371.htm",
+     "extra": ""
+    },
+    {
+     "title": "“独立”微信音乐悄悄上线：内置在听一听中，曲库来源于 QQ 音乐",
+     "url": "https://www.ithome.com/1/032/530.htm",
+     "extra": ""
+    },
+    {
+     "title": "小米新一代 SU7 Ultra 申报：三电机驱动最大功率超 1100kW 极速 318kmh",
+     "url": "https://www.ithome.com/1/032/517.htm",
+     "extra": ""
+    },
+    {
+     "title": "华为余承东解释为何 Mate X8 不标配“云晰柔光膜”：大多数人不喜欢，会少量牺牲分辨率",
+     "url": "https://www.ithome.com/1/032/379.htm",
+     "extra": ""
+    },
+    {
+     "title": "消息称华为 MatePad Mini 2 小平板搭载麒麟 9030 系处理器，发布时间待定",
+     "url": "https://www.ithome.com/1/032/154.htm",
+     "extra": ""
+    },
+    {
+     "title": "消息称华为星芒还有 O1 标准版手机，7 英寸 1.5K 等深四曲屏 + 麒麟 9020 系处理器",
+     "url": "https://www.ithome.com/1/032/109.htm",
+     "extra": ""
+    },
+    {
+     "title": "美国 58 岁女子移植猪肾满一年成全球最长存活者，无严重并发症且不用透析",
+     "url": "https://www.ithome.com/1/032/100.htm",
+     "extra": ""
+    },
+    {
+     "title": "高端 GPU“急寻下家”：数千枚英伟达 B300 涌入海外转售市场",
+     "url": "https://www.ithome.com/1/032/547.htm",
+     "extra": ""
+    }
+   ],
+   "fetched": "2026-11-26"
+  },
+  {
+   "key": "juejin",
+   "name": "掘金",
+   "en": "JUEJIN",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#12b58f,#0a8f70)",
+   "items": [
+    {
+     "title": "从codex转战workbuddy使用一周的感受",
+     "url": "https://juejin.cn/post/7684460980934049807",
+     "extra": ""
+    },
+    {
+     "title": "面试官问你：“AI 能写 80% 的代码了，公司为什么还需要你”",
+     "url": "https://juejin.cn/post/7655245911811784750",
+     "extra": ""
+    },
+    {
+     "title": "华为园区，为啥碰到的高颜值妹子总是外包牌，华为工牌的基本都是资深大姐...",
+     "url": "https://juejin.cn/post/7712008429045317666",
+     "extra": ""
+    },
+    {
+     "title": "你们公司有 35 岁以上的前端吗",
+     "url": "https://juejin.cn/post/7706534471420461098",
+     "extra": ""
+    },
+    {
+     "title": "排名算法一变，国产模型全部滑铁卢了！",
+     "url": "https://juejin.cn/post/7701637989948784659",
+     "extra": ""
+    },
+    {
+     "title": "停更的这一年，All In AI陪媳妇生娃还考了个研",
+     "url": "https://juejin.cn/post/7662691781214470180",
+     "extra": ""
+    },
+    {
+     "title": "2026 年 9 月 GitHub 十大热门项目排行榜",
+     "url": "https://juejin.cn/post/7693828979246186546",
+     "extra": ""
+    },
+    {
+     "title": "Three.js 医院三维大屏实战：Codex + Blender MCP + React 从建模到交互全流程",
+     "url": "https://juejin.cn/post/7700887980140429322",
+     "extra": ""
+    },
+    {
+     "title": "WorkBuddy 最值得落地的 10 个技能，效率直接翻倍",
+     "url": "https://juejin.cn/post/7686407614478893108",
+     "extra": ""
+    },
+    {
+     "title": "手机到底有没有偷听我们我抓包了 72 小时，抓到了真凶",
+     "url": "https://juejin.cn/post/7698382188488048649",
+     "extra": ""
+    }
+   ],
+   "fetched": "2026-11-26"
+  },
+  {
+   "key": "weibo",
+   "name": "微博热搜",
+   "en": "WEIBO",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#ff8a5c,#e0563f)",
+   "items": [
+    {
+     "title": "普京打包深圳炒菜上飞机",
+     "url": "https://s.weibo.com/weibo?q=%23普京打包深圳炒菜上飞机%23",
+     "extra": "189.8万"
+    },
+    {
+     "title": "蔡磊已进渐冻症终末期",
+     "url": "https://s.weibo.com/weibo?q=%23蔡磊已进渐冻症终末期%23",
+     "extra": "136.5万"
+    },
+    {
+     "title": "新一代通信网建设实施方案来了",
+     "url": "https://s.weibo.com/weibo?q=%23新一代通信网建设实施方案来了%23",
+     "extra": "116.6万"
+    },
+    {
+     "title": "后会友期",
+     "url": "https://s.weibo.com/weibo?q=%23后会友期%23",
+     "extra": "115.2万"
+    },
+    {
+     "title": "男子花700万买房搜到诅咒孩子WiFi名",
+     "url": "https://s.weibo.com/weibo?q=%23男子花700万买房搜到诅咒孩子WiFi名%23",
+     "extra": "82.6万"
+    },
+    {
+     "title": "蔡磊融资失败妻子放弃事业全职直播",
+     "url": "https://s.weibo.com/weibo?q=%23蔡磊融资失败妻子放弃事业全职直播%23",
+     "extra": "80.4万"
+    },
+    {
+     "title": "女孩景区同一位置晕倒3次后报警",
+     "url": "https://s.weibo.com/weibo?q=%23女孩景区同一位置晕倒3次后报警%23",
+     "extra": "55.8万"
+    },
+    {
+     "title": "2026电影贺岁档来了",
+     "url": "https://s.weibo.com/weibo?q=%232026电影贺岁档来了%23",
+     "extra": "54.9万"
+    },
+    {
+     "title": "蔡磊妻子算账揭露渐冻症经济困局",
+     "url": "https://s.weibo.com/weibo?q=%23蔡磊妻子算账揭露渐冻症经济困局%23",
+     "extra": "52.9万"
+    },
+    {
+     "title": "雷军现身新浪总部",
+     "url": "https://s.weibo.com/weibo?q=%23雷军现身新浪总部%23",
+     "extra": "52.8万"
+    }
+   ],
+   "fetched": "2026-11-26"
+  },
+  {
+   "key": "zhihu",
+   "name": "知乎热榜",
+   "en": "ZHIHU",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#5c9dff,#2f6bff)",
+   "items": [
+    {
+     "title": "如何看待美国陆军在爱荷华州就地受控引爆约 5 吨劣化叠氮化铅这对人和环境的影响有多大",
+     "url": "https://www.zhihu.com/question/2108344069512492110",
+     "extra": "2687 万"
+    },
+    {
+     "title": "多家机器人公司进入破产清算，两年近 30 家机器人公司倒闭，机器人赛道融资火热，为什么还会出现企业倒闭潮",
+     "url": "https://www.zhihu.com/question/2108863007048591328",
+     "extra": "665 万"
+    },
+    {
+     "title": "国产可口可乐不再标生产日期，客服称新国标允许保质期 6 个月以上可只标到期日，怎样看待这一变化",
+     "url": "https://www.zhihu.com/question/2108687089319371970",
+     "extra": "341 万"
+    },
+    {
+     "title": "你是否支持在长途普速火车末尾加挂一节观景娱乐车厢用来缓解长时间坐车的疲劳",
+     "url": "https://www.zhihu.com/question/2107571003635263309",
+     "extra": "332 万"
+    },
+    {
+     "title": "央视曝光 3.8 万余份孕妇血走私案，国安部警示孕妇血样走私或泄露我国遗传弱点，科学依据和风险具体是什么",
+     "url": "https://www.zhihu.com/question/2109003777294295114",
+     "extra": "283 万"
+    },
+    {
+     "title": "如何评价数学家 Calegari 认为黎曼猜想的证明过程只是从图书馆的书架上拿下来了一本书",
+     "url": "https://www.zhihu.com/question/2108868229795942882",
+     "extra": "221 万"
+    },
+    {
+     "title": "外交部回应美国被曝将对中国等十几国加征关税，称反对以产能过剩为借口政治操弄，如何解读美国到底图什么",
+     "url": "https://www.zhihu.com/question/2108982669157425814",
+     "extra": "188 万"
+    },
+    {
+     "title": "北静王邀请宝玉去他府里读书，贾政为什么没有安排宝玉去",
+     "url": "https://www.zhihu.com/question/2108069184475350804",
+     "extra": "173 万"
+    },
+    {
+     "title": "为什么不要一直穿同一双鞋，鞋换着穿有哪些必要性",
+     "url": "https://www.zhihu.com/question/2108218105012936951",
+     "extra": "166 万"
+    },
+    {
+     "title": "西游记里沙僧到底是什么动物",
+     "url": "https://www.zhihu.com/question/1910612020799185936",
+     "extra": "150 万"
+    }
+   ],
+   "fetched": "2026-11-26"
+  },
+  {
+   "key": "bilibili",
+   "name": "B站",
+   "en": "BILIBILI",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#ff9ec2,#e0568f)",
+   "items": [
+    {
+     "title": "当我用AI续写爱情公寓4关谷悠悠婚礼AI全民制作人",
+     "url": "https://www.bilibili.com/BV1atse6EEfx",
+     "extra": "预告·资讯"
+    },
+    {
+     "title": "你从未见过的硬核开箱视频！",
+     "url": "https://www.bilibili.com/BV1QAypzyE7B",
+     "extra": "日常"
+    },
+    {
+     "title": "“别人过得好 你就要扣自己的分吗”",
+     "url": "https://www.bilibili.com/BV1oSyJz1EiC",
+     "extra": "影视剪辑"
+    },
+    {
+     "title": "火影十一年 神临时刻漩涡鸣人阳之力即将登场！",
+     "url": "https://www.bilibili.com/BV1qYyRz5EdM",
+     "extra": "手机游戏"
+    },
+    {
+     "title": "《绝区零》挽昼角色展示 | 日陨之前",
+     "url": "https://www.bilibili.com/BV1esyZz7ExF",
+     "extra": "手机游戏"
+    },
+    {
+     "title": "我想回家吃饭（两小时大电影）",
+     "url": "https://www.bilibili.com/BV1LoyGzZEX8",
+     "extra": "搞笑"
+    },
+    {
+     "title": "考公务员很难，但是为人民服务却很容易！",
+     "url": "https://www.bilibili.com/BV1uyyazBEUA",
+     "extra": "日常"
+    },
+    {
+     "title": "游戏自由度太高也不是什么好事",
+     "url": "https://www.bilibili.com/BV1NzyHzwEKB",
+     "extra": "单机游戏"
+    },
+    {
+     "title": "扎堆产卵 同类相食！蝗虫诡异行为原理被中国科学家破解！主播说三农",
+     "url": "https://www.bilibili.com/BV121yjzQEWf",
+     "extra": "三农"
+    },
+    {
+     "title": "对质",
+     "url": "https://www.bilibili.com/BV1szyHzwEg9",
+     "extra": "影视剪辑"
+    }
+   ],
+   "fetched": "2026-11-26"
+  },
+  {
+   "key": "douban",
+   "name": "豆瓣热话",
+   "en": "DOUBAN",
+   "span": 2,
+   "grad": "linear-gradient(135deg,#3ecfae,#12b58f)",
+   "items": [
+    {
+     "title": "影视作品中让人印象深刻的女扮男装角色",
+     "url": "https://www.douban.com/gallery/topic/3667899/",
+     "extra": ""
+    },
+    {
+     "title": "人生就是用来感受的",
+     "url": "https://www.douban.com/gallery/topic/3667898/",
+     "extra": ""
+    },
+    {
+     "title": "我的冬日蓄力计划",
+     "url": "https://www.douban.com/gallery/topic/3667897/",
+     "extra": "9089"
+    },
+    {
+     "title": "原来那些难熬的时刻，都在帮我重塑自己",
+     "url": "https://www.douban.com/gallery/topic/3667896/",
+     "extra": "1417"
+    },
+    {
+     "title": "让人眼前一亮的说话方式",
+     "url": "https://www.douban.com/gallery/topic/3667895/",
+     "extra": ""
+    },
+    {
+     "title": "要用自己喜欢的方式过完一生",
+     "url": "https://www.douban.com/gallery/topic/3667894/",
+     "extra": ""
+    },
+    {
+     "title": "秋冬编织Bingo挑战",
+     "url": "https://www.douban.com/gallery/topic/3667893/",
+     "extra": "2832"
+    },
+    {
+     "title": "原来钱要花在这种地方",
+     "url": "https://www.douban.com/gallery/topic/3667892/",
+     "extra": "2889"
+    },
+    {
+     "title": "我的古建筑散步地图",
+     "url": "https://www.douban.com/gallery/topic/3667891/",
+     "extra": ""
+    },
+    {
+     "title": "一个人散发顶级魅力的时刻",
+     "url": "https://www.douban.com/gallery/topic/3667889/",
+     "extra": ""
+    }
+   ],
+   "fetched": "2026-11-25"
+  }
+ ],
+ "errors": []
+}
