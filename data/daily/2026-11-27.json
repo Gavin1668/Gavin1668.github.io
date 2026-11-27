@@ -1,0 +1,368 @@
+{
+ "date": "2026-11-27",
+ "generatedAt": "2026-11-27T12:53:08+08:00",
+ "week": "星期五",
+ "boards": [
+  {
+   "key": "itzhijia",
+   "name": "IT之家",
+   "en": "ITHOME",
+   "span": 2,
+   "grad": "linear-gradient(135deg,#7a96ff,#3d5bff)",
+   "items": [
+    {
+     "title": "格力电器董明珠长城汽车魏建军痛斥恶意挖人：培养 10 多年的人才被轻易挖走，对企业是严重损失",
+     "url": "https://www.ithome.com/1/032/937.htm",
+     "extra": ""
+    },
+    {
+     "title": "过场动画已达 30FPS！民间移植 PC 版《GTA6》游戏突飞猛进，两天从 2FPS 提升到 30FPS",
+     "url": "https://www.ithome.com/1/032/744.htm",
+     "extra": ""
+    },
+    {
+     "title": "长城汽车魏建军称现在汽车贬值速度太离谱，格力电器董明珠回应“有些产业害虫该灭就灭”",
+     "url": "https://www.ithome.com/1/032/746.htm",
+     "extra": ""
+    },
+    {
+     "title": "手机一碰过闸：微信 iOS 端 8.0.80 版本上线 NFC 交通卡",
+     "url": "https://www.ithome.com/1/033/098.htm",
+     "extra": ""
+    },
+    {
+     "title": "英伟达黄仁勋的“失业 11 天”：曾想骑摩托横穿美国",
+     "url": "https://www.ithome.com/1/032/880.htm",
+     "extra": ""
+    },
+    {
+     "title": "全球首个乙肝功能性治愈新药在中国获批上市",
+     "url": "https://www.ithome.com/1/033/089.htm",
+     "extra": ""
+    },
+    {
+     "title": "苹果 iPhone 18 Pro 等锁屏变“广告牌”：海外多款 App 被反馈违规推送促销通知",
+     "url": "https://www.ithome.com/1/032/761.htm",
+     "extra": ""
+    },
+    {
+     "title": "华为星驰辅助驾驶发布：与乾崑智驾技术同源资源共享，明年超 10 款车型量产上市",
+     "url": "https://www.ithome.com/1/033/066.htm",
+     "extra": ""
+    },
+    {
+     "title": "华为 HarmonyOS 五大技术品牌公开，含鸿蒙星河互联星盾安全方舟引擎小艺空间计算",
+     "url": "https://www.ithome.com/1/033/130.htm",
+     "extra": ""
+    },
+    {
+     "title": "蔚来李斌谈小鹏智驾即将付费：买小鹏就趁早，非常高兴看到小鹏走付费订阅的商业模式",
+     "url": "https://www.ithome.com/1/032/949.htm",
+     "extra": ""
+    }
+   ],
+   "fetched": "2026-11-27"
+  },
+  {
+   "key": "juejin",
+   "name": "掘金",
+   "en": "JUEJIN",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#12b58f,#0a8f70)",
+   "items": [
+    {
+     "title": "从codex转战workbuddy使用一周的感受",
+     "url": "https://juejin.cn/post/7684460980934049807",
+     "extra": ""
+    },
+    {
+     "title": "面试官问你：“AI 能写 80% 的代码了，公司为什么还需要你”",
+     "url": "https://juejin.cn/post/7655245911811784750",
+     "extra": ""
+    },
+    {
+     "title": "华为园区，为啥碰到的高颜值妹子总是外包牌，华为工牌的基本都是资深大姐...",
+     "url": "https://juejin.cn/post/7712008429045317666",
+     "extra": ""
+    },
+    {
+     "title": "排名算法一变，国产模型全部滑铁卢了！",
+     "url": "https://juejin.cn/post/7701637989948784659",
+     "extra": ""
+    },
+    {
+     "title": "2026 年 9 月 GitHub 十大热门项目排行榜",
+     "url": "https://juejin.cn/post/7693828979246186546",
+     "extra": ""
+    },
+    {
+     "title": "手机到底有没有偷听我们我抓包了 72 小时，抓到了真凶",
+     "url": "https://juejin.cn/post/7698382188488048649",
+     "extra": ""
+    },
+    {
+     "title": "你们公司有 35 岁以上的前端吗",
+     "url": "https://juejin.cn/post/7706534471420461098",
+     "extra": ""
+    },
+    {
+     "title": "这个本地模型，让我 token 自由了",
+     "url": "https://juejin.cn/post/7676709710489419786",
+     "extra": ""
+    },
+    {
+     "title": "Three.js 医院三维大屏实战：Codex + Blender MCP + React 从建模到交互全流程",
+     "url": "https://juejin.cn/post/7700887980140429322",
+     "extra": ""
+    },
+    {
+     "title": "Qwen4 被嘲笑了！国模被啥锁死了",
+     "url": "https://juejin.cn/post/7706826190912880680",
+     "extra": ""
+    }
+   ],
+   "fetched": "2026-11-26"
+  },
+  {
+   "key": "weibo",
+   "name": "微博热搜",
+   "en": "WEIBO",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#ff8a5c,#e0563f)",
+   "items": [
+    {
+     "title": "海康威视取消大小周遭员工抵制",
+     "url": "https://s.weibo.com/weibo?q=%23海康威视取消大小周遭员工抵制%23",
+     "extra": "218.6万"
+    },
+    {
+     "title": "女子因超40岁被酒店拒办入住",
+     "url": "https://s.weibo.com/weibo?q=%23女子因超40岁被酒店拒办入住%23",
+     "extra": "133.6万"
+    },
+    {
+     "title": "服务贸易发展十五五规划来了",
+     "url": "https://s.weibo.com/weibo?q=%23服务贸易发展十五五规划来了%23",
+     "extra": "131.2万"
+    },
+    {
+     "title": "东风日产NX7价格夯爆了",
+     "url": "https://s.weibo.com/weibo?q=%23东风日产NX7价格夯爆了%23",
+     "extra": "131.0万"
+    },
+    {
+     "title": "被大疆竞业范围震撼到了",
+     "url": "https://s.weibo.com/weibo?q=%23被大疆竞业范围震撼到了%23",
+     "extra": "130.0万"
+    },
+    {
+     "title": "文吉儿不止邀请过王子璇",
+     "url": "https://s.weibo.com/weibo?q=%23文吉儿不止邀请过王子璇%23",
+     "extra": "79.1万"
+    },
+    {
+     "title": "On直播哭了",
+     "url": "https://s.weibo.com/weibo?q=%23On直播哭了%23",
+     "extra": "58.5万"
+    },
+    {
+     "title": "赖冠霖一下就get到了赵昭仪的愤怒",
+     "url": "https://s.weibo.com/weibo?q=%23赖冠霖一下就get到了赵昭仪的愤怒%23",
+     "extra": "55.5万"
+    },
+    {
+     "title": "曾经80万的车现在卖5万",
+     "url": "https://s.weibo.com/weibo?q=%23曾经80万的车现在卖5万%23",
+     "extra": "50.3万"
+    },
+    {
+     "title": "警方回应50余人摘蜜桔仅留下10元",
+     "url": "https://s.weibo.com/weibo?q=%23警方回应50余人摘蜜桔仅留下10元%23",
+     "extra": "37.9万"
+    }
+   ],
+   "fetched": "2026-11-27"
+  },
+  {
+   "key": "zhihu",
+   "name": "知乎热榜",
+   "en": "ZHIHU",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#5c9dff,#2f6bff)",
+   "items": [
+    {
+     "title": "巴基斯坦航天员随神舟二十四入住天宫，是否预示着美国日本或者其他国家航天员今后也可以",
+     "url": "https://www.zhihu.com/question/2108915782302421410",
+     "extra": "936 万"
+    },
+    {
+     "title": "如何看待蔡磊进入渐冻症终末期，其妻子称上次与蔡磊见面全程没有说话而是一直在哭",
+     "url": "https://www.zhihu.com/question/2109172404547228699",
+     "extra": "460 万"
+    },
+    {
+     "title": "东北人好像比别的地方更痴迷于始祖鸟可隆迪桑特这些高价低性价比运动服饰，为什么会这样",
+     "url": "https://www.zhihu.com/question/2107954937695163825",
+     "extra": "415 万"
+    },
+    {
+     "title": "魏建军感慨车企竞争激烈，董明珠提出家里冲进老鼠把它打掉就好，这套竞争思路放在现在的汽车行业适合吗",
+     "url": "https://www.zhihu.com/question/2109305887672357185",
+     "extra": "407 万"
+    },
+    {
+     "title": "沈阳最帅保洁大叔宣布辞职，如何评价他的选择他接下来可能会去干什么",
+     "url": "https://www.zhihu.com/question/2109025597510739022",
+     "extra": "297 万"
+    },
+    {
+     "title": "如何评价 DeepSeek 网页和 App 端开始展示消耗额度",
+     "url": "https://www.zhihu.com/question/2109411707877695723",
+     "extra": "273 万"
+    },
+    {
+     "title": "为什么植物大战僵尸现在还受欢迎，而愤怒的小鸟却很少有人玩了",
+     "url": "https://www.zhihu.com/question/2102466524611199485",
+     "extra": "152 万"
+    },
+    {
+     "title": "睡虎地秦简中记录了大量基层小吏的日常工作，先秦普通官吏的一天，到底和我们想象中有多大差距",
+     "url": "https://www.zhihu.com/question/2037220265193640512",
+     "extra": "147 万"
+    },
+    {
+     "title": "斗鱼及陈少杰被执行超 1.9 亿，从巅峰到接连踩雷，斗鱼这些年衰落的核心原因是什么",
+     "url": "https://www.zhihu.com/question/2108965316487295292",
+     "extra": "119 万"
+    },
+    {
+     "title": "中国男篮世预赛出线形势堪忧，很可能无法参加明年男篮世界杯，对此你怎么看",
+     "url": "https://www.zhihu.com/question/2109423177944102569",
+     "extra": "119 万"
+    }
+   ],
+   "fetched": "2026-11-27"
+  },
+  {
+   "key": "bilibili",
+   "name": "B站",
+   "en": "BILIBILI",
+   "span": 1,
+   "grad": "linear-gradient(135deg,#ff9ec2,#e0568f)",
+   "items": [
+    {
+     "title": "火影十一年 神临时刻漩涡鸣人阳之力即将登场！",
+     "url": "https://www.bilibili.com/BV1qYyRz5EdM",
+     "extra": "手机游戏"
+    },
+    {
+     "title": "《绝区零》挽昼角色展示 | 日陨之前",
+     "url": "https://www.bilibili.com/BV1esyZz7ExF",
+     "extra": "手机游戏"
+    },
+    {
+     "title": "“别人过得好 你就要扣自己的分吗”",
+     "url": "https://www.bilibili.com/BV1oSyJz1EiC",
+     "extra": "影视剪辑"
+    },
+    {
+     "title": "你从未见过的硬核开箱视频！",
+     "url": "https://www.bilibili.com/BV1QAypzyE7B",
+     "extra": "日常"
+    },
+    {
+     "title": "当我用AI续写爱情公寓4关谷悠悠婚礼AI全民制作人",
+     "url": "https://www.bilibili.com/BV1atse6EEfx",
+     "extra": "预告·资讯"
+    },
+    {
+     "title": "去了一趟纽约。",
+     "url": "https://www.bilibili.com/BV1tCyzzpEB6",
+     "extra": "数码"
+    },
+    {
+     "title": "“为人民服务”",
+     "url": "https://www.bilibili.com/BV11yyZzeET3",
+     "extra": "日常"
+    },
+    {
+     "title": "153分钟超长大合集！末日来临，我从吃丧尸开始成神！第1季+第2季完整版AI全民制作人",
+     "url": "https://www.bilibili.com/BV16nyXzyEuQ",
+     "extra": "影视剪辑"
+    },
+    {
+     "title": "吴 众",
+     "url": "https://www.bilibili.com/BV1xvykzsEPv",
+     "extra": "喵星人"
+    },
+    {
+     "title": "长得帅就要被网爆么?",
+     "url": "https://www.bilibili.com/BV11AyUz6E6h",
+     "extra": "搞笑"
+    }
+   ],
+   "fetched": "2026-11-27"
+  },
+  {
+   "key": "douban",
+   "name": "豆瓣热话",
+   "en": "DOUBAN",
+   "span": 2,
+   "grad": "linear-gradient(135deg,#3ecfae,#12b58f)",
+   "items": [
+    {
+     "title": "影视作品中让人印象深刻的女扮男装角色",
+     "url": "https://www.douban.com/gallery/topic/3667899/",
+     "extra": "223"
+    },
+    {
+     "title": "人生就是用来感受的",
+     "url": "https://www.douban.com/gallery/topic/3667898/",
+     "extra": ""
+    },
+    {
+     "title": "我的冬日蓄力计划",
+     "url": "https://www.douban.com/gallery/topic/3667897/",
+     "extra": "1.2万"
+    },
+    {
+     "title": "原来那些难熬的时刻，都在帮我重塑自己",
+     "url": "https://www.douban.com/gallery/topic/3667896/",
+     "extra": "3341"
+    },
+    {
+     "title": "让人眼前一亮的说话方式",
+     "url": "https://www.douban.com/gallery/topic/3667895/",
+     "extra": ""
+    },
+    {
+     "title": "要用自己喜欢的方式过完一生",
+     "url": "https://www.douban.com/gallery/topic/3667894/",
+     "extra": "442"
+    },
+    {
+     "title": "秋冬编织Bingo挑战",
+     "url": "https://www.douban.com/gallery/topic/3667893/",
+     "extra": "3126"
+    },
+    {
+     "title": "原来钱要花在这种地方",
+     "url": "https://www.douban.com/gallery/topic/3667892/",
+     "extra": "5231"
+    },
+    {
+     "title": "我的古建筑散步地图",
+     "url": "https://www.douban.com/gallery/topic/3667891/",
+     "extra": ""
+    },
+    {
+     "title": "一个人散发顶级魅力的时刻",
+     "url": "https://www.douban.com/gallery/topic/3667889/",
+     "extra": ""
+    }
+   ],
+   "fetched": "2026-11-25"
+  }
+ ],
+ "errors": []
+}
